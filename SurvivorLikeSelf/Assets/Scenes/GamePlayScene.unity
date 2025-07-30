@@ -544,7 +544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _testEnemy: {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
   _player: {fileID: 329787707}
-  _enemiesToSpawn: 10
+  _currentWave: {fileID: 11400000, guid: 3dd2571e1476a50488966cbf31ff8918, type: 2}
   _xAxisSpawnSize: 5
   _yAxisSpawnSize: 1.40625
 --- !u!4 &436724868

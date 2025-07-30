@@ -8,10 +8,10 @@ public class SpawnManager : MonoBehaviour
     private Enemy _testEnemy = null;
     [SerializeField]
     private Player _player = null;
+    [SerializeField]
+    private EnemyWave _currentWave = null;
 
     [Header("Settings")]
-    [SerializeField]
-    private int _enemiesToSpawn = 10;
     [SerializeField]
     private float _xAxisSpawnSize = 2.5f;
     [SerializeField]
@@ -39,11 +39,12 @@ public class SpawnManager : MonoBehaviour
             Debug.LogError("Enemy Reference is Empty");
             return;
         }
+        Enemy[] enemiesToSpawn = _currentWave.EnemyData;
 
-        for (int i = 0; i < _enemiesToSpawn; i++)
+        for (int i = 0; i < enemiesToSpawn.Length; i++)
         {
             Enemy newEnemy = Instantiate(
-                _testEnemy,
+                enemiesToSpawn[i],
                 new Vector3(UnityEngine.Random.Range(-_xAxisSpawnSize, _xAxisSpawnSize),
                     UnityEngine.Random.Range(-_yAxisSpawnSize, _yAxisSpawnSize), 0f),
                 Quaternion.identity,
