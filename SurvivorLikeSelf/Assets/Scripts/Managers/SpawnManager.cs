@@ -5,7 +5,9 @@ public class SpawnManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField]
-    private GameObject _testEnemy = null;
+    private Enemy _testEnemy = null;
+    [SerializeField]
+    private Player _player = null;
 
     [Header("Settings")]
     [SerializeField]
@@ -17,6 +19,12 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
+        _player = FindFirstObjectByType<Player>();
+        if (_player == null)
+        {
+            Debug.LogError("Player can't be found in scene!");
+            return;
+        }
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks); // Simple initialization for randomness
         // References docs: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-orthographicSize.html
         _yAxisSpawnSize = Camera.main.orthographicSize/* * 2f*/;
@@ -28,19 +36,20 @@ public class SpawnManager : MonoBehaviour
     {
         if (_testEnemy == null)
         {
-            Debug.LogError("Creature Reference is Empty");
+            Debug.LogError("Enemy Reference is Empty");
             return;
         }
 
         for (int i = 0; i < _enemiesToSpawn; i++)
         {
-            GameObject newEnemy = Instantiate(
+            Enemy newEnemy = Instantiate(
                 _testEnemy,
                 new Vector3(UnityEngine.Random.Range(-_xAxisSpawnSize, _xAxisSpawnSize),
                     UnityEngine.Random.Range(-_yAxisSpawnSize, _yAxisSpawnSize), 0f),
                 Quaternion.identity,
                 transform
                 );
+            newEnemy.Initialize(_player);
         }
     }
 }
