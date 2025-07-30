@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7153797477112411512}
   - component: {fileID: 3257913027194035272}
   - component: {fileID: 6298506012518502051}
-  m_Layer: 0
+  - component: {fileID: -145330401613861630}
+  m_Layer: 7
   m_Name: BaseEnemy 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,3 +103,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 2
   _maximumHealth: 0.5
+--- !u!58 &-145330401613861630
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2352279102841778098}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.088
