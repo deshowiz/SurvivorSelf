@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 817347685074707436}
   - component: {fileID: 3151784832729856219}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ MonoBehaviour:
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  _range: 0.3
+  _range: 0.5
   _fireRate: 1
   _baseDamage: 1
 --- !u!1 &7923908902353235780
@@ -63,7 +63,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 161226105319357598}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Swivel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4723797713496678772}
   - component: {fileID: 4320027273757479097}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

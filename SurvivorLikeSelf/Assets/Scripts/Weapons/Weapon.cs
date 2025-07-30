@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -28,6 +29,8 @@ public class Weapon : MonoBehaviour
 
     private Collider2D _currentlyTargetedCollider = null;
 
+    private Enemy _closestEnemy = null;
+
     private void Start()
     {
         _sqrRange = _range * _range; // sqrMagnitude is faster than magnitude, so set up comparison float
@@ -36,20 +39,24 @@ public class Weapon : MonoBehaviour
     private void Update()
     {
         _timeSinceLastFiring += Time.deltaTime;
-        TryFireWeapon();
+        if (GetClosestEnemy(out _closestEnemy))
+        {
+            TryFireWeapon();
+        }
+        
     }
 
     private void TryFireWeapon()
     {
-        if (_currentlyTargetedCollider)
+        if (_closestEnemy)
         {
-            Vector3 direction = _currentlyTargetedCollider.transform.position - transform.position;
+            Vector3 direction = _closestEnemy.transform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
             //Debug.Log(_currentlyTargetedCollider.transform.position);
             if (_timeSinceLastFiring >= _fireRate)
             {
-                if ((_currentlyTargetedCollider.transform.position - transform.position).sqrMagnitude <= _sqrRange)
+                if ((_closestEnemy.transform.position - transform.position).sqrMagnitude <= _sqrRange)
                 {
                     _timeSinceLastFiring = 0f;
                     Debug.Log("Boom");
@@ -58,31 +65,64 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    // Important note, this is relative to the weapon transform, not the player transform
+    // We can later do this calculation once if we don't want to do per weapon position comparisons
+    // Which would mean we're opting for the player position comparison instead
+    // This is all before partitioning and Jobs
+    private bool GetClosestEnemy(out Enemy closestEnemy)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 3f, _enemyLayer);
-        if (hitColliders.Length > 0)
+        List<Enemy> currentEnemies = SpawnManager.Instance.AliveEnemyList;
+        Vector3 thisPosition = transform.position;
+        int closestIndex = -1;
+        float closestDistance = Mathf.Infinity;
+
+        for (int i = 0; i < currentEnemies.Count; i++)
         {
-            // Aim Weapon
-            int closestIndex = 0;
-            float closestDistance = Mathf.Infinity;
+            float currentDistance = (currentEnemies[i].transform.position - thisPosition).sqrMagnitude;
 
-            for (int i = 0; i < hitColliders.Length; i++)
+            if ((currentEnemies[i].transform.position - thisPosition).sqrMagnitude < closestDistance)
             {
-                float currentDistanceToCollider = (hitColliders[i].transform.position - transform.position).sqrMagnitude;
-                if (currentDistanceToCollider < closestDistance)
-                {
-                    closestIndex = i;
-                }
+                closestDistance = currentDistance;
+                closestIndex = i;
             }
-
-            _currentlyTargetedCollider = hitColliders[closestIndex];
+        }
+        if (closestIndex != -1)
+        {
+            closestEnemy = currentEnemies[closestIndex];
+            return true;
         }
         else
         {
-            transform.rotation = Quaternion.identity; // Reset rotation if missed? maybe change late to not change at all
-            _currentlyTargetedCollider = null;
+            closestEnemy = null;
+            return false;
         }
-        //TryFireWeapon();
     }
+
+    // private void FixedUpdate()
+    // {
+    //     Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 3f, _enemyLayer);
+    //     if (hitColliders.Length > 0)
+    //     {
+    //         // Aim Weapon
+    //         int closestIndex = 0;
+    //         float closestDistance = Mathf.Infinity;
+
+    //         for (int i = 0; i < hitColliders.Length; i++)
+    //         {
+    //             float currentDistanceToCollider = (hitColliders[i].transform.position - transform.position).sqrMagnitude;
+    //             if (currentDistanceToCollider < closestDistance)
+    //             {
+    //                 closestIndex = i;
+    //             }
+    //         }
+
+    //         _currentlyTargetedCollider = hitColliders[closestIndex];
+    //     }
+    //     else
+    //     {
+    //         transform.rotation = Quaternion.identity; // Reset rotation if missed? maybe change late to not change at all
+    //         _currentlyTargetedCollider = null;
+    //     }
+    //     //TryFireWeapon();
+    //}
 }

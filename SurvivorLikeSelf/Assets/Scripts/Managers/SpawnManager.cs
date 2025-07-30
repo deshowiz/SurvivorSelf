@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    public static SpawnManager Instance;
+
     [Header("References")]
     [SerializeField]
     private Enemy _testEnemy = null;
@@ -16,6 +19,15 @@ public class SpawnManager : MonoBehaviour
     private float _xAxisSpawnSize = 2.5f;
     [SerializeField]
     private float _yAxisSpawnSize = 1.40625f;
+
+    private List<Enemy> _aliveEnemyList = new List<Enemy>();
+    // Ref is used to avoid creating copies of the data every time we want to iterate through it
+    public ref List<Enemy> AliveEnemyList { get { return ref _aliveEnemyList; } }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -51,6 +63,7 @@ public class SpawnManager : MonoBehaviour
                 transform
                 );
             newEnemy.Initialize(_player);
+            _aliveEnemyList.Add(newEnemy);
         }
     }
 }
