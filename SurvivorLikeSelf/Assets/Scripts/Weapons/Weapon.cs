@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -19,7 +21,12 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private float _range = 3f;
     [SerializeField]
+    private float _attackDistance = 0f;
+    [SerializeField]
     private float _fireRate = 1f;
+    [SerializeField]
+    [Range(0f, 1f)]
+    private float _animationPercentage = 0.5f;
     [SerializeField]
     private float _baseDamage = 1f;
 
@@ -27,13 +34,18 @@ public class Weapon : MonoBehaviour
 
     private float _sqrRange = 1f;
 
+    private float _animationTotalTime = Mathf.Infinity;
+
     private Collider2D _currentlyTargetedCollider = null;
 
     private Enemy _closestEnemy = null;
 
+    private Coroutine _firingRoutine = null;
+
     private void Start()
     {
         _sqrRange = _range * _range; // sqrMagnitude is faster than magnitude, so set up comparison float
+        _animationTotalTime = _fireRate * _animationPercentage;
     }
 
     private void Update()
@@ -75,7 +87,7 @@ public class Weapon : MonoBehaviour
         {
             Vector3 direction = _closestEnemy.transform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+            _swivelTransform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
             //Debug.Log(_currentlyTargetedCollider.transform.position);
             if (_timeSinceLastFiring >= _fireRate)
             {
@@ -83,15 +95,51 @@ public class Weapon : MonoBehaviour
                 {
                     _timeSinceLastFiring = 0f;
                     Debug.Log("Boom");
+                    FireWeapon();
                 }
             }
+        }
+    }
+
+    private void FireWeapon()
+    {
+        if (_firingRoutine != null)
+        {
+            StopCoroutine(_firingRoutine);
+            _firingRoutine = null;
+        }
+        _firingRoutine = StartCoroutine(Firing());
+    }
+
+    private IEnumerator Firing()
+    {
+        float startTime = Time.time;
+        float halfTime = _animationTotalTime * 0.5f;
+        
+        Debug.Log("begin while check");
+        Debug.Log(halfTime);
+        Vector3 destination = new Vector3(0f, _attackDistance, 0f);
+        while (halfTime > Time.time - startTime)
+        {
+
+            _visualTransform.localPosition = Vector3.Lerp(Vector3.zero, destination, (Time.time - startTime) / halfTime);
+            yield return null;
+        }
+
+        startTime = Time.time;
+
+        while (halfTime > Time.time - startTime)
+        {
+            //Vector3 destination = _visualTransform.up * _attackDistance;
+            _visualTransform.localPosition = Vector3.Lerp(destination, Vector3.zero, (Time.time - startTime) / halfTime);
+            yield return null;
         }
     }
 
     // Important note, this is relative to the weapon transform, not the player transform
     // We can later do this calculation once if we don't want to do per weapon position comparisons
     // Which would mean we're opting for the player position comparison instead
-    // This is all before partitioning and Jobs
+    // This is all before partitioning and Jobs and other methods to make this optimal
     private bool GetClosestEnemy(out Enemy closestEnemy)
     {
         List<Enemy> currentEnemies = SpawnManager.Instance.AliveEnemyList;
