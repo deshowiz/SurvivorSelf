@@ -51,10 +51,10 @@ MonoBehaviour:
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  _range: 0.5
+  _range: 0.8
   _attackDistance: 0.8
   _fireRate: 1
-  _animationPercentage: 0.5
+  _animationPercentage: 0.3
   _baseDamage: 1
 --- !u!1 &7923908902353235780
 GameObject:

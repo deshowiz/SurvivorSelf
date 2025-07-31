@@ -203,8 +203,8 @@ PrefabInstance:
       value: Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 3151784832729856219, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
-      propertyPath: _range
-      value: 0.8
+      propertyPath: _animationPercentage
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -691,7 +691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8691468764698299655, guid: 4fb8b6015dcf5d441bf62596ec1cd233, type: 3}
       propertyPath: _speedMultiplier
-      value: 1.5
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

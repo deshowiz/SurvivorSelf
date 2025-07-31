@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Weapon : MonoBehaviour
 {
@@ -40,7 +41,11 @@ public class Weapon : MonoBehaviour
 
     private Enemy _closestEnemy = null;
 
+    private Vector3 _currentTargetPosition = Vector3.positiveInfinity;
+
     private Coroutine _firingRoutine = null;
+
+    private bool _targeting = true;
 
     private void Start()
     {
@@ -51,11 +56,18 @@ public class Weapon : MonoBehaviour
     private void Update()
     {
         _timeSinceLastFiring += Time.deltaTime;
-        if (GetClosestEnemy(out _closestEnemy))
+        if (!_targeting)
+        {
+            if (_closestEnemy)
+            {
+                _currentTargetPosition = _closestEnemy.transform.position;
+            }
+            RotateWeapon();
+        }
+        else if (GetClosestEnemy(out _closestEnemy))
         {
             TryFireWeapon();
         }
-        
     }
 
     void OnDrawGizmos()
@@ -85,20 +97,34 @@ public class Weapon : MonoBehaviour
     {
         if (_closestEnemy)
         {
-            Vector3 direction = _closestEnemy.transform.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            _swivelTransform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
-            //Debug.Log(_currentlyTargetedCollider.transform.position);
+            _currentTargetPosition = _closestEnemy.transform.position;
+
             if (_timeSinceLastFiring >= _fireRate)
             {
                 if ((_closestEnemy.transform.position - transform.position).sqrMagnitude <= _sqrRange)
                 {
                     _timeSinceLastFiring = 0f;
                     Debug.Log("Boom");
+                    RotateWeapon();
                     FireWeapon();
                 }
+                else if (_targeting)
+                {
+                    RotateWeapon();
+                }
+            }
+            else if (_targeting)
+            {
+                RotateWeapon();
             }
         }
+    }
+
+    private void RotateWeapon()
+    {
+        Vector3 direction = _currentTargetPosition - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        _swivelTransform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
     }
 
     private void FireWeapon()
@@ -113,15 +139,13 @@ public class Weapon : MonoBehaviour
 
     private IEnumerator Firing()
     {
+        _targeting = false;
         float startTime = Time.time;
         float halfTime = _animationTotalTime * 0.5f;
-        
-        Debug.Log("begin while check");
-        Debug.Log(halfTime);
+
         Vector3 destination = new Vector3(0f, _attackDistance, 0f);
         while (halfTime > Time.time - startTime)
         {
-
             _visualTransform.localPosition = Vector3.Lerp(Vector3.zero, destination, (Time.time - startTime) / halfTime);
             yield return null;
         }
@@ -130,10 +154,10 @@ public class Weapon : MonoBehaviour
 
         while (halfTime > Time.time - startTime)
         {
-            //Vector3 destination = _visualTransform.up * _attackDistance;
             _visualTransform.localPosition = Vector3.Lerp(destination, Vector3.zero, (Time.time - startTime) / halfTime);
             yield return null;
         }
+        _targeting = true;
     }
 
     // Important note, this is relative to the weapon transform, not the player transform
