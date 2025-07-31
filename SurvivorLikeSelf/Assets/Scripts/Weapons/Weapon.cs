@@ -46,6 +46,29 @@ public class Weapon : MonoBehaviour
         
     }
 
+    void OnDrawGizmos()
+    {
+        if (!_closestEnemy) return;
+
+        if ((_closestEnemy.transform.position - transform.position).sqrMagnitude <= _sqrRange)
+        {
+            Gizmos.color = new Color(0f, 1f, 0f, 0.3f);
+        }
+        else
+        {
+            if (_timeSinceLastFiring >= _fireRate)
+            {
+                Gizmos.color = new Color(0.5f, 0.5f, 0f, 0.1f);
+            }
+            else
+            {
+                Gizmos.color = new Color(1f, 0f, 0f, 0.1f);
+            }
+        }
+        
+        Gizmos.DrawSphere(transform.position, _range);
+    }
+
     private void TryFireWeapon()
     {
         if (_closestEnemy)
