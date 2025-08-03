@@ -31,6 +31,8 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private float _baseDamage = 1f;
     [SerializeField]
+    private float _basePushback = 1f;
+    [SerializeField]
     private float _weaponLength = 0.3f;
 
     private float _timeSinceLastFiring = 0f;
@@ -48,6 +50,8 @@ public class Weapon : MonoBehaviour
     private Coroutine _firingRoutine = null;
 
     private bool _targeting = true;
+
+    private Vector3 _currentAttackDirection = Vector3.zero;
 
     private void Start()
     {
@@ -233,9 +237,10 @@ public class Weapon : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         Enemy hitEnemy = collision.GetComponent<Enemy>();
+        _currentAttackDirection = (_currentTargetPosition - transform.position).normalized;
         if (hitEnemy)
         {
-            hitEnemy.Damage(_baseDamage);
+            hitEnemy.Damage(_baseDamage, _currentAttackDirection * _basePushback);
         }
         else
         {

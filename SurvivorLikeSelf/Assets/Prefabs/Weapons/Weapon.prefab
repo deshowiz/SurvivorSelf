@@ -58,6 +58,7 @@ MonoBehaviour:
   _fireRate: 1
   _animationPercentage: 0.3
   _baseDamage: 1
+  _basePushback: 300
   _weaponLength: 0.3
 --- !u!50 &7332967650346297398
 Rigidbody2D:

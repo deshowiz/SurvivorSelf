@@ -1,7 +1,10 @@
 using UnityEngine;
-
+[RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour
 {
+    [Header("Reference")]
+    [SerializeField]
+    private Rigidbody2D _rigidbody = null;
     [Header("InitialStats")]
     [SerializeField]
     private float _speed = 1f;
@@ -15,16 +18,19 @@ public class Enemy : MonoBehaviour
     {
         _currentHealth = _maximumHealth;
         this._player = newPlayer;
+        Vector2 travelVector = (_player.transform.position - transform.position).normalized;
+        _rigidbody.linearVelocity = travelVector * _speed;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_player != null)
         {
             Vector2 travelVector = (_player.transform.position - transform.position).normalized;
-            // direction = travelVector.normalized;
+            _rigidbody.linearVelocity += travelVector * (_speed * Time.fixedDeltaTime);
 
-            transform.position += new Vector3(travelVector.x, travelVector.y, 0f) * (_speed * Time.deltaTime);
+            //transform.position += new Vector3(travelVector.x, travelVector.y, 0f) * (_speed * Time.fixedDeltaTime);
+
         }
         else
         {
@@ -32,10 +38,20 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Damage(float incomingDamage)
+    public void Damage(float incomingDamage, Vector2 incomingKnockback)
     {
         _currentHealth -= incomingDamage;
-        if (_currentHealth <= 0f) Die();
+        if (_currentHealth <= 0f)
+        {
+            Die();
+            return;
+        }
+        Push(incomingKnockback);
+    }
+
+    private void Push(Vector2 incomingKnockback)
+    {
+        _rigidbody.AddForce(incomingKnockback);
     }
 
     private void Die()
