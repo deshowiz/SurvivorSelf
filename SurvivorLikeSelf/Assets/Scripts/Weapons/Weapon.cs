@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
 public class Weapon : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField]
-    private SpriteRenderer _weaponSprite = null;
+    // [SerializeField]
+    // private SpriteRenderer _weaponSprite = null;
     [SerializeField]
     private Transform _swivelTransform = null;
     [SerializeField]
@@ -32,16 +33,14 @@ public class Weapon : MonoBehaviour
     private float _baseDamage = 1f;
     [SerializeField]
     private float _basePushback = 1f;
-    [SerializeField]
-    private float _weaponLength = 0.3f;
 
     private float _timeSinceLastFiring = 0f;
 
     private float _sqrRange = 1f;
 
-    private float _animationTotalTime = Mathf.Infinity;
+    private float _trackingRange = 0f;
 
-    private Collider2D _currentlyTargetedCollider = null;
+    private float _animationTotalTime = Mathf.Infinity;
 
     private Enemy _closestEnemy = null;
 
@@ -57,6 +56,7 @@ public class Weapon : MonoBehaviour
     {
         _sqrRange = _range * _range; // sqrMagnitude is faster than magnitude, so set up comparison float
         _animationTotalTime = _fireRate * _animationPercentage;
+        _trackingRange = _range * 1.2f;
     }
 
     private void Update()
@@ -70,7 +70,7 @@ public class Weapon : MonoBehaviour
             }
             RotateWeapon();
         }
-        else if (GetClosestEnemy(out _closestEnemy))
+        else if (_closestEnemy)
         {
             TryFireWeapon();
         }
@@ -97,6 +97,9 @@ public class Weapon : MonoBehaviour
         }
 
         Gizmos.DrawSphere(transform.position, _range);
+        
+        Gizmos.color = new Color(1f, 1f, 1f, 1f);
+        Gizmos.DrawSphere(transform.position, _trackingRange);
     }
 
     private void TryFireWeapon()
@@ -167,38 +170,40 @@ public class Weapon : MonoBehaviour
         _targeting = true;
     }
 
+    #region Deprecated Enemy Tracking
     // Important note, this is relative to the weapon transform, not the player transform
     // We can later do this calculation once if we don't want to do per weapon position comparisons
     // Which would mean we're opting for the player position comparison instead
     // This is all before partitioning and Jobs and other methods to make this optimal
-    private bool GetClosestEnemy(out Enemy closestEnemy)
-    {
-        List<Enemy> currentEnemies = SpawnManager.Instance.AliveEnemyList;
-        Vector3 thisPosition = transform.position;
-        int closestIndex = -1;
-        float closestDistance = Mathf.Infinity;
+    // private bool GetClosestEnemy(out Enemy closestEnemy)
+    // {
+    //     List<Enemy> currentEnemies = SpawnManager.Instance.AliveEnemyList;
+    //     Vector3 thisPosition = transform.position;
+    //     int closestIndex = -1;
+    //     float closestDistance = Mathf.Infinity;
 
-        for (int i = 0; i < currentEnemies.Count; i++)
-        {
-            float currentDistance = (currentEnemies[i].transform.position - thisPosition).sqrMagnitude;
+    //     for (int i = 0; i < currentEnemies.Count; i++)
+    //     {
+    //         float currentDistance = (currentEnemies[i].transform.position - thisPosition).sqrMagnitude;
 
-            if ((currentEnemies[i].transform.position - thisPosition).sqrMagnitude < closestDistance)
-            {
-                closestDistance = currentDistance;
-                closestIndex = i;
-            }
-        }
-        if (closestIndex != -1)
-        {
-            closestEnemy = currentEnemies[closestIndex];
-            return true;
-        }
-        else
-        {
-            closestEnemy = null;
-            return false;
-        }
-    }
+    //         if ((currentEnemies[i].transform.position - thisPosition).sqrMagnitude < closestDistance)
+    //         {
+    //             closestDistance = currentDistance;
+    //             closestIndex = i;
+    //         }
+    //     }
+    //     if (closestIndex != -1)
+    //     {
+    //         closestEnemy = currentEnemies[closestIndex];
+    //         return true;
+    //     }
+    //     else
+    //     {
+    //         closestEnemy = null;
+    //         return false;
+    //     }
+    // }
+    #endregion
 
     private void FixedUpdate()
     {
@@ -228,9 +233,39 @@ public class Weapon : MonoBehaviour
         // }
         // //TryFireWeapon();
         #endregion
-        if (!_targeting)
+        if (_targeting)
         {
-            // Raycast on the enemy layer looking for enemies to hit?
+            // Cast on the enemy layer looking for enemies to hit?
+            Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(transform.position, _trackingRange, _enemyLayer);
+
+            if (enemiesHit.Length != 0)
+            {
+                int closestIndex = -1;
+                float closestDistance = Mathf.Infinity;
+                for (int i = 0; i < enemiesHit.Length; i++)
+                {
+                    float currentDistance = (enemiesHit[i].transform.position - transform.position).sqrMagnitude;
+
+                    if ((enemiesHit[i].transform.position - transform.position).sqrMagnitude < closestDistance)
+                    {
+                        closestDistance = currentDistance;
+                        closestIndex = i;
+                    }
+                }
+
+                if (closestIndex != -1)
+                {
+                    _closestEnemy = enemiesHit[closestIndex].transform.GetComponent<Enemy>();
+                }
+                else
+                {
+                    _closestEnemy = null;
+                }
+            }
+            else
+            {
+                _closestEnemy = null;
+            }
         }
     }
 

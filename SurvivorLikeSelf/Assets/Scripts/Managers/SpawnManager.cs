@@ -21,8 +21,10 @@ public class SpawnManager : MonoBehaviour
     private float _yAxisSpawnSize = 1.40625f;
 
     private List<Enemy> _aliveEnemyList = new List<Enemy>();
-    // Ref is used to avoid creating copies of the data every time we want to iterate through it
+    // Ref is used here to avoid creating copies of the data every time we want to iterate through it
     public ref List<Enemy> AliveEnemyList { get { return ref _aliveEnemyList; } }
+
+    private List<Enemy> _enemiesToBeCleared = new List<Enemy>();
 
     private void Awake()
     {
@@ -37,7 +39,7 @@ public class SpawnManager : MonoBehaviour
             Debug.LogError("Player can't be found in scene!");
             return;
         }
-        UnityEngine.Random.InitState((int)DateTime.Now.Ticks); // Simple initialization for randomness
+        UnityEngine.Random.InitState((int)DateTime.Now.Ticks); // Simple initialization for randomness works for now
         // References docs: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-orthographicSize.html
         _yAxisSpawnSize = Camera.main.orthographicSize/* * 2f*/;
         _xAxisSpawnSize = _yAxisSpawnSize * Camera.main.aspect;
@@ -64,6 +66,22 @@ public class SpawnManager : MonoBehaviour
                 );
             newEnemy.Initialize(_player);
             _aliveEnemyList.Add(newEnemy);
+        }
+    }
+
+    public void ClearEnemy(Enemy deadEnemy) // can later create paralellized int IDs to speed up
+    {
+        _enemiesToBeCleared.Add(deadEnemy);
+    }
+
+    void LateUpdate() // Slow but changing later
+    {
+        if (_enemiesToBeCleared.Count != 0)
+        {
+            for (int i = 0; i < _enemiesToBeCleared.Count; i++)
+            {
+                _aliveEnemyList.Remove(_enemiesToBeCleared[i]);
+            }
         }
     }
 }
