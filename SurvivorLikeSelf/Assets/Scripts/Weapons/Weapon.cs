@@ -5,61 +5,62 @@ using System.Linq;
 using UnityEngine;
 
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
     [Header("References")]
     // [SerializeField]
     // private SpriteRenderer _weaponSprite = null;
     [SerializeField]
-    private Transform _swivelTransform = null;
+    protected Transform _swivelTransform = null;
     [SerializeField]
-    private Transform _visualTransform = null;
-    [SerializeField]
-    private Collider2D _weaponCollider = null;
+    protected Transform _visualTransform = null;
+    
 
     [Header("Settings")]
     [SerializeField]
-    private LayerMask _enemyLayer = 7;
+    protected LayerMask _enemyLayer = 7;
     [SerializeField]
-    private float _range = 3f;
+    protected float _range = 3f;
     [SerializeField]
-    private float _attackDistance = 0f;
+    protected float _attackDistance = 0f;
     [SerializeField]
-    private float _fireRate = 1f;
+    protected float _fireRate = 1f;
     [SerializeField]
     [Range(0f, 1f)]
-    private float _animationPercentage = 0.5f;
+    protected float _animationPercentage = 0.5f;
     [SerializeField]
-    private float _baseDamage = 1f;
+    protected float _baseDamage = 1f;
     [SerializeField]
-    private float _basePushback = 1f;
+    protected float _basePushback = 1f;
 
-    private float _timeSinceLastFiring = 0f;
+    protected float _timeSinceLastFiring = 0f;
 
-    private float _sqrRange = 1f;
+    protected float _sqrRange = 1f;
 
-    private float _trackingRange = 0f;
+    protected float _trackingRange = 0f;
 
-    private float _animationTotalTime = Mathf.Infinity;
+    protected Enemy _closestEnemy = null;
 
-    private Enemy _closestEnemy = null;
+    protected Vector3 _currentTargetPosition = Vector3.positiveInfinity;
 
-    private Vector3 _currentTargetPosition = Vector3.positiveInfinity;
+    protected Coroutine _firingRoutine = null;
 
-    private Coroutine _firingRoutine = null;
+    protected bool _targeting = true;
 
-    private bool _targeting = true;
+    protected Vector3 _currentAttackDirection = Vector3.zero;
 
-    private Vector3 _currentAttackDirection = Vector3.zero;
+    protected void Start()
+    {
+        InitializeWeapon();
+    }
 
-    private void Start()
+    protected virtual void InitializeWeapon()
     {
         _sqrRange = _range * _range; // sqrMagnitude is faster than magnitude, so set up comparison float
-        _animationTotalTime = _fireRate * _animationPercentage;
         _trackingRange = _range * 1.2f;
     }
 
-    private void Update()
+    protected void Update()
     {
         _timeSinceLastFiring += Time.deltaTime;
         if (!_targeting)
@@ -76,7 +77,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    protected void OnDrawGizmos()
     {
         if (!_closestEnemy) return;
 
@@ -102,7 +103,7 @@ public class Weapon : MonoBehaviour
         Gizmos.DrawSphere(transform.position, _trackingRange);
     }
 
-    private void TryFireWeapon()
+    protected void TryFireWeapon()
     {
         if (_closestEnemy)
         {
@@ -145,29 +146,9 @@ public class Weapon : MonoBehaviour
         _firingRoutine = StartCoroutine(Firing());
     }
 
-    private IEnumerator Firing()
+    protected virtual IEnumerator Firing()
     {
-        _weaponCollider.enabled = true;
-        _targeting = false;
-        float startTime = Time.time;
-        float halfTime = _animationTotalTime * 0.5f;
-
-        Vector3 destination = new Vector3(0f, _attackDistance, 0f);
-        while (halfTime > Time.time - startTime)
-        {
-            _visualTransform.localPosition = Vector3.Lerp(Vector3.zero, destination, (Time.time - startTime) / halfTime);
-            yield return null;
-        }
-
-        _weaponCollider.enabled = false;
-        startTime = Time.time;
-
-        while (halfTime > Time.time - startTime)
-        {
-            _visualTransform.localPosition = Vector3.Lerp(destination, Vector3.zero, (Time.time - startTime) / halfTime);
-            yield return null;
-        }
-        _targeting = true;
+        yield return null;
     }
 
     #region Deprecated Enemy Tracking
@@ -205,7 +186,7 @@ public class Weapon : MonoBehaviour
     // }
     #endregion
 
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
         #region Disabled Physics
         // Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 3f, _enemyLayer);
@@ -269,17 +250,5 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        Enemy hitEnemy = collision.GetComponent<Enemy>();
-        _currentAttackDirection = (_currentTargetPosition - transform.position).normalized;
-        if (hitEnemy)
-        {
-            hitEnemy.Damage(_baseDamage, _currentAttackDirection * _basePushback);
-        }
-        else
-        {
-            Debug.LogError(collision.gameObject.name + " is on the enemy layer for some reason?");
-        }
-    }
+    //protected virtual void OnTriggerEnter2D(Collider2D collision) {}
 }

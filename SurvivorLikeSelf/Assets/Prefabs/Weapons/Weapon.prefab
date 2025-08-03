@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 817347685074707436}
-  - component: {fileID: 3151784832729856219}
+  - component: {fileID: 6383740888935680488}
   - component: {fileID: 7332967650346297398}
   m_Layer: 6
   m_Name: Weapon
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 161226105319357598}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3151784832729856219
+--- !u!114 &6383740888935680488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,23 +43,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1640702997191274751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fac97c07b2aef3b4eab0f5c4e97f3ebd, type: 3}
+  m_Script: {fileID: 11500000, guid: 23eab7e6caf87f946b33e7623bac09d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponSprite: {fileID: 4320027273757479097}
   _swivelTransform: {fileID: 161226105319357598}
   _visualTransform: {fileID: 4723797713496678772}
-  _weaponCollider: {fileID: 7711258298298445828}
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  _range: 0.8
-  _attackDistance: 0.8
+  _range: 1.2
+  _attackDistance: 0.6
   _fireRate: 1
-  _animationPercentage: 0.3
+  _animationPercentage: 0.5
   _baseDamage: 1
-  _basePushback: 300
-  _weaponLength: 0.3
+  _basePushback: 250
+  _weaponCollider: {fileID: 7711258298298445828}
 --- !u!50 &7332967650346297398
 Rigidbody2D:
   serializedVersion: 5
