@@ -20,6 +20,8 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField]
     protected LayerMask _enemyLayer = 7;
     [SerializeField]
+    protected Vector3 _baseRotation = new Vector3(0f, 0f, -90f);
+    [SerializeField]
     protected float _range = 3f;
     [SerializeField]
     protected float _attackDistance = 0f;
@@ -39,6 +41,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected float _trackingRange = 0f;
 
+    [SerializeField]
     protected Enemy _closestEnemy = null;
 
     protected Vector3 _currentTargetPosition = Vector3.positiveInfinity;
@@ -58,6 +61,7 @@ public abstract class Weapon : MonoBehaviour
     {
         _sqrRange = _range * _range; // sqrMagnitude is faster than magnitude, so set up comparison float
         _trackingRange = _range * 1.2f;
+        ResetRotation();
     }
 
     protected void Update()
@@ -74,6 +78,10 @@ public abstract class Weapon : MonoBehaviour
         else if (_closestEnemy)
         {
             TryFireWeapon();
+        }
+        else
+        {
+            ResetRotation();
         }
     }
 
@@ -103,10 +111,11 @@ public abstract class Weapon : MonoBehaviour
         Gizmos.DrawSphere(transform.position, _trackingRange);
     }
 
-    protected void TryFireWeapon()
+    private void TryFireWeapon()
     {
-        if (_closestEnemy)
+        if (_closestEnemy != null)
         {
+            Debug.Log("can see enemy");
             _currentTargetPosition = _closestEnemy.transform.position;
 
             if (_timeSinceLastFiring >= _fireRate)
@@ -134,6 +143,11 @@ public abstract class Weapon : MonoBehaviour
         Vector3 direction = _currentTargetPosition - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         _swivelTransform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+    }
+
+    private void ResetRotation()
+    {
+        _swivelTransform.rotation = Quaternion.Euler(_baseRotation);
     }
 
     private void FireWeapon()
@@ -186,7 +200,7 @@ public abstract class Weapon : MonoBehaviour
     // }
     #endregion
 
-    protected void FixedUpdate()
+    private void FixedUpdate()
     {
         #region Disabled Physics
         // Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 3f, _enemyLayer);
