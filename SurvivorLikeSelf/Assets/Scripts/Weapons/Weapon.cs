@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 public class Weapon : MonoBehaviour
 {
@@ -15,6 +13,8 @@ public class Weapon : MonoBehaviour
     private Transform _swivelTransform = null;
     [SerializeField]
     private Transform _visualTransform = null;
+    [SerializeField]
+    private Collider2D _weaponCollider = null;
 
     [Header("Settings")]
     [SerializeField]
@@ -30,6 +30,8 @@ public class Weapon : MonoBehaviour
     private float _animationPercentage = 0.5f;
     [SerializeField]
     private float _baseDamage = 1f;
+    [SerializeField]
+    private float _weaponLength = 0.3f;
 
     private float _timeSinceLastFiring = 0f;
 
@@ -89,7 +91,7 @@ public class Weapon : MonoBehaviour
                 Gizmos.color = new Color(1f, 0f, 0f, 0.1f);
             }
         }
-        
+
         Gizmos.DrawSphere(transform.position, _range);
     }
 
@@ -104,7 +106,6 @@ public class Weapon : MonoBehaviour
                 if ((_closestEnemy.transform.position - transform.position).sqrMagnitude <= _sqrRange)
                 {
                     _timeSinceLastFiring = 0f;
-                    Debug.Log("Boom");
                     RotateWeapon();
                     FireWeapon();
                 }
@@ -139,6 +140,7 @@ public class Weapon : MonoBehaviour
 
     private IEnumerator Firing()
     {
+        _weaponCollider.enabled = true;
         _targeting = false;
         float startTime = Time.time;
         float halfTime = _animationTotalTime * 0.5f;
@@ -150,6 +152,7 @@ public class Weapon : MonoBehaviour
             yield return null;
         }
 
+        _weaponCollider.enabled = false;
         startTime = Time.time;
 
         while (halfTime > Time.time - startTime)
@@ -193,31 +196,50 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    // private void FixedUpdate()
-    // {
-    //     Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 3f, _enemyLayer);
-    //     if (hitColliders.Length > 0)
-    //     {
-    //         // Aim Weapon
-    //         int closestIndex = 0;
-    //         float closestDistance = Mathf.Infinity;
+    private void FixedUpdate()
+    {
+        #region Disabled Physics
+        // Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 3f, _enemyLayer);
+        // if (hitColliders.Length > 0)
+        // {
+        //     // Aim Weapon
+        //     int closestIndex = 0;
+        //     float closestDistance = Mathf.Infinity;
 
-    //         for (int i = 0; i < hitColliders.Length; i++)
-    //         {
-    //             float currentDistanceToCollider = (hitColliders[i].transform.position - transform.position).sqrMagnitude;
-    //             if (currentDistanceToCollider < closestDistance)
-    //             {
-    //                 closestIndex = i;
-    //             }
-    //         }
+        //     for (int i = 0; i < hitColliders.Length; i++)
+        //     {
+        //         float currentDistanceToCollider = (hitColliders[i].transform.position - transform.position).sqrMagnitude;
+        //         if (currentDistanceToCollider < closestDistance)
+        //         {
+        //             closestIndex = i;
+        //         }
+        //     }
 
-    //         _currentlyTargetedCollider = hitColliders[closestIndex];
-    //     }
-    //     else
-    //     {
-    //         transform.rotation = Quaternion.identity; // Reset rotation if missed? maybe change late to not change at all
-    //         _currentlyTargetedCollider = null;
-    //     }
-    //     //TryFireWeapon();
-    //}
+        //     _currentlyTargetedCollider = hitColliders[closestIndex];
+        // }
+        // else
+        // {
+        //     transform.rotation = Quaternion.identity; // Reset rotation if missed? maybe change late to not change at all
+        //     _currentlyTargetedCollider = null;
+        // }
+        // //TryFireWeapon();
+        #endregion
+        if (!_targeting)
+        {
+            // Raycast on the enemy layer looking for enemies to hit?
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Enemy hitEnemy = collision.GetComponent<Enemy>();
+        if (hitEnemy)
+        {
+            hitEnemy.Damage(_baseDamage);
+        }
+        else
+        {
+            Debug.LogError(collision.gameObject.name + " is on the enemy layer for some reason?");
+        }
+    }
 }

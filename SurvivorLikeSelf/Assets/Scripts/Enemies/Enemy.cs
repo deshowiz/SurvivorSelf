@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
 
     public void Initialize(Player newPlayer)
     {
-        _maximumHealth = _currentHealth;
+        _currentHealth = _maximumHealth;
         this._player = newPlayer;
     }
 
@@ -30,6 +30,17 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Enemy can't see player");
         }
+    }
+
+    public void Damage(float incomingDamage)
+    {
+        _currentHealth -= incomingDamage;
+        if (_currentHealth <= 0f) Die();
+    }
+
+    private void Die()
+    {
+        gameObject.SetActive(false);
     }
 
 }
