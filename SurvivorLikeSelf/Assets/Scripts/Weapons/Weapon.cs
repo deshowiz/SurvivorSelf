@@ -86,6 +86,9 @@ public abstract class Weapon : MonoBehaviour
     {
         if (!_closestEnemy) return;
 
+        Gizmos.color = new Color(1f, 1f, 1f, 1f);
+        Gizmos.DrawSphere(transform.position, _trackingRange);
+
         if ((_closestEnemy.transform.position - transform.position).sqrMagnitude <= _sqrRange)
         {
             Gizmos.color = new Color(0f, 1f, 0f, 0.3f);
@@ -104,8 +107,7 @@ public abstract class Weapon : MonoBehaviour
 
         Gizmos.DrawSphere(transform.position, _range);
         
-        Gizmos.color = new Color(1f, 1f, 1f, 1f);
-        Gizmos.DrawSphere(transform.position, _trackingRange);
+        
     }
 
     private void TryFireWeapon()
@@ -141,7 +143,7 @@ public abstract class Weapon : MonoBehaviour
         _swivelTransform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
     }
 
-    private void ResetRotation()
+    protected virtual void ResetRotation()
     {
         _swivelTransform.rotation = Quaternion.Euler(_baseRotation);
     }
