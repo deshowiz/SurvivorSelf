@@ -19,8 +19,8 @@ public class RangedWeapon : Weapon
 
     protected override void InitializeWeapon()
     {
+        _startingWeaponPosition = transform.localPosition;
         base.InitializeWeapon();
-        _startingWeaponPosition = transform.position;
     }
 
     protected override void FireWeapon()
@@ -39,13 +39,18 @@ public class RangedWeapon : Weapon
         Vector3 direction = _currentTargetPosition - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         _swivelTransform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        _weaponSprite.flipX = false;
-        if (!_weaponSprite.flipY && transform.position.x - _currentTargetPosition.x > 0.25f)
+        if (_weaponSprite.flipX)
+        {
+            _weaponSprite.flipX = false;
+            _weaponSprite.flipY = true;
+        }
+        float transformLocalX = transform.localPosition.x;
+        if (transformLocalX == _startingWeaponPosition.x && transform.position.x - 0.25f > _currentTargetPosition.x)
         {
             _weaponSprite.flipY = true;
             transform.localPosition = -_startingWeaponPosition;
         }
-        else if (_weaponSprite.flipY && _currentTargetPosition.x - transform.position.x > 0.25f)
+        else if (transformLocalX != _startingWeaponPosition.x && _currentTargetPosition.x - 0.25f > transform.position.x)
         {
             _weaponSprite.flipY = false;
             transform.localPosition = _startingWeaponPosition;
@@ -58,7 +63,7 @@ public class RangedWeapon : Weapon
         //_weaponSprite.flipY = false;
         if (transform.localPosition.x != _startingWeaponPosition.x)
         {
-             _weaponSprite.flipY = false;
+            _weaponSprite.flipY = false;
             _weaponSprite.flipX = true;
         }
     }

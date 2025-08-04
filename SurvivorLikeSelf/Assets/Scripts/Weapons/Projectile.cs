@@ -46,7 +46,6 @@ public class Projectile : MonoBehaviour
 
         if (hit.collider != null)
         {
-            Debug.Log("contact with " + hit.collider.gameObject.name);
             Enemy hitEnemy = hit.collider.GetComponent<Enemy>();
             if (hitEnemy != null)
             {
