@@ -15,7 +15,6 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField]
     protected Transform _visualTransform = null;
     
-
     [Header("Settings")]
     [SerializeField]
     protected LayerMask _enemyLayer = 7;
@@ -23,8 +22,6 @@ public abstract class Weapon : MonoBehaviour
     protected Vector3 _baseRotation = new Vector3(0f, 0f, -90f);
     [SerializeField]
     protected float _range = 3f;
-    [SerializeField]
-    protected float _attackDistance = 0f;
     [SerializeField]
     protected float _fireRate = 1f;
     [SerializeField]
@@ -115,7 +112,6 @@ public abstract class Weapon : MonoBehaviour
     {
         if (_closestEnemy != null)
         {
-            Debug.Log("can see enemy");
             _currentTargetPosition = _closestEnemy.transform.position;
 
             if (_timeSinceLastFiring >= _fireRate)
@@ -138,7 +134,7 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    private void RotateWeapon()
+    protected virtual void RotateWeapon()
     {
         Vector3 direction = _currentTargetPosition - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -150,20 +146,7 @@ public abstract class Weapon : MonoBehaviour
         _swivelTransform.rotation = Quaternion.Euler(_baseRotation);
     }
 
-    private void FireWeapon()
-    {
-        if (_firingRoutine != null)
-        {
-            StopCoroutine(_firingRoutine);
-            _firingRoutine = null;
-        }
-        _firingRoutine = StartCoroutine(Firing());
-    }
-
-    protected virtual IEnumerator Firing()
-    {
-        yield return null;
-    }
+    protected virtual void FireWeapon(){}
 
     #region Deprecated Enemy Tracking
     // Important note, this is relative to the weapon transform, not the player transform

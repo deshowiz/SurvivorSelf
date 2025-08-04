@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
+    [Header("Melee Weapon")]
     [SerializeField]
     protected Collider2D _weaponCollider = null;
-
+    [SerializeField]
+    protected float _attackDistance = 0.8f;
     protected float _animationTotalTime = Mathf.Infinity;
 
     protected override void InitializeWeapon()
@@ -14,7 +16,17 @@ public class MeleeWeapon : Weapon
         _animationTotalTime = _fireRate * _animationPercentage;
     }
 
-    protected override IEnumerator Firing()
+    protected override void FireWeapon()
+    {
+        if (_firingRoutine != null)
+        {
+            StopCoroutine(_firingRoutine);
+            _firingRoutine = null;
+        }
+        _firingRoutine = StartCoroutine(Firing());
+    }
+
+    protected virtual IEnumerator Firing()
     {
         _weaponCollider.enabled = true;
         _targeting = false;
