@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class RangedWeapon : Weapon
 {
-    [SerializeField]
-    private bool _onlyWeapon = true;
-    [SerializeField]
-    protected SpriteRenderer _weaponSprite = null;
     [Header("Projectile")]
     [SerializeField]
     private Transform _exitTransform = null;
@@ -16,17 +12,6 @@ public class RangedWeapon : Weapon
     [SerializeField]
     [Tooltip("Base speed of projectiles fired from this weapon")]
     protected float _baseProjVelMagnitude = 0f;
-
-    private Vector2 _startingWeaponPosition = Vector2.zero;
-
-    private float _lastPosX = 0f;
-
-    protected override void InitializeWeapon()
-    {
-        _lastPosX = transform.position.x;
-        _startingWeaponPosition = transform.localPosition;
-        base.InitializeWeapon();
-    }
 
     protected override void FireWeapon()
     {
@@ -39,37 +24,35 @@ public class RangedWeapon : Weapon
         //Time.timeScale = 0f;
     }
 
-    protected override void RotateWeapon()
-    {
-        Vector3 direction = _currentTargetPosition - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        _swivelTransform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        if (_onlyWeapon)
-        {
-            if (_weaponSprite.flipX)
-            {
-                _weaponSprite.flipX = false;
-                _weaponSprite.flipY = true;
-            }
-            float transformLocalX = transform.localPosition.x;
-            if (transformLocalX == _startingWeaponPosition.x && transform.position.x - 0.25f > _currentTargetPosition.x)
-            {
-                _weaponSprite.flipY = true;
-                transform.localPosition = new Vector3(-_startingWeaponPosition.x, _startingWeaponPosition.y, 0f);
-            }
-            else if (transformLocalX != _startingWeaponPosition.x && _currentTargetPosition.x - 0.25f > transform.position.x)
-            {
-                _weaponSprite.flipY = false;
-                transform.localPosition = _startingWeaponPosition;
-            }
-        }
-        else
-        {
-            _weaponSprite.flipY = transform.position.x >= _currentTargetPosition.x;
-            _weaponSprite.flipX = false;
-        }
-        _lastPosX = transform.position.x;
-    }
+    // protected override void RotateWeapon()
+    // {
+    //     base.RotateWeapon();
+    //     if (_onlyWeapon)
+    //     {
+    //         if (_weaponSprite.flipX)
+    //         {
+    //             _weaponSprite.flipX = false;
+    //             _weaponSprite.flipY = true;
+    //         }
+    //         float transformLocalX = transform.localPosition.x;
+    //         if (transformLocalX == _startingWeaponPosition.x && transform.position.x - 0.25f > _currentTargetPosition.x)
+    //         {
+    //             _weaponSprite.flipY = true;
+    //             transform.localPosition = new Vector3(-_startingWeaponPosition.x, _startingWeaponPosition.y, 0f);
+    //         }
+    //         else if (transformLocalX != _startingWeaponPosition.x && _currentTargetPosition.x - 0.25f > transform.position.x)
+    //         {
+    //             _weaponSprite.flipY = false;
+    //             transform.localPosition = _startingWeaponPosition;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         _weaponSprite.flipY = transform.position.x >= _currentTargetPosition.x;
+    //         _weaponSprite.flipX = false;
+    //     }
+    //     _lastPosX = transform.position.x;
+    // }
 
     protected override void ResetRotation()
     {

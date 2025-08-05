@@ -14,14 +14,20 @@ public abstract class Weapon : MonoBehaviour
     protected Transform _swivelTransform = null;
     [SerializeField]
     protected Transform _visualTransform = null;
+    [SerializeField]
+    protected SpriteRenderer _weaponSprite = null;
     
     [Header("Settings")]
+    [SerializeField]
+    protected bool _onlyWeapon = true;
     [SerializeField]
     protected LayerMask _enemyLayer = 7;
     [SerializeField]
     protected Vector3 _baseRotation = new Vector3(0f, 0f, -90f);
     [SerializeField]
     protected float _range = 3f;
+    [SerializeField]
+    protected float _detectionRangeMultiplier = 1.5f;
     [SerializeField]
     protected float _fireRate = 1f;
     [SerializeField]
@@ -49,6 +55,10 @@ public abstract class Weapon : MonoBehaviour
 
     protected Vector3 _currentAttackDirection = Vector3.zero;
 
+    protected Vector2 _startingWeaponPosition = Vector2.zero;
+
+    protected float _lastPosX = 0f;
+
     protected void Start()
     {
         InitializeWeapon();
@@ -57,7 +67,9 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void InitializeWeapon()
     {
         _sqrRange = _range * _range; // sqrMagnitude is faster than magnitude, so set up comparison float
-        _trackingRange = _range * 1.2f;
+        _trackingRange = _range * _detectionRangeMultiplier;
+        _startingWeaponPosition = transform.localPosition;
+        _lastPosX = transform.position.x;
         ResetRotation();
     }
 
@@ -140,7 +152,32 @@ public abstract class Weapon : MonoBehaviour
     {
         Vector3 direction = _currentTargetPosition - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        _swivelTransform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+        _swivelTransform.rotation = Quaternion.AngleAxis(angle - _baseRotation.z, Vector3.forward);
+        if (_onlyWeapon)
+        {
+            if (_weaponSprite.flipX)
+            {
+                _weaponSprite.flipX = false;
+                _weaponSprite.flipY = true;
+            }
+            float transformLocalX = transform.localPosition.x;
+            if (transformLocalX == _startingWeaponPosition.x && transform.position.x - 0.1f > _currentTargetPosition.x)
+            {
+                _weaponSprite.flipY = true;
+                transform.localPosition = new Vector3(-_startingWeaponPosition.x, _startingWeaponPosition.y, 0f);
+            }
+            else if (transformLocalX != _startingWeaponPosition.x && _currentTargetPosition.x - 0.1f > transform.position.x)
+            {
+                _weaponSprite.flipY = false;
+                transform.localPosition = _startingWeaponPosition;
+            }
+        }
+        else
+        {
+            _weaponSprite.flipY = transform.position.x >= _currentTargetPosition.x;
+            _weaponSprite.flipX = false;
+        }
+        _lastPosX = transform.position.x;
     }
 
     protected virtual void ResetRotation()

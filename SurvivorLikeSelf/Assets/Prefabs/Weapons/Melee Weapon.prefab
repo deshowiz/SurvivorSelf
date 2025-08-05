@@ -48,16 +48,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _swivelTransform: {fileID: 161226105319357598}
   _visualTransform: {fileID: 4723797713496678772}
+  _weaponSprite: {fileID: 4320027273757479097}
+  _onlyWeapon: 1
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  _baseRotation: {x: 0, y: 0, z: 0}
   _range: 0.8
-  _attackDistance: 0.8
+  _detectionRangeMultiplier: 1.5
   _fireRate: 1
   _animationPercentage: 0.3
   _baseDamage: 1
   _basePushback: 300
+  _closestEnemy: {fileID: 0}
   _weaponCollider: {fileID: 7711258298298445828}
+  _attackDistance: 0.8
 --- !u!50 &7332967650346297398
 Rigidbody2D:
   serializedVersion: 5
@@ -145,7 +150,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.02, y: 0.08, z: 0.08}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 161226105319357598}
@@ -191,15 +196,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 58e78642aad23b7459974f5e308a7900, type: 3}
-  m_Color: {r: 0.52566385, g: 0, b: 1, a: 1}
+  m_SortingLayerID: -1482968339
+  m_SortingLayer: 2
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 19c37ec7d025879458a3d3cf4b372333, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.26, y: 3.78}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -242,9 +247,9 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 1.89}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1.26, y: 3.78}
-    newSize: {x: 1.26, y: 3.78}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 2.56, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

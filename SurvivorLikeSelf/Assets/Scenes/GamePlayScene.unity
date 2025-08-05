@@ -192,11 +192,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.08
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03
+      value: -0.03
       objectReference: {fileID: 0}
     - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -232,15 +232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1640702997191274751, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
       propertyPath: m_Name
-      value: Weapon
+      value: MeleeWeapon
       objectReference: {fileID: 0}
-    - target: {fileID: 1640702997191274751, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3151784832729856219, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
-      propertyPath: _animationPercentage
-      value: 0.2
+    - target: {fileID: 6383740888935680488, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: _onlyWeapon
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -805,7 +801,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &960133048
 Transform:
   m_ObjectHideFlags: 0
@@ -836,18 +832,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _swivelTransform: {fileID: 51199026}
   _visualTransform: {fileID: 1973745520}
+  _weaponSprite: {fileID: 1973745521}
+  _onlyWeapon: 0
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   _baseRotation: {x: 0, y: 0, z: 0}
   _range: 3
+  _detectionRangeMultiplier: 1.5
   _fireRate: 1
   _animationPercentage: 0.5
   _baseDamage: 1
   _basePushback: 1
   _closestEnemy: {fileID: 0}
-  _onlyWeapon: 0
-  _weaponSprite: {fileID: 1973745521}
   _exitTransform: {fileID: 977737150}
   _projectile: {fileID: 7535900947648716335, guid: f1abd161ce33359438419b1c9176d503, type: 3}
   _localProjectilePosition: {x: 0.12, y: 0.01, z: 0}
@@ -971,6 +968,76 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1907976050
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 329787706}
+    m_Modifications:
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640702997191274751, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_Name
+      value: MeleeWeapon (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640702997191274751, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6383740888935680488, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+      propertyPath: _onlyWeapon
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+--- !u!4 &1907976051 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 817347685074707436, guid: ee3645bcfb96acb4d88b1cfe426a477f, type: 3}
+  m_PrefabInstance: {fileID: 1907976050}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1936052493
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,7 +1054,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1936052494
 Transform:
   m_ObjectHideFlags: 0
@@ -1018,18 +1085,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _swivelTransform: {fileID: 2035896822}
   _visualTransform: {fileID: 1880072434}
+  _weaponSprite: {fileID: 1880072435}
+  _onlyWeapon: 0
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   _baseRotation: {x: 0, y: 0, z: 0}
   _range: 3
+  _detectionRangeMultiplier: 1.5
   _fireRate: 1
   _animationPercentage: 0.5
   _baseDamage: 1
   _basePushback: 1
   _closestEnemy: {fileID: 0}
-  _onlyWeapon: 0
-  _weaponSprite: {fileID: 1880072435}
   _exitTransform: {fileID: 598584143}
   _projectile: {fileID: 7535900947648716335, guid: f1abd161ce33359438419b1c9176d503, type: 3}
   _localProjectilePosition: {x: 0.12, y: 0.01, z: 0}
@@ -1170,7 +1238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2063405762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1185,18 +1253,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _swivelTransform: {fileID: 405046486}
   _visualTransform: {fileID: 484246825}
+  _weaponSprite: {fileID: 484246826}
+  _onlyWeapon: 1
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   _baseRotation: {x: 0, y: 0, z: 0}
   _range: 3
+  _detectionRangeMultiplier: 1.5
   _fireRate: 1
   _animationPercentage: 0.5
   _baseDamage: 1
   _basePushback: 1
   _closestEnemy: {fileID: 0}
-  _onlyWeapon: 0
-  _weaponSprite: {fileID: 484246826}
   _exitTransform: {fileID: 207968555}
   _projectile: {fileID: 7535900947648716335, guid: f1abd161ce33359438419b1c9176d503, type: 3}
   _localProjectilePosition: {x: 0.12, y: 0.01, z: 0}
@@ -1210,7 +1279,7 @@ Transform:
   m_GameObject: {fileID: 2063405761}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.62, y: 0, z: 0}
+  m_LocalPosition: {x: 0.15, y: -0.03, z: 0}
   m_LocalScale: {x: 0.08, y: 0.08, z: 0.08}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1291,6 +1360,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1556669774889655872, guid: 4fb8b6015dcf5d441bf62596ec1cd233, type: 3}
       insertIndex: -1
       addedObject: {fileID: 220522973}
+    - targetCorrespondingSourceObject: {fileID: 1556669774889655872, guid: 4fb8b6015dcf5d441bf62596ec1cd233, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1907976051}
     - targetCorrespondingSourceObject: {fileID: 1556669774889655872, guid: 4fb8b6015dcf5d441bf62596ec1cd233, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2063405763}

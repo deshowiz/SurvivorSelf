@@ -16,6 +16,64 @@ public class MeleeWeapon : Weapon
         _animationTotalTime = _fireRate * _animationPercentage;
     }
 
+    // protected override void RotateWeapon()
+    // {
+    //     base.RotateWeapon();
+    //     if (_onlyWeapon)
+    //     {
+    //         if (_weaponSprite.flipX)
+    //         {
+    //             _weaponSprite.flipX = false;
+    //             _weaponSprite.flipY = true;
+    //         }
+    //         float transformLocalX = transform.localPosition.x;
+    //         if (transformLocalX == _startingWeaponPosition.x && transform.position.x - 0.1f > _currentTargetPosition.x)
+    //         {
+    //             _weaponSprite.flipY = true;
+    //             transform.localPosition = new Vector3(-_startingWeaponPosition.x, _startingWeaponPosition.y, 0f);
+    //         }
+    //         else if (transformLocalX != _startingWeaponPosition.x && _currentTargetPosition.x - 0.1f > transform.position.x)
+    //         {
+    //             _weaponSprite.flipY = false;
+    //             transform.localPosition = _startingWeaponPosition;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         _weaponSprite.flipY = transform.position.x >= _currentTargetPosition.x;
+    //         _weaponSprite.flipX = false;
+    //     }
+    //     _lastPosX = transform.position.x;
+    // }
+    
+
+    protected override void ResetRotation()
+    {
+        base.ResetRotation();
+        _weaponSprite.flipY = false;
+
+        if (transform.position.x != _lastPosX)
+        {
+            if (transform.position.x < _lastPosX)
+            {
+                _weaponSprite.flipX = true;
+                if (_onlyWeapon)
+                {
+                    transform.localPosition = new Vector3(-_startingWeaponPosition.x, _startingWeaponPosition.y, 0f);
+                }
+            }
+            else
+            {
+                _weaponSprite.flipX = false;
+                if (_onlyWeapon)
+                {
+                    transform.localPosition = _startingWeaponPosition;
+                }
+            }
+        }
+        _lastPosX = transform.position.x;
+    }
+
     protected override void FireWeapon()
     {
         if (_firingRoutine != null)
@@ -33,7 +91,7 @@ public class MeleeWeapon : Weapon
         float startTime = Time.time;
         float halfTime = _animationTotalTime * 0.5f;
 
-        Vector3 destination = new Vector3(0f, _attackDistance, 0f);
+        Vector3 destination = new Vector3(_attackDistance, 0f, 0f);
         while (halfTime > Time.time - startTime)
         {
             _visualTransform.localPosition = Vector3.Lerp(Vector3.zero, destination, (Time.time - startTime) / halfTime);
@@ -54,7 +112,7 @@ public class MeleeWeapon : Weapon
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         Enemy hitEnemy = collision.GetComponent<Enemy>();
-        _currentAttackDirection = (_currentTargetPosition - transform.position).normalized;
+        _currentAttackDirection = _visualTransform.right;
         if (hitEnemy)
         {
             hitEnemy.Damage(_baseDamage, _currentAttackDirection * _basePushback);
