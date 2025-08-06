@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,7 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Stats")]
     [SerializeField]
     private float _baseMaximumHealth = 10f;
-    private float _baseCurrentHealth;
+    private float _currentHealth;
     [SerializeField]
     private float _speedMultiplier = 1f;
 
@@ -33,7 +34,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Initialize()
     {
-        _baseCurrentHealth = _baseMaximumHealth;
+        _currentHealth = _baseMaximumHealth;
+        EventManager.TriggerEvent("PlayerHealthInitialized", new Dictionary<string, object> {{"maxHealth", _baseMaximumHealth}});
     }
 
     void Update()
@@ -54,8 +56,9 @@ public class Player : MonoBehaviour, IDamageable
         }
         _lastTimeHit = Time.time;
 
-        _baseCurrentHealth -= incomingDamage;
-        if (_baseCurrentHealth <= 0f)
+        _currentHealth -= incomingDamage;
+        EventManager.TriggerEvent("PlayerSetHealth", new Dictionary<string, object> {{"currentHealth", _currentHealth}});
+        if (_currentHealth <= 0f)
         {
             Die();
             return;
