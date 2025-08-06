@@ -105,6 +105,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 44124559042242915}
   _speed: 2
   _maximumHealth: 1
+  _enemyId: 0
 --- !u!58 &-1403103890463018730
 CircleCollider2D:
   m_ObjectHideFlags: 0

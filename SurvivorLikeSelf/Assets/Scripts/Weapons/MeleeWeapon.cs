@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeWeapon : Weapon
@@ -80,6 +81,7 @@ public class MeleeWeapon : Weapon
         {
             StopCoroutine(_firingRoutine);
             _firingRoutine = null;
+            _hitEnemies.Clear();
         }
         _firingRoutine = StartCoroutine(Firing());
     }
@@ -95,7 +97,7 @@ public class MeleeWeapon : Weapon
         while (halfTime > Time.time - startTime)
         {
             _visualTransform.localPosition = Vector3.Lerp(Vector3.zero, destination, (Time.time - startTime) / halfTime);
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         _weaponCollider.enabled = false;
@@ -104,10 +106,23 @@ public class MeleeWeapon : Weapon
         while (halfTime > Time.time - startTime)
         {
             _visualTransform.localPosition = Vector3.Lerp(destination, Vector3.zero, (Time.time - startTime) / halfTime);
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
         _targeting = true;
+        for (int i = 0; i < _hitEnemies.Count; i++)
+            {
+                for (int j = 0; j < _hitEnemies.Count; j++)
+                {
+                    if (i != j && _hitEnemies[i].transform.position == _hitEnemies[j].transform.position)
+                    {
+                        Debug.Log("Duplicate Found");
+                    }
+                }
+            }
+        _hitEnemies.Clear();
     }
+
+    private List<Enemy> _hitEnemies = new List<Enemy>();
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
@@ -115,6 +130,14 @@ public class MeleeWeapon : Weapon
         _currentAttackDirection = _visualTransform.right;
         if (hitEnemy)
         {
+            for (int i = 0; i < _hitEnemies.Count; i++)
+            {
+                if (hitEnemy._enemyId == _hitEnemies[i]._enemyId)
+                {
+                    return;
+                }
+            }
+            _hitEnemies.Add(hitEnemy);
             hitEnemy.Damage(_baseDamage, _currentAttackDirection * _basePushback);
         }
         else

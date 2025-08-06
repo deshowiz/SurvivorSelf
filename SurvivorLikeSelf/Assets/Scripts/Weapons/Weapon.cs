@@ -141,7 +141,7 @@ public abstract class Weapon : MonoBehaviour
                     RotateWeapon();
                 }
             }
-            else if (_targeting)
+            else
             {
                 RotateWeapon();
             }

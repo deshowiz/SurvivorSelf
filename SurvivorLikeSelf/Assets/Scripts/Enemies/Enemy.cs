@@ -12,12 +12,14 @@ public class Enemy : MonoBehaviour
     private float _maximumHealth = 1f;
     private float _currentHealth = 0f;
 
+    public uint _enemyId = 0;
     private Player _player = null;
 
-    public void Initialize(Player newPlayer)
+    public void Initialize(Player newPlayer, uint newEnemyId)
     {
         _currentHealth = _maximumHealth;
         this._player = newPlayer;
+        this._enemyId = newEnemyId;
         Vector2 travelVector = (_player.transform.position - transform.position).normalized;
         _rigidbody.linearVelocity = travelVector * _speed;
     }

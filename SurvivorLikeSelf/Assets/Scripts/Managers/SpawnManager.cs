@@ -64,7 +64,7 @@ public class SpawnManager : MonoBehaviour
                 Quaternion.identity,
                 transform
                 );
-            newEnemy.Initialize(_player);
+            newEnemy.Initialize(_player, (uint)i);
             _aliveEnemyList.Add(newEnemy);
         }
     }
