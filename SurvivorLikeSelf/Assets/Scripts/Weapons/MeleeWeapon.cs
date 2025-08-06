@@ -8,7 +8,7 @@ public class MeleeWeapon : Weapon
     [SerializeField]
     protected Collider2D _weaponCollider = null;
     [SerializeField]
-    protected float _attackDistance = 0.8f;
+    protected float _baseAttackDistance = 0.8f;
     [SerializeField]
     protected float _baseDamage = 1f;
     [SerializeField]
@@ -97,7 +97,7 @@ public class MeleeWeapon : Weapon
         float startTime = Time.time;
         float halfTime = _animationTotalTime * 0.5f;
 
-        Vector3 destination = new Vector3(_attackDistance, 0f, 0f);
+        Vector3 destination = new Vector3(_baseAttackDistance, 0f, 0f);
         while (halfTime > Time.time - startTime)
         {
             _visualTransform.localPosition = Vector3.Lerp(Vector3.zero, destination, (Time.time - startTime) / halfTime);
