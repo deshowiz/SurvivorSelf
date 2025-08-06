@@ -9,6 +9,10 @@ public class MeleeWeapon : Weapon
     protected Collider2D _weaponCollider = null;
     [SerializeField]
     protected float _attackDistance = 0.8f;
+    [SerializeField]
+    protected float _baseDamage = 1f;
+    [SerializeField]
+    protected float _basePushback = 1f;
     protected float _animationTotalTime = Mathf.Infinity;
 
     protected override void InitializeWeapon()

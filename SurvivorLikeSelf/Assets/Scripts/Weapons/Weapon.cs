@@ -33,10 +33,7 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField]
     [Range(0f, 1f)]
     protected float _animationPercentage = 0.5f;
-    [SerializeField]
-    protected float _baseDamage = 1f;
-    [SerializeField]
-    protected float _basePushback = 1f;
+    
 
     protected float _timeSinceLastFiring = 0f;
 

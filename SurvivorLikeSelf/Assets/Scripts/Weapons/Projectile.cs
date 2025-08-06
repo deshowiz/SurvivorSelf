@@ -24,7 +24,6 @@ public class Projectile : MonoBehaviour
     public void Initialize(Vector3 newDirection)
     {
         _currentDirection = transform.right;
-        _currentLifetime = Time.time;
         _lastPosition = transform.position;
     }
 
