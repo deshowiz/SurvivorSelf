@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    //gameManager.Init();
 
                     //  Sets this to not be destroyed when reloading scene
                     DontDestroyOnLoad(gameManager);
