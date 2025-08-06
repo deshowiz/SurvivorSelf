@@ -81,7 +81,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98e80f3c19041f4c82a4f311eec507e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedMultiplier: 5
+  _playerSprite: {fileID: 5352036266787842811}
+  _baseMaximumHealth: 10
+  _speedMultiplier: 3
+  _invulnTimer: 0.5
+  _flashDuration: 0.1
 --- !u!212 &5352036266787842811
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -123,8 +127,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1482968339
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -167,7 +171,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
