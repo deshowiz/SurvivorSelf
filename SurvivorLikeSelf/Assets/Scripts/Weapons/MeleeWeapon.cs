@@ -113,20 +113,10 @@ public class MeleeWeapon : Weapon
             yield return new WaitForFixedUpdate();
         }
         _targeting = true;
-        for (int i = 0; i < _hitEnemies.Count; i++)
-            {
-                for (int j = 0; j < _hitEnemies.Count; j++)
-                {
-                    if (i != j && _hitEnemies[i].transform.position == _hitEnemies[j].transform.position)
-                    {
-                        Debug.Log("Duplicate Found");
-                    }
-                }
-            }
         _hitEnemies.Clear();
     }
 
-    private List<Enemy> _hitEnemies = new List<Enemy>();
+    private List<uint> _hitEnemies = new List<uint>();
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
@@ -136,13 +126,17 @@ public class MeleeWeapon : Weapon
         {
             for (int i = 0; i < _hitEnemies.Count; i++)
             {
-                if (hitEnemy._enemyId == _hitEnemies[i]._enemyId)
+                if (hitEnemy._enemyId == _hitEnemies[i])
                 {
                     return;
                 }
             }
-            _hitEnemies.Add(hitEnemy);
+
             hitEnemy.Damage(_baseDamage, _currentAttackDirection * _basePushback);
+            if (hitEnemy != null)
+            {
+                _hitEnemies.Add(hitEnemy._enemyId);
+            }
         }
         else
         {
