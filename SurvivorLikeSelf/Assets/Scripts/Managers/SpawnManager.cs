@@ -29,10 +29,6 @@ public class SpawnManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
         _player = FindFirstObjectByType<Player>();
         if (_player == null)
         {
@@ -43,11 +39,16 @@ public class SpawnManager : MonoBehaviour
         // References docs: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-orthographicSize.html
         _yAxisSpawnSize = Camera.main.orthographicSize/* * 2f*/;
         _xAxisSpawnSize = _yAxisSpawnSize * Camera.main.aspect;
-        SpawnWave();
     }
 
-    public void SpawnWave()
+    // private void Start()
+    // {
+    //     SpawnWave();
+    // }
+
+    public void SpawnWave(EnemyWave newWave)
     {
+        _currentWave = newWave;
         if (_testEnemy == null)
         {
             Debug.LogError("Enemy Reference is Empty");
