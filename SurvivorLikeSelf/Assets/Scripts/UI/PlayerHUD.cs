@@ -6,17 +6,21 @@ using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Canvas References")]
     [SerializeField]
     private GameObject _gameplayElements = null;
     [SerializeField]
     private GameObject _itemSelectionElements = null;
+    [Header("Gameplay References")]
     [SerializeField]
     private Image _filledBarImage = null;
     [SerializeField]
     private TextMeshProUGUI _healthText = null;
     [SerializeField]
     private TextMeshProUGUI _timerText = null;
+    [Header("Item Choice References")]
+    [SerializeField]
+    private List<ItemChoice> _itemChoices = new List<ItemChoice>();
 
     private int _maxHealth = 0;
 
@@ -49,6 +53,13 @@ public class PlayerHUD : MonoBehaviour
 
     private void SwitchToItems(Dictionary<string, object> message)
     {
+        List<Item> newItems = (List<Item>)message["rolledItems"];
+
+        for (int i = 0; i < newItems.Count; i++)
+        {
+            _itemChoices[i].SetChoice(newItems[i]);
+        }
+
         _gameplayElements.SetActive(false);
         _itemSelectionElements.SetActive(true);
     }

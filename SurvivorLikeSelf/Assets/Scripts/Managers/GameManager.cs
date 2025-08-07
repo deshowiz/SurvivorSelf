@@ -29,9 +29,11 @@ public class GameManager : MonoBehaviour
             return gameManager;
         }
     }
-
+    [Header("References")]
     [SerializeField]
     private EnemyWave[] _enemyWaves;
+    [SerializeField]
+    private ItemList _fullItemList = null;
 
     private int _currentWaveIndex = 0;
 
@@ -88,6 +90,6 @@ public class GameManager : MonoBehaviour
         }
         // Wave Over
         _currentWaveIndex++;
-        EventManager.TriggerEvent("WaveEnd", null);
+        EventManager.TriggerEvent("WaveEnd", new Dictionary<string, object>() { { "rolledItems", _fullItemList.RollNextItems(1) } });
     }
 }

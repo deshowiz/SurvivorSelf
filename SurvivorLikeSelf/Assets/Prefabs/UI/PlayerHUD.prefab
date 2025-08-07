@@ -121,6 +121,8 @@ MonoBehaviour:
   _filledBarImage: {fileID: 5807779402994715415}
   _healthText: {fileID: 1227953514696795125}
   _timerText: {fileID: 8758900684323383094}
+  _itemChoices:
+  - {fileID: 294895463793864819}
 --- !u!1 &1123717076516617174
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,7 +819,7 @@ GameObject:
   - component: {fileID: 4295402567313489917}
   - component: {fileID: 1227953514696795125}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: HealthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1038,6 +1040,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68d57adce1df3724081540427c2554cf, type: 3}
+--- !u!114 &294895463793864819 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3116165452476479169, guid: 68d57adce1df3724081540427c2554cf, type: 3}
+  m_PrefabInstance: {fileID: 3398381691775665842}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09699768e669d64438237247295e9a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6255026760209692316 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8784037521650004014, guid: 68d57adce1df3724081540427c2554cf, type: 3}
