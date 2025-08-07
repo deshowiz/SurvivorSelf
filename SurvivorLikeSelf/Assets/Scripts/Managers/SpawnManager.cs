@@ -41,6 +41,16 @@ public class SpawnManager : MonoBehaviour
         _xAxisSpawnSize = _yAxisSpawnSize * Camera.main.aspect;
     }
 
+    void OnEnable()
+    {
+        EventManager.StartListening("WaveEnd", ClearWave);
+    }
+
+    void ODisable()
+    {
+        EventManager.StopListening("WaveEnd", ClearWave);
+    }
+
     // private void Start()
     // {
     //     SpawnWave();
@@ -68,6 +78,18 @@ public class SpawnManager : MonoBehaviour
             newEnemy.Initialize(_player, (uint)i);
             _aliveEnemyList.Add(newEnemy);
         }
+    }
+
+    private void ClearWave(Dictionary<string, object> message)
+    {
+        for (int i = 0; i < _aliveEnemyList.Count; i++)
+        {
+            if (_aliveEnemyList[i] != null)
+            {
+                Destroy(_aliveEnemyList[i].gameObject);
+            }
+        }
+        _aliveEnemyList.Clear();
     }
 
     public void ClearEnemy(Enemy deadEnemy) // can later create paralellized int IDs to speed up

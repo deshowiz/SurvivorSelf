@@ -39,11 +39,13 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
+        EventManager.StartListening("StartWave", StartNewWave);
         EventManager.StartListening("gameover", Restart);
     }
 
     void OnDisable()
     {
+        EventManager.StopListening("StartWave", StartNewWave);
         EventManager.StopListening("gameover", Restart);
     }
 
@@ -54,10 +56,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartNewWave();
+        StartNewWave(null);
     }
 
-    private void StartNewWave()
+    private void StartNewWave(Dictionary<string, object> message)
     {
         SpawnManager.Instance.SpawnWave(_enemyWaves[_currentWaveIndex]);
         if (_waveTimerRoutine != null)
@@ -72,8 +74,8 @@ public class GameManager : MonoBehaviour
     {
         int waveTime = _enemyWaves[_currentWaveIndex].WaveLengthSeconds;
         EventManager.TriggerEvent("SetSecondDisplay", new Dictionary<string, object> { { "secondValue", waveTime } });
-        float timeElapsed = 30f;
-        int lastSecondValue = 30;
+        float timeElapsed = waveTime;
+        int lastSecondValue = waveTime;
         while (timeElapsed > 0)
         {
             timeElapsed -= Time.deltaTime;
@@ -85,5 +87,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         // Wave Over
+        _currentWaveIndex++;
+        EventManager.TriggerEvent("WaveEnd", null);
     }
 }

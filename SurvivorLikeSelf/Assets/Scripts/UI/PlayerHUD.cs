@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,10 @@ using UnityEngine.UI;
 public class PlayerHUD : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField]
+    private GameObject _gameplayElements = null;
+    [SerializeField]
+    private GameObject _itemSelectionElements = null;
     [SerializeField]
     private Image _filledBarImage = null;
     [SerializeField]
@@ -17,6 +22,9 @@ public class PlayerHUD : MonoBehaviour
 
     void OnEnable()
     {
+        EventManager.StartListening("StartWave", SwitchToGameplay);
+        EventManager.StartListening("WaveEnd", SwitchToItems);
+
         EventManager.StartListening("PlayerHealthInitialized", IntializeHealth);
         EventManager.StartListening("PlayerSetHealth", SetHealth);
         EventManager.StartListening("SetSecondDisplay", SetTimer);
@@ -24,9 +32,25 @@ public class PlayerHUD : MonoBehaviour
 
     void OnDisable()
     {
+        EventManager.StopListening("StartWave", SwitchToGameplay);
+        EventManager.StopListening("WaveEnd", SwitchToItems);
+
         EventManager.StopListening("PlayerHealthInitialized", IntializeHealth);
         EventManager.StopListening("PlayerSetHealth", SetHealth);
         EventManager.StopListening("SetSecondDisplay", SetTimer);
+    }
+
+    public void SwitchToGameplay(Dictionary<string, object> message)
+    {
+        _timerText.color = Color.white;
+        _itemSelectionElements.SetActive(false);
+        _gameplayElements.SetActive(true);
+    }
+
+    private void SwitchToItems(Dictionary<string, object> message)
+    {
+        _gameplayElements.SetActive(false);
+        _itemSelectionElements.SetActive(true);
     }
 
     private void IntializeHealth(Dictionary<string, object> message)

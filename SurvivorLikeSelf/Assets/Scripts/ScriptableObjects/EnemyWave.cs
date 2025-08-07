@@ -8,7 +8,6 @@ public class EnemyWave : ScriptableObject
     [SerializeField]
     private int _waveLengthSeconds = 30;
     public int WaveLengthSeconds {get{return _waveLengthSeconds;}}
-    
     [Header("Wave Enemies")]
     [SerializeField]
     private Enemy[] _enemyData = null;

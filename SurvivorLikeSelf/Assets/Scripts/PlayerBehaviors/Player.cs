@@ -23,6 +23,7 @@ public class Player : MonoBehaviour, IDamageable
     private float _flashDuration = 0.1f;
 
     private Vector2 _currentMovementVector = Vector2.zero;
+    private bool _isPlaying = false;
     private float _lastTimeHit = -Mathf.Infinity;
 
     private Coroutine _flashRoutine = null;
@@ -32,15 +33,42 @@ public class Player : MonoBehaviour, IDamageable
         Initialize();
     }
 
+    void OnEnable()
+    {
+        EventManager.StartListening("StartWave", ReInitialize);
+        EventManager.StartListening("WaveEnd", DisablePlayer);
+    }
+
+    void ODisable()
+    {
+        EventManager.StopListening("StartWave", ReInitialize);
+        EventManager.StopListening("WaveEnd", DisablePlayer);
+    }
+
+    private void DisablePlayer(Dictionary<string, object> message)
+    {
+        _isPlaying = false;
+    }
+
+    private void ReInitialize(Dictionary<string, object> message)
+    {
+        Initialize();
+    }
+
     private void Initialize()
     {
         _currentHealth = _baseMaximumHealth;
-        EventManager.TriggerEvent("PlayerHealthInitialized", new Dictionary<string, object> {{"maxHealth", _baseMaximumHealth}});
+        EventManager.TriggerEvent("PlayerHealthInitialized", new Dictionary<string, object> { { "maxHealth", _baseMaximumHealth } });
+        transform.position = Vector2.zero;
+        _isPlaying = true;
     }
 
     void Update()
     {
-        transform.Translate(_currentMovementVector * _speedMultiplier * Time.deltaTime);
+        if (_isPlaying)
+        {
+            transform.Translate(_currentMovementVector * _speedMultiplier * Time.deltaTime);
+        }
     }
 
     private void OnMove(InputValue value)
