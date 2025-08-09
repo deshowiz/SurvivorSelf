@@ -5,35 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
-    private static EventManager gameManager;
-    public static EventManager instance
-    {
-        get
-        {
-            if (!gameManager)
-            {
-                gameManager = FindFirstObjectByType<EventManager>();
-
-                if (!gameManager)
-                {
-                    Debug.LogError("There needs to be one active EventManager script on a GameObject in your scene.");
-                }
-                else
-                {
-
-                    //  Sets this to not be destroyed when reloading scene
-                    DontDestroyOnLoad(gameManager);
-                }
-            }
-            return gameManager;
-        }
-    }
     [Header("References")]
     [SerializeField]
     private EnemyWave[] _enemyWaves;
-    [SerializeField]
-    private ItemList _fullItemList = null;
 
     private int _currentWaveIndex = 0;
 
@@ -41,27 +15,27 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening("StartWave", StartNewWave);
-        EventManager.StartListening("gameover", Restart);
+        EventManager.OnStartWave += StartNewWave;
+        EventManager.OnDeath +=  Restart;
     }
 
     void OnDisable()
     {
-        EventManager.StopListening("StartWave", StartNewWave);
-        EventManager.StopListening("gameover", Restart);
+        EventManager.OnStartWave -= StartNewWave;
+        EventManager.OnDeath -=  Restart;
     }
 
-    private void Restart(Dictionary<string, object> message)
+    private void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void Start()
     {
-        StartNewWave(null);
+        StartNewWave();
     }
 
-    private void StartNewWave(Dictionary<string, object> message)
+    private void StartNewWave()
     {
         SpawnManager.Instance.SpawnWave(_enemyWaves[_currentWaveIndex]);
         if (_waveTimerRoutine != null)
@@ -75,7 +49,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator WaveTimer()
     {
         int waveTime = _enemyWaves[_currentWaveIndex].WaveLengthSeconds;
-        EventManager.TriggerEvent("SetSecondDisplay", new Dictionary<string, object> { { "secondValue", waveTime } });
+        EventManager.OnTimerChange?.Invoke(waveTime);
         float timeElapsed = waveTime;
         int lastSecondValue = waveTime;
         while (timeElapsed > 0)
@@ -84,12 +58,12 @@ public class GameManager : MonoBehaviour
             if (Mathf.CeilToInt(timeElapsed) < lastSecondValue)
             {
                 lastSecondValue--;
-                EventManager.TriggerEvent("SetSecondDisplay", new Dictionary<string, object> { { "secondValue", lastSecondValue } });
+                EventManager.OnTimerChange?.Invoke(lastSecondValue);
             }
             yield return null;
         }
         // Wave Over
         _currentWaveIndex++;
-        EventManager.TriggerEvent("WaveEnd", new Dictionary<string, object>() { { "rolledItems", _fullItemList.RollNextItems(1) } });
+        EventManager.OnEndWave?.Invoke();
     }
 }

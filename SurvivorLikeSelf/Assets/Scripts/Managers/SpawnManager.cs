@@ -43,12 +43,12 @@ public class SpawnManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening("WaveEnd", ClearWave);
+        EventManager.OnEndWave += ClearWave;
     }
 
     void ODisable()
     {
-        EventManager.StopListening("WaveEnd", ClearWave);
+        EventManager.OnEndWave -= ClearWave;
     }
 
     // private void Start()
@@ -80,7 +80,7 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private void ClearWave(Dictionary<string, object> message)
+    private void ClearWave()
     {
         for (int i = 0; i < _aliveEnemyList.Count; i++)
         {

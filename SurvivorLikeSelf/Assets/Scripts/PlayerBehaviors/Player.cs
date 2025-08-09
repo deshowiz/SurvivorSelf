@@ -35,22 +35,22 @@ public class Player : MonoBehaviour, IDamageable
 
     void OnEnable()
     {
-        EventManager.StartListening("StartWave", ReInitialize);
-        EventManager.StartListening("WaveEnd", DisablePlayer);
+        EventManager.OnStartWave += ReInitialize;
+        EventManager.OnEndWave += DisablePlayer;
     }
 
     void ODisable()
     {
-        EventManager.StopListening("StartWave", ReInitialize);
-        EventManager.StopListening("WaveEnd", DisablePlayer);
+        EventManager.OnStartWave -= ReInitialize;
+        EventManager.OnEndWave -= DisablePlayer;
     }
 
-    private void DisablePlayer(Dictionary<string, object> message)
+    private void DisablePlayer()
     {
         _isPlaying = false;
     }
 
-    private void ReInitialize(Dictionary<string, object> message)
+    private void ReInitialize()
     {
         Initialize();
     }
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour, IDamageable
     private void Initialize()
     {
         _currentHealth = _baseMaximumHealth;
-        EventManager.TriggerEvent("PlayerHealthInitialized", new Dictionary<string, object> { { "maxHealth", _baseMaximumHealth } });
+        EventManager.OnPlayerHealthInitialization?.Invoke(_baseMaximumHealth);
         transform.position = Vector2.zero;
         _isPlaying = true;
     }
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour, IDamageable
         _lastTimeHit = Time.time;
 
         _currentHealth -= incomingDamage;
-        EventManager.TriggerEvent("PlayerSetHealth", new Dictionary<string, object> {{"currentHealth", _currentHealth}});
+        EventManager.OnPlayerHealthChange?.Invoke(_currentHealth);
         if (_currentHealth <= 0f)
         {
             Die();
@@ -131,6 +131,6 @@ public class Player : MonoBehaviour, IDamageable
 
     public void Die()
     {
-        EventManager.TriggerEvent("gameover", null);
+        EventManager.OnDeath?.Invoke();
     }
 }

@@ -121,6 +121,7 @@ MonoBehaviour:
   _filledBarImage: {fileID: 5807779402994715415}
   _healthText: {fileID: 1227953514696795125}
   _timerText: {fileID: 8758900684323383094}
+  _fullItemList: {fileID: 11400000, guid: 8c1fc6f6020d13a4aae64f0cabada2d9, type: 2}
   _itemChoices:
   - {fileID: 294895463793864819}
 --- !u!1 &1123717076516617174

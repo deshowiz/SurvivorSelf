@@ -4,9 +4,21 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    private Dictionary<string, Action<Dictionary<string, object>>> eventDictionary;
 
     private static EventManager eventManager;
+
+    public delegate void ParamaterlessEvent();
+    public static ParamaterlessEvent OnStartWave;
+    public static ParamaterlessEvent OnEndWave;
+    public static ParamaterlessEvent OnDeath;
+
+    public delegate void FloatEvent(float floatP);
+    public static FloatEvent OnPlayerHealthInitialization;
+    public static FloatEvent OnPlayerHealthChange;
+
+    public delegate void IntEvent(int intP);
+    public static IntEvent OnTimerChange;
+
 
     public static EventManager instance
     {
@@ -22,7 +34,7 @@ public class EventManager : MonoBehaviour
                 }
                 else
                 {
-                    eventManager.Init();
+                    //eventManager.Init();
 
                     //  Sets this to not be destroyed when reloading scene
                     //DontDestroyOnLoad(eventManager);
@@ -32,47 +44,10 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    void Init()
-    {
-        if (eventDictionary == null)
-        {
-            eventDictionary = new Dictionary<string, Action<Dictionary<string, object>>>();
-        }
-    }
+    // public static void RegisterEvent<T>(string eventName, T param)
+    // {
 
-    public static void StartListening(string eventName, Action<Dictionary<string, object>> listener)
-    {
-        Action<Dictionary<string, object>> thisEvent;
+    // }
 
-        if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
-        {
-            thisEvent += listener;
-            instance.eventDictionary[eventName] = thisEvent;
-        }
-        else
-        {
-            thisEvent += listener;
-            instance.eventDictionary.Add(eventName, thisEvent);
-        }
-    }
-
-    public static void StopListening(string eventName, Action<Dictionary<string, object>> listener)
-    {
-        if (eventManager == null) return;
-        Action<Dictionary<string, object>> thisEvent;
-        if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
-        {
-            thisEvent -= listener;
-            instance.eventDictionary[eventName] = thisEvent;
-        }
-    }
-
-    public static void TriggerEvent(string eventName, Dictionary<string, object> message)
-    {
-        Action<Dictionary<string, object>> thisEvent = null;
-        if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
-        {
-            thisEvent.Invoke(message);
-        }
-    }
 }
+

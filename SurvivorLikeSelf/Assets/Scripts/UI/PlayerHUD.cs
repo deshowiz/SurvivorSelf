@@ -20,40 +20,43 @@ public class PlayerHUD : MonoBehaviour
     private TextMeshProUGUI _timerText = null;
     [Header("Item Choice References")]
     [SerializeField]
+    private ItemList _fullItemList = null;
+    [SerializeField]
     private List<ItemChoice> _itemChoices = new List<ItemChoice>();
+    
 
     private int _maxHealth = 0;
 
     void OnEnable()
     {
-        EventManager.StartListening("StartWave", SwitchToGameplay);
-        EventManager.StartListening("WaveEnd", SwitchToItems);
+        EventManager.OnStartWave += SwitchToGameplay;
+        EventManager.OnEndWave += SwitchToItems;
 
-        EventManager.StartListening("PlayerHealthInitialized", IntializeHealth);
-        EventManager.StartListening("PlayerSetHealth", SetHealth);
-        EventManager.StartListening("SetSecondDisplay", SetTimer);
+        EventManager.OnPlayerHealthInitialization += IntializeHealth;
+        EventManager.OnPlayerHealthChange += SetHealth;
+        EventManager.OnTimerChange += SetTimer;
     }
 
     void OnDisable()
     {
-        EventManager.StopListening("StartWave", SwitchToGameplay);
-        EventManager.StopListening("WaveEnd", SwitchToItems);
+        EventManager.OnStartWave -= SwitchToGameplay;
+        EventManager.OnEndWave -= SwitchToItems;
 
-        EventManager.StopListening("PlayerHealthInitialized", IntializeHealth);
-        EventManager.StopListening("PlayerSetHealth", SetHealth);
-        EventManager.StopListening("SetSecondDisplay", SetTimer);
+        EventManager.OnPlayerHealthInitialization -= IntializeHealth;
+        EventManager.OnPlayerHealthChange -= SetHealth;
+        EventManager.OnTimerChange -= SetTimer;
     }
 
-    public void SwitchToGameplay(Dictionary<string, object> message)
+    public void SwitchToGameplay()
     {
         _timerText.color = Color.white;
         _itemSelectionElements.SetActive(false);
         _gameplayElements.SetActive(true);
     }
 
-    private void SwitchToItems(Dictionary<string, object> message)
+    private void SwitchToItems()
     {
-        List<Item> newItems = (List<Item>)message["rolledItems"];
+        List<Item> newItems = _fullItemList.RollNextItems(1);
 
         for (int i = 0; i < newItems.Count; i++)
         {
@@ -64,24 +67,23 @@ public class PlayerHUD : MonoBehaviour
         _itemSelectionElements.SetActive(true);
     }
 
-    private void IntializeHealth(Dictionary<string, object> message)
+    private void IntializeHealth(float newMaxHP)
     {
-        _maxHealth = Mathf.CeilToInt((float)message["maxHealth"]);
+        _maxHealth = Mathf.CeilToInt(newMaxHP);
         string newHealthMax = _maxHealth.ToString();
         _healthText.text = newHealthMax + " / " + newHealthMax;
         _filledBarImage.fillAmount = 1f;
     }
 
-    private void SetHealth(Dictionary<string, object> message)
+    private void SetHealth(float newHP)
     {
-        int currentHealth = Mathf.CeilToInt((float)message["currentHealth"]);
+        int currentHealth = Mathf.CeilToInt(newHP);
         _healthText.text = currentHealth.ToString() + " / " + _maxHealth.ToString();
         _filledBarImage.fillAmount = (float)currentHealth / _maxHealth;
     }
 
-    private void SetTimer(Dictionary<string, object> message)
+    private void SetTimer(int newValue)
     {
-        int newValue = (int)message["secondValue"];
         _timerText.text = newValue.ToString();
         if (newValue <= 5) _timerText.color = Color.red;
     }
