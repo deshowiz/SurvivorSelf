@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Knife
   m_EditorClassIdentifier: 
   _itemImage: {fileID: 21300000, guid: 19c37ec7d025879458a3d3cf4b372333, type: 3}
+  _itemType: 0
+  _itemDescriptionText: Is a knife
+  _itemRarity: {fileID: 11400000, guid: 4bace78cf0ca4d542a50a049e03b15c3, type: 2}

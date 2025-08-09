@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Lemon
   m_EditorClassIdentifier: 
   _itemImage: {fileID: 21300000, guid: 94d21cfab5c5a6348a1794545621ede5, type: 3}
+  _itemType: 1
+  _itemDescriptionText: Is a lemon?
+  _itemRarity: {fileID: 11400000, guid: d8c01549a8695cc4abb53ac095e82352, type: 2}
