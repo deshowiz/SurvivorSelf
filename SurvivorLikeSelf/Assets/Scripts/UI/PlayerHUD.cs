@@ -56,7 +56,7 @@ public class PlayerHUD : MonoBehaviour
 
     private void SwitchToItems()
     {
-        List<Item> newItems = _fullItemList.RollNextItems(1);
+        List<Item> newItems = _fullItemList.RollNextItems(2);
 
         for (int i = 0; i < newItems.Count; i++)
         {

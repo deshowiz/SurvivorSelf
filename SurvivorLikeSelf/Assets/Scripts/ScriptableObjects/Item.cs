@@ -70,12 +70,12 @@ public class Item : ScriptableObject
         return true;
     }
 
-    public string GetItemDescriptionText()
+    public virtual string GetItemDescriptionText()
     {
-        string descriptionAdditive = _itemDescriptionText;
-        if (!String.IsNullOrEmpty(descriptionAdditive))
+        string _descriptionAdditive = _itemDescriptionText;
+        if (!String.IsNullOrEmpty(_descriptionAdditive))
         {
-            descriptionAdditive += "\n";
+            _descriptionAdditive += "\n";
         }
 
         for (int i = 0; i < _statModifiers.Count; i++)
@@ -95,14 +95,14 @@ public class Item : ScriptableObject
             switch (_statModifiers[i]._modifier.Type)
             {
                 case StatModType.Flat:
-                    descriptionAdditive += signString + modValue.ToString() + " " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
+                    _descriptionAdditive += signString + modValue.ToString() + " " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
                     break;
                 case StatModType.PercentAdd:
-                    descriptionAdditive += signString + (modValue * 100f).ToString() + "% " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
+                    _descriptionAdditive += signString + (modValue * 100f).ToString() + "% " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
                     break;
             }
         }
-
-        return descriptionAdditive;
+        
+        return _descriptionAdditive;
     }
 }

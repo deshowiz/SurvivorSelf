@@ -9,8 +9,10 @@ public class Projectile : MonoBehaviour
     private float _baseSpeed = 20f;
     [SerializeField]
     private float _baseDamage = 1f;
+    public float BaseDamage {get{ return _baseDamage; }}
     [SerializeField]
     private float _baseKnockback = 75f;
+    public float BaseKnockback {get{ return _baseKnockback; }}
     [SerializeField]
     private float _lifetime = 1f;
 

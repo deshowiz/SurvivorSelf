@@ -7,6 +7,7 @@ public class RangedWeapon : Weapon
     private Transform _exitTransform = null;
     [SerializeField]
     protected Projectile _projectile = null;
+    public Projectile Projectile { get { return _projectile; } }
 
     protected override void FireWeapon()
     {

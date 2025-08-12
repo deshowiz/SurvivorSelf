@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Gun
   m_EditorClassIdentifier: 
   _itemImage: {fileID: 21300000, guid: 42820b3c7d68c474eb8b3084c503dbc1, type: 3}
-  _itemDescriptionText: BLAMOOOO
+  _itemDescriptionText: 
   _itemRarity: {fileID: 11400000, guid: 48b5560b7ffd167458658a2454c78237, type: 2}
   _itemType: 0
-  _statModifiers: []
+  _statModifiers:
+  - _statTag: 0
+    _modifier:
+      Value: 1
+      Type: 0
   _weaponPrefab: {fileID: 7774832353588662543, guid: 8171631ba43736b4eb867a141664d01e, type: 3}

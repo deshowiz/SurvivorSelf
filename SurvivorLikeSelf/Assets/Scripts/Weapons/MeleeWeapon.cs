@@ -11,6 +11,7 @@ public class MeleeWeapon : Weapon
     protected float _baseAttackDistance = 0.8f;
     [SerializeField]
     protected float _baseDamage = 1f;
+    public float BaseDamage { get { return _baseDamage; } }
     [SerializeField]
     protected float _basePushback = 1f;
     protected float _animationTotalTime = Mathf.Infinity;
