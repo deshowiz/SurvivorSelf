@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour, IDamageable
@@ -5,6 +6,8 @@ public class Enemy : MonoBehaviour, IDamageable
     [Header("Reference")]
     [SerializeField]
     private Rigidbody2D _rigidbody = null;
+    [SerializeField]
+    private Interactable _droppedInteractable = null;
     [Header("InitialStats")]
     [SerializeField]
     private float _baseSpeed = 1f;
@@ -61,6 +64,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public void Die()
     {
         //gameObject.SetActive(false);
+        Instantiate(_droppedInteractable, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

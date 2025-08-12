@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0.8675709, b: 0, a: 1}
+  m_Color: {r: 0.15265143, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 3067873572695368743}
+  _droppedInteractable: {fileID: -8324303227085989481, guid: 7bc0f01cf717cfc4495ee59f5bdf9add, type: 3}
   _baseSpeed: 2
   _baseDamage: 1
   _baseMaximumHealth: 1
