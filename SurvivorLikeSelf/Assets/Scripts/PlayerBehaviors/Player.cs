@@ -9,6 +9,9 @@ public class Player : MonoBehaviour, IDamageable
     [Header("References")]
     [SerializeField]
     private SpriteRenderer _playerSprite = null;
+    [SerializeField]
+    private WeaponPositions _weaponPositions = null;
+    private List<Weapon> _equippedWeapons = new List<Weapon>();
     
     [Header("Stats")]
     [SerializeField]
@@ -148,10 +151,14 @@ public class Player : MonoBehaviour, IDamageable
         if (newWeapon.Equip(this))
         {
             Weapon weaponObject = Instantiate(newWeapon.WeaponPrefab,
-             transform.position + new Vector3(0.1f, 0f, 0f),
+             transform.position,
              Quaternion.identity,
               transform);
+            _equippedWeapons.Add(weaponObject);
         }
+
+        // Recalculate Weapon positions
+        _weaponPositions.SetNewPositions(_equippedWeapons);
     }
 
     public void ReCalcAllChangedStats(List<AttributeStat> changedStats)

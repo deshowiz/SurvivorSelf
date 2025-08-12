@@ -19,7 +19,7 @@ public abstract class Weapon : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField]
-    protected bool _onlyWeapon = true;
+    public bool _onlyWeapon = true;
     [SerializeField]
     protected LayerMask _enemyLayer = 7;
     [SerializeField]

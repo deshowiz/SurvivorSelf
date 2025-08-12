@@ -82,8 +82,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerSprite: {fileID: 5352036266787842811}
-  _baseMaximumHealth: 10
-  _speedMultiplier: 3
+  _weaponPositions: {fileID: 11400000, guid: bccad4eea389718419ea5b31962d056c, type: 2}
+  _maxHP:
+    _baseValue: 10
+    _value: 0
+  _speed:
+    _baseValue: 3
+    _value: 0
   _invulnTimer: 0.3
   _flashDuration: 0.1
 --- !u!212 &5352036266787842811
