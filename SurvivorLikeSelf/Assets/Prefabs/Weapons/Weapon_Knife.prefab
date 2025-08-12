@@ -58,11 +58,11 @@ MonoBehaviour:
   _detectionRangeMultiplier: 1.5
   _fireRate: 0.3
   _animationPercentage: 0.3
-  _baseDamage: 0
-  _basePushback: 75
   _closestEnemy: {fileID: 0}
   _weaponCollider: {fileID: 7711258298298445828}
-  _attackDistance: 0.8
+  _baseAttackDistance: 0.8
+  _baseDamage: 69
+  _basePushback: 75
 --- !u!50 &7332967650346297398
 Rigidbody2D:
   serializedVersion: 5

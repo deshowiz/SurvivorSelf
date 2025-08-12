@@ -14,7 +14,7 @@ public class Item : ScriptableObject
 
     [SerializeField]
     [TextArea(10, 10)]
-    private string _itemDescriptionText = "";
+    protected string _itemDescriptionText = "";
     public string ItemDescriptionText { get { return _itemDescriptionText; } }
 
     [Header("Settings")]
@@ -70,12 +70,17 @@ public class Item : ScriptableObject
         return true;
     }
 
-    public virtual string GetItemDescriptionText()
+    public virtual string GetItemDescriptionText(bool fullDescription = true)
     {
-        string _descriptionAdditive = _itemDescriptionText;
-        if (!String.IsNullOrEmpty(_descriptionAdditive))
+        string descriptionAdditive = "";
+        if (fullDescription)
         {
-            _descriptionAdditive += "\n";
+            descriptionAdditive = _itemDescriptionText;
+        }
+
+        if (!String.IsNullOrEmpty(descriptionAdditive))
+        {
+            descriptionAdditive += "\n";
         }
 
         for (int i = 0; i < _statModifiers.Count; i++)
@@ -95,14 +100,14 @@ public class Item : ScriptableObject
             switch (_statModifiers[i]._modifier.Type)
             {
                 case StatModType.Flat:
-                    _descriptionAdditive += signString + modValue.ToString() + " " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
+                    descriptionAdditive += signString + modValue.ToString() + " " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
                     break;
                 case StatModType.PercentAdd:
-                    _descriptionAdditive += signString + (modValue * 100f).ToString() + "% " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
+                    descriptionAdditive += signString + (modValue * 100f).ToString() + "% " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
                     break;
             }
         }
         
-        return _descriptionAdditive;
+        return descriptionAdditive;
     }
 }

@@ -23,6 +23,8 @@ public class PlayerHUD : MonoBehaviour
     private ItemList _fullItemList = null;
     [SerializeField]
     private List<ItemChoice> _itemChoices = new List<ItemChoice>();
+    [SerializeField]
+    private int numChoices = 3;
     
 
     private int _maxHealth = 0;
@@ -56,7 +58,7 @@ public class PlayerHUD : MonoBehaviour
 
     private void SwitchToItems()
     {
-        List<Item> newItems = _fullItemList.RollNextItems(2);
+        List<Item> newItems = _fullItemList.RollNextItems(numChoices);
 
         for (int i = 0; i < newItems.Count; i++)
         {
