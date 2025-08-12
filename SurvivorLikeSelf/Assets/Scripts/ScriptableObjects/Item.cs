@@ -40,20 +40,32 @@ public class Item : ScriptableObject
 
     private enum StatTag { MaxHP, Speed }
 
+    private delegate void EquipStatRefresh();
+
+    private EquipStatRefresh _OnEquippedItem;
+
     public virtual bool Equip(Player player)
     {
+        if (_statModifiers == null) return true;
+
+        List<AttributeStat> _playerStatsChanged = new List<AttributeStat>();
+
         for (int i = 0; i < _statModifiers.Count; i++)
         {
             switch (_statModifiers[i]._statTag)
             {
                 case StatTag.Speed:
                     player._speed.AddModifier(_statModifiers[i]._modifier);
+                    _playerStatsChanged.Add(player._speed);
                     break;
                 case StatTag.MaxHP:
                     player._maxHP.AddModifier(_statModifiers[i]._modifier);
+                    _playerStatsChanged.Add(player._maxHP);
                     break;
             }
         }
+
+        player.ReCalcAllChangedStats(_playerStatsChanged);
 
         return true;
     }

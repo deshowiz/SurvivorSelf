@@ -43,6 +43,7 @@ public class Player : MonoBehaviour, IDamageable
         EventManager.OnStartWave += ReInitialize;
         EventManager.OnEndWave += DisablePlayer;
         EventManager.OnItemEquipped += EquipItem;
+        EventManager.OnWeaponEquipped += WeaponEquipItem;
     }
 
     void OnDisable()
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour, IDamageable
         EventManager.OnStartWave -= ReInitialize;
         EventManager.OnEndWave -= DisablePlayer;
         EventManager.OnItemEquipped -= EquipItem;
+        EventManager.OnWeaponEquipped -= WeaponEquipItem;
     }
 
     private void DisablePlayer()
@@ -138,9 +140,25 @@ public class Player : MonoBehaviour, IDamageable
 
     private void EquipItem(Item newItem)
     {
-        if (newItem.Equip(this))
+        newItem.Equip(this);
+    }
+
+    private void WeaponEquipItem(WeaponItem newWeapon)
+    {
+        if (newWeapon.Equip(this))
         {
-            _speed.ReCalculateValue();
+            Weapon weaponObject = Instantiate(newWeapon.WeaponPrefab,
+             transform.position + new Vector3(0.1f, 0f, 0f),
+             Quaternion.identity,
+              transform);
+        }
+    }
+
+    public void ReCalcAllChangedStats(List<AttributeStat> changedStats)
+    {
+        for (int i = 0; i < changedStats.Count; i++)
+        {
+            changedStats[i].ReCalculateValue();
         }
     }
 

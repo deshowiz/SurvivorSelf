@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91bfc8a517c659b499490c894b98257e, type: 3}
+  m_Name: Gun
+  m_EditorClassIdentifier: 
+  _itemImage: {fileID: 21300000, guid: 42820b3c7d68c474eb8b3084c503dbc1, type: 3}
+  _itemDescriptionText: BLAMOOOO
+  _itemRarity: {fileID: 11400000, guid: 48b5560b7ffd167458658a2454c78237, type: 2}
+  _itemType: 0
+  _statModifiers: []
+  _weaponPrefab: {fileID: 7774832353588662543, guid: 8171631ba43736b4eb867a141664d01e, type: 3}

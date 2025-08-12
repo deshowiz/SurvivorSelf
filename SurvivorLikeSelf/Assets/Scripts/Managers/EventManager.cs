@@ -22,6 +22,9 @@ public class EventManager : MonoBehaviour
     public delegate void ItemEquippedEvent(Item newItem);
     public static ItemEquippedEvent OnItemEquipped;
 
+    public delegate void WeaponEquippedEvent(WeaponItem newWeapon);
+    public static WeaponEquippedEvent OnWeaponEquipped;
+
 
     public static EventManager instance
     {

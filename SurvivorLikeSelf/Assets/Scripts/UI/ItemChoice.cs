@@ -34,7 +34,14 @@ public class ItemChoice : MonoBehaviour
     {
         if (_currentItem != null)
         {
-            EventManager.OnItemEquipped?.Invoke(_currentItem);
+            if (_currentItem is WeaponItem)
+            {
+                EventManager.OnWeaponEquipped?.Invoke((WeaponItem)_currentItem);
+            }
+            else
+            {
+                EventManager.OnItemEquipped?.Invoke(_currentItem);
+            }
         }
         else
         {

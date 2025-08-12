@@ -7,11 +7,6 @@ public class RangedWeapon : Weapon
     private Transform _exitTransform = null;
     [SerializeField]
     protected Projectile _projectile = null;
-    [SerializeField]
-    protected Vector3 _localProjectilePosition = Vector3.zero;
-    [SerializeField]
-    [Tooltip("Base speed of projectiles fired from this weapon")]
-    protected float _baseProjVelMagnitude = 0f;
 
     protected override void FireWeapon()
     {
