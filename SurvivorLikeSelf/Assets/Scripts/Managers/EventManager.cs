@@ -25,6 +25,12 @@ public class EventManager : MonoBehaviour
     public delegate void WeaponEquippedEvent(WeaponItem newWeapon);
     public static WeaponEquippedEvent OnWeaponEquipped;
 
+    public delegate void EnemyDeathEvent(Vector2 dropPosition);
+    public static EnemyDeathEvent OnEnemyDeath;
+
+    public delegate void PickedUpInteractable(Interactable pickup);
+    public static PickedUpInteractable OnPickedUpInteractable;
+
 
     public static EventManager instance
     {

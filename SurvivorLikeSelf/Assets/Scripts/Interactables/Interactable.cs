@@ -48,6 +48,6 @@ public class Interactable : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position, _player.transform.position, startTime);
             yield return null;
         }
-        Destroy(gameObject);
+        EventManager.OnPickedUpInteractable?.Invoke(this);
     }
 }

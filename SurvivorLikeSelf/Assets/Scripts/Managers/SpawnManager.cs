@@ -12,13 +12,26 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private Player _player = null;
     [SerializeField]
+    private Transform _interactablesHolderTransform = null;
+    [SerializeField]
     private EnemyWave _currentWave = null;
 
     [Header("Settings")]
     [SerializeField]
+    private List<InteractableSpawnData> _interactablesSpawnData = new List<InteractableSpawnData>();
+
+    [Serializable]
+    private struct InteractableSpawnData
+    {
+        public int numToSpawn;
+        public Interactable prefabToSpawn;
+    }
+    
+    private Queue<Interactable> _interactableQueue = new Queue<Interactable>();
+
     private float _xAxisSpawnSize = 2.5f;
-    [SerializeField]
     private float _yAxisSpawnSize = 1.40625f;
+    
 
     private List<Enemy> _aliveEnemyList = new List<Enemy>();
     // Ref is used here to avoid creating copies of the data every time we want to iterate through it
@@ -39,22 +52,48 @@ public class SpawnManager : MonoBehaviour
         // References docs: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-orthographicSize.html
         _yAxisSpawnSize = Camera.main.orthographicSize/* * 2f*/;
         _xAxisSpawnSize = _yAxisSpawnSize * Camera.main.aspect;
+
+        InitializeSpawns();
     }
 
     void OnEnable()
     {
         EventManager.OnEndWave += ClearWave;
+        EventManager.OnEnemyDeath += SpawnInteractable;
+        EventManager.OnPickedUpInteractable += PoolInteractable;
     }
 
-    void ODisable()
+    void OnDisable()
     {
         EventManager.OnEndWave -= ClearWave;
+        EventManager.OnEnemyDeath -= SpawnInteractable;
+        EventManager.OnPickedUpInteractable -= PoolInteractable;
     }
 
-    // private void Start()
-    // {
-    //     SpawnWave();
-    // }
+    private void InitializeSpawns()
+    {
+        for (int i = 0; i < _interactablesSpawnData.Count; i++)
+        {
+            Interactable currentInteractableToSpawn = _interactablesSpawnData[i].prefabToSpawn;
+            for (int j = 0; j < _interactablesSpawnData[i].numToSpawn; j++)
+            {
+                _interactableQueue.Enqueue(Instantiate(currentInteractableToSpawn, _interactablesHolderTransform));
+            }
+        }
+    }
+
+    private void SpawnInteractable(Vector2 spawnPos)
+    {
+        Interactable spawnedInteractable = _interactableQueue.Dequeue();
+        spawnedInteractable.transform.position = spawnPos;
+        spawnedInteractable.gameObject.SetActive(true);
+    }
+
+    private void PoolInteractable(Interactable pickup)
+    {
+        pickup.gameObject.SetActive(false);
+        _interactableQueue.Enqueue(pickup);
+    }
 
     public void SpawnWave(EnemyWave newWave)
     {

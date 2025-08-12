@@ -64,7 +64,8 @@ public class Enemy : MonoBehaviour, IDamageable
     public void Die()
     {
         //gameObject.SetActive(false);
-        Instantiate(_droppedInteractable, transform.position, Quaternion.identity);
+        //Instantiate(_droppedInteractable, transform.position, Quaternion.identity);
+        EventManager.OnEnemyDeath?.Invoke(transform.position);
         Destroy(gameObject);
     }
 
