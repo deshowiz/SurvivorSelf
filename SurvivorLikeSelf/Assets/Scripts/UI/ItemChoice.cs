@@ -16,12 +16,31 @@ public class ItemChoice : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _itemDescriptionText = null;
 
+    private Item _currentItem = null;
+
     public void SetChoice(Item newItem)
     {
+
         _itemImage.sprite = newItem.ItemImage;
         _backgroundImage.color = newItem.Rarity.RarityColor;
         _itemNameText.text = newItem.name;
         _itemSubtypeText.text = newItem.ItemTypes.ToString();
         _itemDescriptionText.text = newItem.ItemDescriptionText;
+        _currentItem = newItem;
+        gameObject.SetActive(true);
+    }
+
+    public void PurchaseItem()
+    {
+        if (_currentItem != null)
+        {
+            EventManager.OnItemEquipped?.Invoke(_currentItem);
+        }
+        else
+        {
+            Debug.LogError("ItemChoice is missing item ref");
+        }
+        _currentItem = null;
+        gameObject.SetActive(false);
     }
 }

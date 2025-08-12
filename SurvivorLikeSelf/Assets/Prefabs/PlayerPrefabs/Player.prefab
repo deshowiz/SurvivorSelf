@@ -84,7 +84,7 @@ MonoBehaviour:
   _playerSprite: {fileID: 5352036266787842811}
   _baseMaximumHealth: 10
   _speedMultiplier: 3
-  _invulnTimer: 0.5
+  _invulnTimer: 0.3
   _flashDuration: 0.1
 --- !u!212 &5352036266787842811
 SpriteRenderer:

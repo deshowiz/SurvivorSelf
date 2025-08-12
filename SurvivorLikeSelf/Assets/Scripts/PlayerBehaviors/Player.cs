@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +9,14 @@ public class Player : MonoBehaviour, IDamageable
     [Header("References")]
     [SerializeField]
     private SpriteRenderer _playerSprite = null;
+    
     [Header("Stats")]
     [SerializeField]
-    private float _baseMaximumHealth = 10f;
+    public AttributeStat _maxHP = new AttributeStat(0);
     private float _currentHealth;
     [SerializeField]
-    private float _speedMultiplier = 1f;
+    public AttributeStat _speed = new AttributeStat(0);
+    
 
     [Header("Settings")]
     [SerializeField]
@@ -28,6 +31,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private Coroutine _flashRoutine = null;
 
+    // Point for later, use structs as stat modifiers for scaling enemies later per wave
+
     void Start()
     {
         Initialize();
@@ -37,12 +42,14 @@ public class Player : MonoBehaviour, IDamageable
     {
         EventManager.OnStartWave += ReInitialize;
         EventManager.OnEndWave += DisablePlayer;
+        EventManager.OnItemEquipped += EquipItem;
     }
 
-    void ODisable()
+    void OnDisable()
     {
         EventManager.OnStartWave -= ReInitialize;
         EventManager.OnEndWave -= DisablePlayer;
+        EventManager.OnItemEquipped -= EquipItem;
     }
 
     private void DisablePlayer()
@@ -57,8 +64,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Initialize()
     {
-        _currentHealth = _baseMaximumHealth;
-        EventManager.OnPlayerHealthInitialization?.Invoke(_baseMaximumHealth);
+        _currentHealth = _maxHP.Value;
+        EventManager.OnPlayerHealthInitialization?.Invoke(_maxHP.Value);
         transform.position = Vector2.zero;
         _isPlaying = true;
     }
@@ -67,7 +74,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (_isPlaying)
         {
-            transform.Translate(_currentMovementVector * _speedMultiplier * Time.deltaTime);
+            transform.Translate(_currentMovementVector * _speed.Value * Time.deltaTime);
         }
     }
 
@@ -127,6 +134,14 @@ public class Player : MonoBehaviour, IDamageable
         }
 
         _playerSprite.color = Color.white;
+    }
+
+    private void EquipItem(Item newItem)
+    {
+        if (newItem.Equip(this))
+        {
+            _speed.ReCalculateValue();
+        }
     }
 
     public void Die()

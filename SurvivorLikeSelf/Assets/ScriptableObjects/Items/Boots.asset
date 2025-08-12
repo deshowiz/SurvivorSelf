@@ -10,9 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f84defde692c6424e860863de7a72c3c, type: 3}
-  m_Name: Knife
+  m_Name: Boots
   m_EditorClassIdentifier: 
-  _itemImage: {fileID: 21300000, guid: 19c37ec7d025879458a3d3cf4b372333, type: 3}
+  _itemImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  _itemDescriptionText: 
+  _itemRarity: {fileID: 11400000, guid: 7313819a4f07bd440820d3efc38f5959, type: 2}
   _itemType: 0
-  _itemDescriptionText: Is a knife
-  _itemRarity: {fileID: 11400000, guid: 4bace78cf0ca4d542a50a049e03b15c3, type: 2}
+  _statModifiers:
+  - _statTag: 0
+    _modifier:
+      Value: 20
+      Type: 0
