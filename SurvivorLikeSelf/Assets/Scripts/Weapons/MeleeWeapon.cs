@@ -104,6 +104,7 @@ public class MeleeWeapon : Weapon
             _visualTransform.localPosition = Vector3.Lerp(Vector3.zero, destination, (Time.time - startTime) / halfTime);
             yield return new WaitForFixedUpdate();
         }
+        _visualTransform.localPosition = destination;
 
         _weaponCollider.enabled = false;
         startTime = Time.time;
@@ -113,6 +114,7 @@ public class MeleeWeapon : Weapon
             _visualTransform.localPosition = Vector3.Lerp(destination, Vector3.zero, (Time.time - startTime) / halfTime);
             yield return new WaitForFixedUpdate();
         }
+        _visualTransform.localPosition = Vector3.zero;
         _targeting = true;
         _hitEnemies.Clear();
     }
