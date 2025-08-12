@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Kryz.CharacterStats;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ public class Item : ScriptableObject
 
     public virtual bool Equip(Player player)
     {
-        for(int i = 0; i < _statModifiers.Count; i++)
+        for (int i = 0; i < _statModifiers.Count; i++)
         {
             switch (_statModifiers[i]._statTag)
             {
@@ -55,5 +56,41 @@ public class Item : ScriptableObject
         }
 
         return true;
+    }
+
+    public string GetItemDescriptionText()
+    {
+        string descriptionAdditive = _itemDescriptionText;
+        if (!String.IsNullOrEmpty(descriptionAdditive))
+        {
+            descriptionAdditive += "\n";
+        }
+
+        for (int i = 0; i < _statModifiers.Count; i++)
+        {
+            string signString;
+            float modValue = _statModifiers[i]._modifier.Value;
+
+
+            if (Mathf.Sign(modValue) == 1f)
+            {
+                signString = "<color=#09C829>+";
+            }
+            else
+            {
+                signString = "<color=#ff0000ff>";
+            }
+            switch (_statModifiers[i]._modifier.Type)
+            {
+                case StatModType.Flat:
+                    descriptionAdditive += signString + modValue.ToString() + " " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
+                    break;
+                case StatModType.PercentAdd:
+                    descriptionAdditive += signString + (modValue * 100f).ToString() + "% " + _statModifiers[i]._statTag.ToString() + "</color> " + "\n";
+                    break;
+            }
+        }
+
+        return descriptionAdditive;
     }
 }

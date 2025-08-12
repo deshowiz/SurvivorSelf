@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: Boots
   m_EditorClassIdentifier: 
   _itemImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  _itemDescriptionText: 
+  _itemDescriptionText: This is a pair of boots lmao
   _itemRarity: {fileID: 11400000, guid: 7313819a4f07bd440820d3efc38f5959, type: 2}
   _itemType: 0
   _statModifiers:
+  - _statTag: 1
+    _modifier:
+      Value: -2
+      Type: 1
   - _statTag: 0
     _modifier:
-      Value: 20
+      Value: 3
       Type: 0

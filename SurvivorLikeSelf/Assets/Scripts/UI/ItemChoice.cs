@@ -25,7 +25,7 @@ public class ItemChoice : MonoBehaviour
         _backgroundImage.color = newItem.Rarity.RarityColor;
         _itemNameText.text = newItem.name;
         _itemSubtypeText.text = newItem.ItemTypes.ToString();
-        _itemDescriptionText.text = newItem.ItemDescriptionText;
+        _itemDescriptionText.text = newItem.GetItemDescriptionText();
         _currentItem = newItem;
         gameObject.SetActive(true);
     }
