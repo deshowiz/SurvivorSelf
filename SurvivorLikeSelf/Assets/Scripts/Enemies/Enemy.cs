@@ -17,14 +17,13 @@ public class Enemy : MonoBehaviour, IDamageable
     private float _baseMaximumHealth = 1f;
     private float _baseCurrentHealth = 0f;
 
-    public uint _enemyId = 0;
+    public int _enemyId = 0;
     private Player _player = null;
 
-    public void Initialize(Player newPlayer, uint newEnemyId)
+    public void Initialize(Player newPlayer)
     {
         _baseCurrentHealth = _baseMaximumHealth;
         this._player = newPlayer;
-        this._enemyId = newEnemyId;
         Vector2 travelVector = (_player.transform.position - transform.position).normalized;
         _rigidbody.linearVelocity = travelVector * _baseSpeed;
     }

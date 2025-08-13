@@ -119,7 +119,7 @@ public class MeleeWeapon : Weapon
         _hitEnemies.Clear();
     }
 
-    private List<uint> _hitEnemies = new List<uint>();
+    private List<int> _hitEnemies = new List<int>();
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {

@@ -107,7 +107,7 @@ MonoBehaviour:
   _baseSpeed: 2
   _baseDamage: 1
   _baseMaximumHealth: 1
-  _enemyId: 0
+  _enemyId: 1
 --- !u!58 &-145330401613861630
 CircleCollider2D:
   m_ObjectHideFlags: 0

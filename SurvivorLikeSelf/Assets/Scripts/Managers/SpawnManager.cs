@@ -39,7 +39,7 @@ public class SpawnManager : MonoBehaviour
     }
     
     private Queue<Interactable> _interactableQueue = new Queue<Interactable>();
-    private Queue<Enemy> _enemyQueue = new Queue<Enemy>();
+    private List<Queue<Enemy>> _enemyQueues = new List<Queue<Enemy>>();
 
     private float _xAxisSpawnSize = 2.5f;
     private float _yAxisSpawnSize = 1.40625f;
@@ -81,6 +81,7 @@ public class SpawnManager : MonoBehaviour
 
     private void InitializeSpawns()
     {
+        _interactableQueue.Clear();
         for (int i = 0; i < _interactablesSpawnData.Count; i++)
         {
             Interactable currentInteractableToSpawn = _interactablesSpawnData[i].prefabToSpawn;
@@ -89,13 +90,15 @@ public class SpawnManager : MonoBehaviour
                 _interactableQueue.Enqueue(Instantiate(currentInteractableToSpawn, _interactablesHolderTransform));
             }
         }
-
+        _enemyQueues.Clear();
         for (int i = 0; i < _enemiesSpawnData.Count; i++)
         {
+            _enemyQueues.Add(new Queue<Enemy>());
             Enemy currentEnemyTospawn = _enemiesSpawnData[i].prefabToSpawn;
             for (int j = 0; j < _enemiesSpawnData[i].numToSpawn; j++)
             {
-                _enemyQueue.Enqueue(Instantiate(currentEnemyTospawn, _enemiesHolderTransform));
+                Enemy currentEnemy = Instantiate(currentEnemyTospawn, _enemiesHolderTransform);
+                _enemyQueues[i].Enqueue(currentEnemy);
             }
         }
     }
@@ -116,7 +119,7 @@ public class SpawnManager : MonoBehaviour
     private void PoolEnemy(Enemy enemyToPool)
     {
         enemyToPool.gameObject.SetActive(false);
-        _enemyQueue.Enqueue(enemyToPool);
+        _enemyQueues[enemyToPool._enemyId].Enqueue(enemyToPool);
     }
 
     // Change this so that it's a routine that draws from the _enemyQueue instead
@@ -131,22 +134,12 @@ public class SpawnManager : MonoBehaviour
         Enemy[] enemiesToSpawn = _currentWave.EnemyData;
         for (int i = 0; i < enemiesToSpawn.Length; i++)
         {
-            Enemy spawnedEnemy = _enemyQueue.Dequeue();
-            spawnedEnemy.Initialize(_player, (uint)i);
+            Enemy spawnedEnemy = _enemyQueues[enemiesToSpawn[i]._enemyId].Dequeue();
+            spawnedEnemy.Initialize(_player);
             spawnedEnemy.transform.position = new Vector3(UnityEngine.Random.Range(-_xAxisSpawnSize, _xAxisSpawnSize),
-                    UnityEngine.Random.Range(-_yAxisSpawnSize, _yAxisSpawnSize), 0f);
+                UnityEngine.Random.Range(-_yAxisSpawnSize, _yAxisSpawnSize), 0f);
 
             spawnedEnemy.gameObject.SetActive(true);
-
-            // Enemy newEnemy = Instantiate(
-            //     enemiesToSpawn[i],
-            //     new Vector3(UnityEngine.Random.Range(-_xAxisSpawnSize, _xAxisSpawnSize),
-            //         UnityEngine.Random.Range(-_yAxisSpawnSize, _yAxisSpawnSize), 0f),
-            //     Quaternion.identity,
-            //     transform
-            //     );
-            // newEnemy.Initialize(_player, (uint)i);
-            //_aliveEnemyList.Add(spawnedEnemy);
         }
     }
 
@@ -160,23 +153,7 @@ public class SpawnManager : MonoBehaviour
         {
             Enemy _currentEnemy = clearableEnemies[i];
             _currentEnemy.gameObject.SetActive(false);
-            _enemyQueue.Enqueue(_currentEnemy);
+            _enemyQueues[_currentEnemy._enemyId].Enqueue(_currentEnemy);
         }
     }
-
-    public void ClearEnemy(Enemy deadEnemy) // can later create paralellized int IDs to speed up
-    {
-        _enemiesToBeCleared.Add(deadEnemy);
-    }
-
-    // void LateUpdate() // Slow but changing later
-    // {
-    //     if (_enemiesToBeCleared.Count != 0)
-    //     {
-    //         for (int i = 0; i < _enemiesToBeCleared.Count; i++)
-    //         {
-    //             _aliveEnemyList.Remove(_enemiesToBeCleared[i]);
-    //         }
-    //     }
-    // }
 }
