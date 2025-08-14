@@ -21,6 +21,17 @@ public class Interactable : MonoBehaviour
         _sqrDistancePickup = _distanceToPickup * _distanceToPickup;
         _sqrDistanceAbsorb = _distanceToAbsorb * _distanceToAbsorb;
     }
+
+    private void OnEnable()
+    {
+        EventManager.OnEndWave += ForceFly;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnEndWave -= ForceFly;
+    }
+
     private void Update()
     {
         if (!_pickedUp)
@@ -36,7 +47,16 @@ public class Interactable : MonoBehaviour
                 _flyingRoutine = StartCoroutine(FlyTowardsPlayer());
             }
         }
-        
+
+    }
+
+    private void ForceFly()
+    {
+        if (_flyingRoutine != null)
+        {
+            _flyingRoutine = null;
+        }
+        _flyingRoutine = StartCoroutine(FlyTowardsPlayer());
     }
 
     private IEnumerator FlyTowardsPlayer()
