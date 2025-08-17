@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1211627319573454987}
   - component: {fileID: 6413591247267084393}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: PriceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,6 +252,8 @@ MonoBehaviour:
   _itemNameText: {fileID: 3263786177395944558}
   _itemSubtypeText: {fileID: 8111075653834470590}
   _itemDescriptionText: {fileID: 6068745291326477314}
+  _purchaseButton: {fileID: 1667087445295778553}
+  _purchasePriceText: {fileID: 6413591247267084393}
 --- !u!1 &1778233838739223527
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,6 +19,8 @@ public class EventManager : MonoBehaviour
 
     public delegate void IntEvent(int intP);
     public static IntEvent OnTimerChange;
+    public static IntEvent OnGoldChange;
+    public static IntEvent OnPurchasedItem;
 
     public delegate void ItemEquippedEvent(Item newItem);
     public static ItemEquippedEvent OnItemEquipped;

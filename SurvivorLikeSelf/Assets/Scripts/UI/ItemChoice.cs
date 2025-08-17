@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,19 +16,50 @@ public class ItemChoice : MonoBehaviour
     private TextMeshProUGUI _itemSubtypeText = null;
     [SerializeField]
     private TextMeshProUGUI _itemDescriptionText = null;
+    [SerializeField]
+    private Button _purchaseButton = null;
+    [SerializeField]
+    private TextMeshProUGUI _purchasePriceText = null;
 
     private Item _currentItem = null;
+    private int _currentPrice = 0;
 
-    public void SetChoice(Item newItem)
+    private void OnEnable()
     {
+        EventManager.OnGoldChange += SetPurchaseButtonFromPrice;
+    }
 
+    private void OnDisable()
+    {
+        EventManager.OnGoldChange -= SetPurchaseButtonFromPrice;
+    }
+
+    public void SetChoice(Item newItem, int heldGold)
+    {
         _itemImage.sprite = newItem.ItemImage;
         _backgroundImage.color = newItem.Rarity.RarityColor;
         _itemNameText.text = newItem.name;
         _itemSubtypeText.text = newItem.ItemTypes.ToString();
         _itemDescriptionText.text = newItem.GetItemDescriptionText();
         _currentItem = newItem;
+        _currentPrice = newItem.Rarity.NewPrice;
+        _purchasePriceText.text = _currentPrice.ToString();
+        SetPurchaseButtonFromPrice(heldGold);
         gameObject.SetActive(true);
+    }
+
+    private void SetPurchaseButtonFromPrice(int heldGold)
+    {
+        if (heldGold >= _currentPrice)
+        {
+            _purchaseButton.interactable = true;
+            _purchasePriceText.color = Color.white;
+        }
+        else
+        {
+            _purchaseButton.interactable = false;
+            _purchasePriceText.color = Color.red;
+        }
     }
 
     public void PurchaseItem()
@@ -42,6 +74,7 @@ public class ItemChoice : MonoBehaviour
             {
                 EventManager.OnItemEquipped?.Invoke(_currentItem);
             }
+            EventManager.OnPurchasedItem?.Invoke(_currentPrice);
         }
         else
         {

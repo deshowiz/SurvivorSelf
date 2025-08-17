@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Legendary
   m_EditorClassIdentifier: 
   _rarityColor: {r: 1, g: 0.9318118, b: 0, a: 1}
+  _priceRangeMinimum: 190
+  _priceRangeMaximum: 314

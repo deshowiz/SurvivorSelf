@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Epic
   m_EditorClassIdentifier: 
   _rarityColor: {r: 0.34864983, g: 0, b: 0.7169812, a: 1}
+  _priceRangeMinimum: 115
+  _priceRangeMaximum: 160

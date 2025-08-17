@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Uncommon
   m_EditorClassIdentifier: 
   _rarityColor: {r: 0.2615482, g: 0.6226415, b: 0.249644, a: 1}
+  _priceRangeMinimum: 30
+  _priceRangeMaximum: 60

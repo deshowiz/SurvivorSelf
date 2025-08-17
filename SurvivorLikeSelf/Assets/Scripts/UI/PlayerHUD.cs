@@ -18,6 +18,8 @@ public class PlayerHUD : MonoBehaviour
     private TextMeshProUGUI _healthText = null;
     [SerializeField]
     private TextMeshProUGUI _timerText = null;
+    [SerializeField]
+    private TextMeshProUGUI _goldText = null;
     [Header("Item Choice References")]
     [SerializeField]
     private ItemList _fullItemList = null;
@@ -25,9 +27,8 @@ public class PlayerHUD : MonoBehaviour
     private List<ItemChoice> _itemChoices = new List<ItemChoice>();
     [SerializeField]
     private int numChoices = 3;
-    
-
     private int _maxHealth = 0;
+    private int _currentGold = 0;
 
     void OnEnable()
     {
@@ -37,6 +38,7 @@ public class PlayerHUD : MonoBehaviour
         EventManager.OnPlayerHealthInitialization += IntializeHealth;
         EventManager.OnPlayerHealthChange += SetHealth;
         EventManager.OnTimerChange += SetTimer;
+        EventManager.OnGoldChange += SetGold;
     }
 
     void OnDisable()
@@ -47,6 +49,7 @@ public class PlayerHUD : MonoBehaviour
         EventManager.OnPlayerHealthInitialization -= IntializeHealth;
         EventManager.OnPlayerHealthChange -= SetHealth;
         EventManager.OnTimerChange -= SetTimer;
+        EventManager.OnGoldChange -= SetGold;
     }
 
     public void SwitchToGameplay()
@@ -62,7 +65,7 @@ public class PlayerHUD : MonoBehaviour
 
         for (int i = 0; i < newItems.Count; i++)
         {
-            _itemChoices[i].SetChoice(newItems[i]);
+            _itemChoices[i].SetChoice(newItems[i], _currentGold);
         }
 
         _gameplayElements.SetActive(false);
@@ -88,5 +91,11 @@ public class PlayerHUD : MonoBehaviour
     {
         _timerText.text = newValue.ToString();
         if (newValue <= 5) _timerText.color = Color.red;
+    }
+
+    private void SetGold(int newGoldValue)
+    {
+        _currentGold = newGoldValue;
+        _goldText.text = _currentGold.ToString();
     }
 }
