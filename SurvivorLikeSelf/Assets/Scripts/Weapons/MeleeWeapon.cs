@@ -127,9 +127,10 @@ public class MeleeWeapon : Weapon
         _currentAttackDirection = _visualTransform.right;
         if (hitEnemy)
         {
+            int enemyInstanceID = hitEnemy.GetInstanceID();
             for (int i = 0; i < _hitEnemies.Count; i++)
             {
-                if (hitEnemy._enemyId == _hitEnemies[i])
+                if (enemyInstanceID == _hitEnemies[i])
                 {
                     return;
                 }
@@ -138,7 +139,7 @@ public class MeleeWeapon : Weapon
             hitEnemy.Damage(_baseDamage, _currentAttackDirection * _basePushback);
             if (hitEnemy != null)
             {
-                _hitEnemies.Add(hitEnemy._enemyId);
+                _hitEnemies.Add(enemyInstanceID);
             }
         }
         else

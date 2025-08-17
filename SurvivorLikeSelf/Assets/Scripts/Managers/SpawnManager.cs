@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ public class SpawnManager : MonoBehaviour
         public int numToSpawn;
         public Enemy prefabToSpawn;
     }
-    
+
     private Queue<Interactable> _interactableQueue = new Queue<Interactable>();
     private List<Queue<Enemy>> _enemyQueues = new List<Queue<Enemy>>();
 
@@ -45,6 +46,12 @@ public class SpawnManager : MonoBehaviour
     private float _yAxisSpawnSize = 1.40625f;
 
     private List<Enemy> _enemiesToBeCleared = new List<Enemy>();
+
+    private int _numInteractablesEnabled = 0;
+
+    private Coroutine _waitForCollectionRoutine = null;
+
+    private WaitForSeconds _shopDelayWait = new WaitForSeconds(2);
 
     private void Awake()
     {
@@ -65,7 +72,7 @@ public class SpawnManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.OnEndWave += ClearWave;
+        EventManager.OnWaveTimerZero += ClearWave;
         EventManager.OnEnemyDeath += SpawnInteractable;
         EventManager.OnEnemyDeath += PoolEnemy;
         EventManager.OnPickedUpInteractable += PoolInteractable;
@@ -73,7 +80,7 @@ public class SpawnManager : MonoBehaviour
 
     void OnDisable()
     {
-        EventManager.OnEndWave -= ClearWave;
+        EventManager.OnWaveTimerZero -= ClearWave;
         EventManager.OnEnemyDeath -= SpawnInteractable;
         EventManager.OnEnemyDeath -= PoolEnemy;
         EventManager.OnPickedUpInteractable -= PoolInteractable;
@@ -108,12 +115,14 @@ public class SpawnManager : MonoBehaviour
         Interactable spawnedInteractable = _interactableQueue.Dequeue();
         spawnedInteractable.transform.position = deadEnemy.transform.position;
         spawnedInteractable.gameObject.SetActive(true);
+        _numInteractablesEnabled++;
     }
 
     private void PoolInteractable(Interactable pickup)
     {
         pickup.gameObject.SetActive(false);
         _interactableQueue.Enqueue(pickup);
+        _numInteractablesEnabled--;
     }
 
     private void PoolEnemy(Enemy enemyToPool)
@@ -155,5 +164,31 @@ public class SpawnManager : MonoBehaviour
             _currentEnemy.gameObject.SetActive(false);
             _enemyQueues[_currentEnemy._enemyId].Enqueue(_currentEnemy);
         }
+
+        CheckForCollection();
+    }
+
+    private void CheckForCollection()
+    {
+        if (_numInteractablesEnabled != 0)
+        {
+            if (_waitForCollectionRoutine != null)
+            {
+                StopCoroutine(_waitForCollectionRoutine);
+                _waitForCollectionRoutine = null;
+            }
+            _waitForCollectionRoutine = StartCoroutine(WaitForCollection());
+        }
+        else
+        {
+            EventManager.OnEndWave?.Invoke();
+        }
+        _numInteractablesEnabled = 0;
+    }
+
+    private IEnumerator WaitForCollection()
+    {
+        yield return _shopDelayWait;
+        EventManager.OnEndWave?.Invoke();
     }
 }

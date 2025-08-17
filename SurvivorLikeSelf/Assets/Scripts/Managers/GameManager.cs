@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         // Wave Over
+        EventManager.OnWaveTimerZero?.Invoke();
         _currentWaveIndex++;
-        EventManager.OnEndWave?.Invoke();
     }
 }

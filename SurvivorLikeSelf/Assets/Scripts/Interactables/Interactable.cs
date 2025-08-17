@@ -24,12 +24,13 @@ public class Interactable : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnEndWave += ForceFly;
+        EventManager.OnWaveTimerZero += ForceFly;
+        _pickedUp = false;
     }
 
     private void OnDisable()
     {
-        EventManager.OnEndWave -= ForceFly;
+        EventManager.OnWaveTimerZero -= ForceFly;
     }
 
     private void Update()
