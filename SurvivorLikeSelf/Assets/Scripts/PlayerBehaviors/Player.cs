@@ -11,6 +11,7 @@ public class Player : MonoBehaviour, IDamageable
     private SpriteRenderer _playerSprite = null;
     [SerializeField]
     private WeaponPositions _weaponPositions = null;
+    [SerializeField]
     private List<Weapon> _equippedWeapons = new List<Weapon>();
     
     [Header("Stats")]

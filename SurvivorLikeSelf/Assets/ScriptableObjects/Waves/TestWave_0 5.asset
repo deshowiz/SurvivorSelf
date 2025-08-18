@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed362ee63ba1234d9325948418c09a8, type: 3}
   m_Name: TestWave_0 5
   m_EditorClassIdentifier: 
-  _waveLengthSeconds: 1
+  _waveLengthSeconds: 2
   _enemyData:
   - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
   - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}

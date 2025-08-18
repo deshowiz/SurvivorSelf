@@ -49,7 +49,7 @@ MonoBehaviour:
   _swivelTransform: {fileID: 161226105319357598}
   _visualTransform: {fileID: 4723797713496678772}
   _weaponSprite: {fileID: 4320027273757479097}
-  _onlyWeapon: 0
+  _onlyWeapon: 1
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
