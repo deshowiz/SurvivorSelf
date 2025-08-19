@@ -12,6 +12,7 @@ public class EventManager : MonoBehaviour
     public static ParamaterlessEvent OnWaveTimerZero;
     public static ParamaterlessEvent OnEndWave;
     public static ParamaterlessEvent OnDeath;
+    public static ParamaterlessEvent OnItemExitHover;
 
     public delegate void FloatEvent(float floatP);
     public static FloatEvent OnPlayerHealthInitialization;
@@ -22,8 +23,11 @@ public class EventManager : MonoBehaviour
     public static IntEvent OnGoldChange;
     public static IntEvent OnPurchasedItem;
 
-    public delegate void ItemEquippedEvent(Item newItem);
-    public static ItemEquippedEvent OnItemEquipped;
+    public delegate void ItemEvent(Item newItem);
+    public static ItemEvent OnItemEquipped;
+
+    public delegate void SlotHoveredEvent(ItemSlot newItemSlot);
+    public static SlotHoveredEvent OnItemHovered;
 
     public delegate void WeaponEquippedEvent(WeaponItem newWeapon);
     public static WeaponEquippedEvent OnWeaponEquipped;
