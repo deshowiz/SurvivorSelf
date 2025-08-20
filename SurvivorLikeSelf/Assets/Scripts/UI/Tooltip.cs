@@ -39,7 +39,7 @@ public class Tooltip : MonoBehaviour
         _panelImage.color = heldItem.Rarity.RarityColor;
         _itemImage.sprite = heldItem.ItemImage;
         _nameText.text = heldItem.name;
-        _descriptionText.text = heldItem.ItemDescriptionText;
+        _descriptionText.text = heldItem.GetItemDescriptionText();
 
         CanvasScaler canvasScaler = _panelImage.canvas.gameObject?.GetComponent<CanvasScaler>();
         Vector2 resMultiplier;

@@ -7,15 +7,32 @@ public class PlayerInventoryDisplay : MonoBehaviour
     private ItemSlot _itemThumbnailPrefab = null;
     [SerializeField]
     private RectTransform _contentTransform = null;
+    [SerializeField]
+    private bool _isWeaponInventory = false;
 
     private void OnEnable()
     {
-        EventManager.OnItemEquipped += AddNewItem;
+        if (_isWeaponInventory)
+        {
+            EventManager.OnWeaponEquipped += AddNewItem;
+        }
+        else
+        {
+            EventManager.OnItemEquipped += AddNewItem;
+        }
+        
     }
 
     private void OnDisable()
     {
-        EventManager.OnItemEquipped -= AddNewItem;
+        if (_isWeaponInventory)
+        {
+            EventManager.OnWeaponEquipped -= AddNewItem;
+        }
+        else
+        {
+            EventManager.OnItemEquipped -= AddNewItem;
+        }
     }
 
     private void AddNewItem(Item newItem)
