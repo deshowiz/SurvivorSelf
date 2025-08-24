@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     private void StartNewWave()
     {
-        SpawnManager.Instance.SpawnWave(_enemyWaves[_currentWaveIndex]);
+        SpawnManager.Instance.SetSpawnWave(_enemyWaves[_currentWaveIndex]);
         if (_waveTimerRoutine != null)
         {
             StopCoroutine(_waveTimerRoutine);

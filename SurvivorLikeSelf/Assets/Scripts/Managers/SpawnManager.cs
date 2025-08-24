@@ -9,8 +9,6 @@ public class SpawnManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField]
-    private Enemy _testEnemy = null;
-    [SerializeField]
     private Player _player = null;
     [SerializeField]
     private Transform _interactablesHolderTransform = null;
@@ -50,6 +48,7 @@ public class SpawnManager : MonoBehaviour
     private int _numInteractablesEnabled = 0;
 
     private Coroutine _waitForCollectionRoutine = null;
+    private Coroutine _spawnWaveRoutine = null;
 
     private WaitForSeconds _shopDelayWait = new WaitForSeconds(2);
 
@@ -131,24 +130,47 @@ public class SpawnManager : MonoBehaviour
         _enemyQueues[enemyToPool._enemyId].Enqueue(enemyToPool);
     }
 
-    // Change this so that it's a routine that draws from the _enemyQueue instead
-    public void SpawnWave(EnemyWave newWave)
+    public void SetSpawnWave(EnemyWave newWave)
     {
         _currentWave = newWave;
-        if (_testEnemy == null)
+        if (_spawnWaveRoutine != null)
         {
-            Debug.LogError("Enemy Reference is Empty");
-            return;
+            StopCoroutine(_spawnWaveRoutine);
+            _spawnWaveRoutine = null;
         }
-        Enemy[] enemiesToSpawn = _currentWave.EnemyData;
-        for (int i = 0; i < enemiesToSpawn.Length; i++)
+        _spawnWaveRoutine = StartCoroutine(WaveSpawnRoutine(_currentWave));
+    }
+
+    // Change this so that it's a routine that draws from the _enemyQueue instead
+    public void SpawnWave(EnemyWave.SubWaveData newSubWave)
+    {
+        
+        for (int i = 0; i < newSubWave._enemyMakeup.Length; i++)
         {
-            Enemy spawnedEnemy = _enemyQueues[enemiesToSpawn[i]._enemyId].Dequeue();
+            Enemy spawnedEnemy = _enemyQueues[newSubWave._enemyMakeup[i]._enemyId].Dequeue();
             spawnedEnemy.Initialize(_player);
             spawnedEnemy.transform.position = new Vector3(UnityEngine.Random.Range(-_xAxisSpawnSize, _xAxisSpawnSize),
                 UnityEngine.Random.Range(-_yAxisSpawnSize, _yAxisSpawnSize), 0f);
 
             spawnedEnemy.gameObject.SetActive(true);
+        }
+    }
+    // Note that async won't work with timescale things like pausing
+    // here's a possible async based replacement
+    // https://openupm.com/packages/com.cysharp.unitask/
+    private IEnumerator WaveSpawnRoutine(EnemyWave newWave)
+    {
+        int numSubWaves = newWave.GetSubWaveCount;
+        int currentSubWave = 0;
+        WaitForSeconds subWaveDelay;
+
+        while (currentSubWave < numSubWaves)
+        {
+            EnemyWave.SubWaveData currentsubWaveData = newWave.GetNextSubWave(currentSubWave);
+            SpawnWave(currentsubWaveData);
+            subWaveDelay = new WaitForSeconds(currentsubWaveData._triggerDelay);
+            currentSubWave++;
+            yield return subWaveDelay;
         }
     }
 
