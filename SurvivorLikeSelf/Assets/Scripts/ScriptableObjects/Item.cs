@@ -48,6 +48,8 @@ public class Item : ScriptableObject
     {
         if (_statModifiers == null) return true;
 
+        PlayerAttributesContainer playerAttributes = player._playerAttributes;
+
         List<AttributeStat> _playerStatsChanged = new List<AttributeStat>();
 
         for (int i = 0; i < _statModifiers.Count; i++)
@@ -55,12 +57,12 @@ public class Item : ScriptableObject
             switch (_statModifiers[i]._statTag)
             {
                 case StatTag.Speed:
-                    player._speed.AddModifier(_statModifiers[i]._modifier);
-                    _playerStatsChanged.Add(player._speed);
+                    playerAttributes._speed.AddModifier(_statModifiers[i]._modifier);
+                    _playerStatsChanged.Add(playerAttributes._speed);
                     break;
                 case StatTag.MaxHP:
-                    player._maxHP.AddModifier(_statModifiers[i]._modifier);
-                    _playerStatsChanged.Add(player._maxHP);
+                    playerAttributes._maxHP.AddModifier(_statModifiers[i]._modifier);
+                    _playerStatsChanged.Add(playerAttributes._maxHP);
                     break;
             }
         }

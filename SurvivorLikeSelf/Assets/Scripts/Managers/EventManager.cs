@@ -13,6 +13,7 @@ public class EventManager : MonoBehaviour
     public static ParamaterlessEvent OnEndWave;
     public static ParamaterlessEvent OnDeath;
     public static ParamaterlessEvent OnItemExitHover;
+    public static ParamaterlessEvent OnAttributeChange;
 
     public delegate void FloatEvent(float floatP);
     public static FloatEvent OnPlayerHealthInitialization;

@@ -13,14 +13,10 @@ public class Player : MonoBehaviour, IDamageable
     private WeaponPositions _weaponPositions = null;
     [SerializeField]
     private List<Weapon> _equippedWeapons = new List<Weapon>();
-    
+
     [Header("Stats")]
     [SerializeField]
-    public AttributeStat _maxHP = new AttributeStat(0);
-    private float _currentHealth;
-    [SerializeField]
-    public AttributeStat _speed = new AttributeStat(0);
-    
+    public PlayerAttributesContainer _playerAttributes = null;
 
     [Header("Settings")]
     [SerializeField]
@@ -28,6 +24,8 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField]
     [Tooltip("Flash duration should be lower than invuln timer")]
     private float _flashDuration = 0.1f;
+
+    private float _currentHealth = 10f;
 
     private Vector2 _currentMovementVector = Vector2.zero;
     private bool _isPlaying = false;
@@ -70,8 +68,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Initialize()
     {
-        _currentHealth = _maxHP.Value;
-        EventManager.OnPlayerHealthInitialization?.Invoke(_maxHP.Value);
+        _currentHealth = _playerAttributes._maxHP.Value;
+        EventManager.OnPlayerHealthInitialization?.Invoke(_currentHealth);
         transform.position = Vector2.zero;
         _isPlaying = true;
     }
@@ -80,7 +78,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (_isPlaying)
         {
-            transform.Translate(_currentMovementVector * _speed.Value * Time.deltaTime);
+            transform.Translate(_currentMovementVector * _playerAttributes._speed.Value * Time.deltaTime);
         }
     }
 
