@@ -6,4 +6,10 @@ public class PlayerAttributesContainer : ScriptableObject
 {
     public AttributeStat _maxHP;
     public AttributeStat _speed;
+
+    public void UpdateAllAttributes()
+    {
+        _maxHP.ReCalculateValue();
+        _speed.ReCalculateValue();
+    }
 }

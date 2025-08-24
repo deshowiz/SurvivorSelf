@@ -71,6 +71,7 @@ public class Player : MonoBehaviour, IDamageable
         _currentHealth = _playerAttributes._maxHP.Value;
         EventManager.OnPlayerHealthInitialization?.Invoke(_currentHealth);
         transform.position = Vector2.zero;
+        _playerAttributes.UpdateAllAttributes();
         _isPlaying = true;
     }
 
@@ -78,6 +79,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (_isPlaying)
         {
+            Debug.Log(_playerAttributes._speed.Value);
             transform.Translate(_currentMovementVector * _playerAttributes._speed.Value * Time.deltaTime);
         }
     }
