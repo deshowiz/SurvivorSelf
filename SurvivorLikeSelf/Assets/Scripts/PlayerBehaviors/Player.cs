@@ -68,10 +68,10 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Initialize()
     {
+        _playerAttributes.UpdateAllAttributes();
         _currentHealth = _playerAttributes._maxHP.Value;
         EventManager.OnPlayerHealthInitialization?.Invoke(_currentHealth);
         transform.position = Vector2.zero;
-        _playerAttributes.UpdateAllAttributes();
         _isPlaying = true;
     }
 
