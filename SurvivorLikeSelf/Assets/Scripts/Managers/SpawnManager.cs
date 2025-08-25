@@ -52,6 +52,8 @@ public class SpawnManager : MonoBehaviour
 
     private WaitForSeconds _shopDelayWait = new WaitForSeconds(2);
 
+    private List<Vector2[]> _subWavePositionData;
+
     private void Awake()
     {
         Instance = this;
@@ -138,22 +140,24 @@ public class SpawnManager : MonoBehaviour
             StopCoroutine(_spawnWaveRoutine);
             _spawnWaveRoutine = null;
         }
-        _spawnWaveRoutine = StartCoroutine(WaveSpawnRoutine(_currentWave));
+        int subWaveCount = _currentWave.GetSubWaveCount;
+        _subWavePositionData = _currentWave.GetFullWavePositions(_xAxisSpawnSize, _yAxisSpawnSize);
+        _spawnWaveRoutine = StartCoroutine(WaveSpawnRoutine(_currentWave, subWaveCount));
     }
     
     // Note that async won't work with timescale things like pausing
     // here's a possible async based replacement
     // https://openupm.com/packages/com.cysharp.unitask/
-    private IEnumerator WaveSpawnRoutine(EnemyWave newWave)
+    private IEnumerator WaveSpawnRoutine(EnemyWave newWave, int numSubWaves)
     {
-        int numSubWaves = newWave.GetSubWaveCount;
+        //numSubWaves = newWave.GetSubWaveCount;
         int currentSubWave = 0;
         WaitForSeconds subWaveDelay;
 
         while (currentSubWave < numSubWaves)
         {
             EnemyWave.SubWaveData currentsubWaveData = newWave.GetNextSubWave(currentSubWave);
-            SpawnWave(currentsubWaveData, currentsubWaveData.GetSubWavePositions(_xAxisSpawnSize, _yAxisSpawnSize));
+            SpawnWave(currentsubWaveData, _subWavePositionData[currentSubWave]);
             subWaveDelay = new WaitForSeconds(currentsubWaveData._triggerDelay);
             currentSubWave++;
             yield return subWaveDelay;

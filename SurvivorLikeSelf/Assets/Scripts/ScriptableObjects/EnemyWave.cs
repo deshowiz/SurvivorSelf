@@ -24,6 +24,17 @@ public class EnemyWave : ScriptableObject
         return enemyData[subWaveIndex];
     }
 
+    public List<Vector2[]> GetFullWavePositions(float xHalf, float yHalf)
+    {
+        List<Vector2[]> positions = new List<Vector2[]>();
+        for (int i = 0; i < enemyData.Length; i++)
+        {
+            positions.Add(enemyData[i].GetSubWavePositions(xHalf, yHalf));
+        }
+
+        return positions;
+    }
+
 
     [Serializable]
     public class SubWaveData
