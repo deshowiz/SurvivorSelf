@@ -37,6 +37,10 @@ public class GameManager : MonoBehaviour
 
     private void StartNewWave()
     {
+        if (_currentWaveIndex == 0)
+        {
+            EventManager.OnFullInitialization?.Invoke();
+        }
         SpawnManager.Instance.SetSpawnWave(_enemyWaves[_currentWaveIndex]);
         if (_waveTimerRoutine != null)
         {

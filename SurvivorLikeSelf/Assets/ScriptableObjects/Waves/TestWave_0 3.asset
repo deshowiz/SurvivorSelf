@@ -12,15 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed362ee63ba1234d9325948418c09a8, type: 3}
   m_Name: TestWave_0 3
   m_EditorClassIdentifier: 
-  _waveLengthSeconds: 2
-  _enemyData:
-  - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
-  - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
-  - {fileID: 6298506012518502051, guid: 30168d88e10258a4082d842a4cccacac, type: 3}
-  - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
-  - {fileID: 6298506012518502051, guid: 30168d88e10258a4082d842a4cccacac, type: 3}
-  - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
-  - {fileID: 6298506012518502051, guid: 30168d88e10258a4082d842a4cccacac, type: 3}
-  - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
-  - {fileID: 6298506012518502051, guid: 30168d88e10258a4082d842a4cccacac, type: 3}
-  - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+  _waveLengthSeconds: 30
+  enemyData:
+  - _triggerDelay: 2
+    _spawnType: 1
+    _boxHalfSizeXY: {x: 0.5, y: 0.5}
+    _enemyMakeup:
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+  - _triggerDelay: 6
+    _spawnType: 0
+    _boxHalfSizeXY: {x: 5, y: 5}
+    _enemyMakeup:
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+  - _triggerDelay: 10
+    _spawnType: 0
+    _boxHalfSizeXY: {x: 5, y: 5}
+    _enemyMakeup:
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
+    - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}

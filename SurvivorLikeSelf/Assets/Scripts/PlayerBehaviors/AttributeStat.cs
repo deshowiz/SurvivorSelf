@@ -9,13 +9,15 @@ using UnityEngine;
 [Serializable]
 public class AttributeStat
 {
-    public float _baseValue;
+    private float _baseValue;
 
     //private bool _isDirty = true;
     //private float _lastBaseValue;
     [SerializeField]
     private float _value;
-    public float Value {get { return _value; }}
+    public float Value { get { return _value; } }
+
+    private float _multiplier = 1f;
 
     public AttributeStat(float newBaseValue)
     {
@@ -61,7 +63,8 @@ public class AttributeStat
     public float CalculateFinalValue()
     {
         float finalValue = _baseValue;
-        float sumPercentAdd = 1f;
+        float additive = 0f;
+        float sumPercentAdd = 0f;
 
         for (int i = 0; i < _statmodifiers.Count; i++)
         {
@@ -70,7 +73,7 @@ public class AttributeStat
             // Can be done with a simple bool, but keeping enums for expansion later if needed, and to reiterate the lesson on enums
             if (currentMod.Type == StatModType.Flat)
             {
-                finalValue += currentMod.Value;
+                additive += currentMod.Value;
             }
             else // Can be done with a simple bool, but keeping enums for expansion later if needed, and to reiterate the lesson on enums
             {
@@ -78,7 +81,12 @@ public class AttributeStat
             }
         }
 
+        additive *= _multiplier;
+        sumPercentAdd = 1 + (sumPercentAdd * _multiplier);
+
+        finalValue += additive;
         finalValue *= sumPercentAdd;
+        
 
         return finalValue;
     }
@@ -86,5 +94,13 @@ public class AttributeStat
     public void ReCalculateValue()
     {
         _value = CalculateFinalValue();
+    }
+
+    public void FullReset(float resetValue, float newMultiplier)
+    {
+        _multiplier = newMultiplier;
+        _baseValue = resetValue;
+        _value = resetValue;
+        _statmodifiers.Clear();
     }
 }

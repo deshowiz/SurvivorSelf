@@ -42,6 +42,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void OnEnable()
     {
+        EventManager.OnFullInitialization += AttributeReset;
         EventManager.OnStartWave += ReInitialize;
         EventManager.OnEndWave += DisablePlayer;
         EventManager.OnItemEquipped += EquipItem;
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void OnDisable()
     {
+        EventManager.OnFullInitialization -= AttributeReset;
         EventManager.OnStartWave -= ReInitialize;
         EventManager.OnEndWave -= DisablePlayer;
         EventManager.OnItemEquipped -= EquipItem;
@@ -61,6 +63,11 @@ public class Player : MonoBehaviour, IDamageable
         _isPlaying = false;
     }
 
+    private void AttributeReset()
+    {
+        _playerAttributes.ResetAttributesToDefaultValues();
+    }
+
     private void ReInitialize()
     {
         Initialize();
@@ -68,7 +75,7 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Initialize()
     {
-        _playerAttributes.UpdateAllAttributes();
+        //_playerAttributes.UpdateAllAttributes();
         _currentHealth = _playerAttributes._maxHP.Value;
         EventManager.OnPlayerHealthInitialization?.Invoke(_currentHealth);
         transform.position = Vector2.zero;

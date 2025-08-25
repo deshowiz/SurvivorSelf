@@ -402,7 +402,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a8efde8b135648449597709c0e622fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _testEnemy: {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
   _player: {fileID: 329787707}
   _interactablesHolderTransform: {fileID: 1948257749}
   _enemiesHolderTransform: {fileID: 968994439}
@@ -711,10 +710,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyWaves:
   - {fileID: 11400000, guid: 3dd2571e1476a50488966cbf31ff8918, type: 2}
-  - {fileID: 11400000, guid: 6ae20041a615bb2408e4c6f7a37dde0d, type: 2}
-  - {fileID: 11400000, guid: 6b3f1c78eccdffe41a99da6d29d4bd3b, type: 2}
-  - {fileID: 11400000, guid: 81f10e766a2257a49a9c7ed13807f674, type: 2}
-  - {fileID: 11400000, guid: b0f63dabbe2ee9446b84bdaf4eb4b61a, type: 2}
+  - {fileID: 11400000, guid: c3454266c3bd9be4fb2bb5dd2f9b5deb, type: 2}
+  - {fileID: 11400000, guid: 1d3cbfded0042db4cb08175bf3d689c7, type: 2}
+  - {fileID: 11400000, guid: af8b29fca902c4043a8aacc3e4c18331, type: 2}
+  - {fileID: 11400000, guid: f9477469930408c409e8f956785cdb23, type: 2}
 --- !u!4 &1585698035
 Transform:
   m_ObjectHideFlags: 0

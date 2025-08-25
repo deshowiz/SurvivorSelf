@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: PlayerAttributes
   m_EditorClassIdentifier: 
   _maxHP:
-    _baseValue: 10
-    _value: 0
+    _value: 25
+  _defaultMaxHP: 10
+  _multiplierMaxHP: 2
   _speed:
-    _baseValue: 1
-    _value: 0
+    _value: 1
+  _defaultSpeed: 1
+  _multiplierSpeed: 1

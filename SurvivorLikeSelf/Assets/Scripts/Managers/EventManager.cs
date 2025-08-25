@@ -8,6 +8,7 @@ public class EventManager : MonoBehaviour
     private static EventManager eventManager;
 
     public delegate void ParamaterlessEvent();
+    public static ParamaterlessEvent OnFullInitialization;
     public static ParamaterlessEvent OnStartWave;
     public static ParamaterlessEvent OnWaveTimerZero;
     public static ParamaterlessEvent OnEndWave;

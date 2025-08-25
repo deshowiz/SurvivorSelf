@@ -70,7 +70,6 @@ public class EnemyWave : ScriptableObject
                     }
                     break;
                 case SpawnType.Box:
-                    Debug.Log("spawning in box");
                         float xCenter = UnityEngine.Random.Range(-xHalf + _boxHalfSizeXY.x, xHalf - _boxHalfSizeXY.x);
                     float yCenter = UnityEngine.Random.Range(-yHalf + _boxHalfSizeXY.y, yHalf - _boxHalfSizeXY.y);
                     for (int i = 0; i < generatedPositions.Length; i++)
@@ -78,7 +77,6 @@ public class EnemyWave : ScriptableObject
                         generatedPositions[i] =
                         new Vector2(xCenter + UnityEngine.Random.Range(-_boxHalfSizeXY.x, _boxHalfSizeXY.x),
                         yCenter + UnityEngine.Random.Range(-_boxHalfSizeXY.y, _boxHalfSizeXY.y));
-                        Debug.Log(generatedPositions[i]);
                     }
                     break;
             }

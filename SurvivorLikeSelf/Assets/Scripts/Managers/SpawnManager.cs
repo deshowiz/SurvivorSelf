@@ -150,7 +150,6 @@ public class SpawnManager : MonoBehaviour
     // https://openupm.com/packages/com.cysharp.unitask/
     private IEnumerator WaveSpawnRoutine(EnemyWave newWave, int numSubWaves)
     {
-        //numSubWaves = newWave.GetSubWaveCount;
         int currentSubWave = 0;
         WaitForSeconds subWaveDelay;
 
@@ -166,7 +165,7 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnWave(EnemyWave.SubWaveData newSubWave, Vector2[] positions)
     {
-        Enemy[] enemyMakeup = newSubWave.EnemyMakeup; // cache since it is a getter property
+        Enemy[] enemyMakeup = newSubWave.EnemyMakeup; // cache since it is a getter property?
         for (int i = 0; i < enemyMakeup.Length; i++)
         {
             Enemy spawnedEnemy = _enemyQueues[enemyMakeup[i]._enemyId].Dequeue();

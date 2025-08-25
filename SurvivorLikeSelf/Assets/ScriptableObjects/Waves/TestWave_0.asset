@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed362ee63ba1234d9325948418c09a8, type: 3}
   m_Name: TestWave_0
   m_EditorClassIdentifier: 
-  _waveLengthSeconds: 30
+  _waveLengthSeconds: 11
   enemyData:
   - _triggerDelay: 2
     _spawnType: 1
