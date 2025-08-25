@@ -223,7 +223,7 @@ public class SpawnManager : MonoBehaviour
     {
         Enemy[] clearableEnemies = _enemiesHolderTransform.GetComponentsInChildren<Enemy>();
 
-        if (clearableEnemies.Length == 0) return;
+        // if (clearableEnemies.Length == 0) return;
 
         for (int i = 0; i < clearableEnemies.Length; i++)
         {

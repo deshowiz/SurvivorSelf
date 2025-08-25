@@ -747,9 +747,7 @@ MonoBehaviour:
   _enemyWaves:
   - {fileID: 11400000, guid: 3dd2571e1476a50488966cbf31ff8918, type: 2}
   - {fileID: 11400000, guid: c3454266c3bd9be4fb2bb5dd2f9b5deb, type: 2}
-  - {fileID: 11400000, guid: 1d3cbfded0042db4cb08175bf3d689c7, type: 2}
-  - {fileID: 11400000, guid: af8b29fca902c4043a8aacc3e4c18331, type: 2}
-  - {fileID: 11400000, guid: f9477469930408c409e8f956785cdb23, type: 2}
+  - {fileID: 11400000, guid: 3dd2571e1476a50488966cbf31ff8918, type: 2}
 --- !u!4 &1585698035
 Transform:
   m_ObjectHideFlags: 0
