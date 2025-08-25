@@ -15,18 +15,24 @@ MonoBehaviour:
   _waveLengthSeconds: 30
   enemyData:
   - _triggerDelay: 2
+    _spawnType: 1
+    _boxHalfSizeXY: {x: 0.5, y: 0.5}
     _enemyMakeup:
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
   - _triggerDelay: 6
+    _spawnType: 0
+    _boxHalfSizeXY: {x: 5, y: 5}
     _enemyMakeup:
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
   - _triggerDelay: 10
+    _spawnType: 0
+    _boxHalfSizeXY: {x: 5, y: 5}
     _enemyMakeup:
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}
     - {fileID: 6298506012518502051, guid: e6fd34bc95c29eb43b23bd7a5fa78222, type: 3}

@@ -140,21 +140,7 @@ public class SpawnManager : MonoBehaviour
         }
         _spawnWaveRoutine = StartCoroutine(WaveSpawnRoutine(_currentWave));
     }
-
-    // Change this so that it's a routine that draws from the _enemyQueue instead
-    public void SpawnWave(EnemyWave.SubWaveData newSubWave)
-    {
-        
-        for (int i = 0; i < newSubWave._enemyMakeup.Length; i++)
-        {
-            Enemy spawnedEnemy = _enemyQueues[newSubWave._enemyMakeup[i]._enemyId].Dequeue();
-            spawnedEnemy.Initialize(_player);
-            spawnedEnemy.transform.position = new Vector3(UnityEngine.Random.Range(-_xAxisSpawnSize, _xAxisSpawnSize),
-                UnityEngine.Random.Range(-_yAxisSpawnSize, _yAxisSpawnSize), 0f);
-
-            spawnedEnemy.gameObject.SetActive(true);
-        }
-    }
+    
     // Note that async won't work with timescale things like pausing
     // here's a possible async based replacement
     // https://openupm.com/packages/com.cysharp.unitask/
@@ -167,10 +153,23 @@ public class SpawnManager : MonoBehaviour
         while (currentSubWave < numSubWaves)
         {
             EnemyWave.SubWaveData currentsubWaveData = newWave.GetNextSubWave(currentSubWave);
-            SpawnWave(currentsubWaveData);
+            SpawnWave(currentsubWaveData, currentsubWaveData.GetSubWavePositions(_xAxisSpawnSize, _yAxisSpawnSize));
             subWaveDelay = new WaitForSeconds(currentsubWaveData._triggerDelay);
             currentSubWave++;
             yield return subWaveDelay;
+        }
+    }
+
+    public void SpawnWave(EnemyWave.SubWaveData newSubWave, Vector2[] positions)
+    {
+        Enemy[] enemyMakeup = newSubWave.EnemyMakeup; // cache since it is a getter property
+        for (int i = 0; i < enemyMakeup.Length; i++)
+        {
+            Enemy spawnedEnemy = _enemyQueues[enemyMakeup[i]._enemyId].Dequeue();
+            spawnedEnemy.Initialize(_player);
+            spawnedEnemy.transform.position = positions[i];
+
+            spawnedEnemy.gameObject.SetActive(true);
         }
     }
 

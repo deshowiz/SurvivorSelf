@@ -79,7 +79,6 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (_isPlaying)
         {
-            Debug.Log(_playerAttributes._speed.Value);
             transform.Translate(_currentMovementVector * _playerAttributes._speed.Value * Time.deltaTime);
         }
     }
