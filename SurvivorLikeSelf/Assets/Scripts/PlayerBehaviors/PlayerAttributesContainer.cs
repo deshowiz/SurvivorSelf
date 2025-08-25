@@ -9,6 +9,7 @@ public class PlayerAttributesContainer : ScriptableObject
     private int _defaultMaxHP = 10;
     [SerializeField]
     private int _multiplierMaxHP = 1;
+    
     public AttributeStat _speed;
     [SerializeField]
     private float _defaultSpeed = 1;

@@ -15,6 +15,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private Transform _enemiesHolderTransform = null;
     [SerializeField]
+    private Transform _visualsHolderTransform = null;
+    [SerializeField]
     private EnemyWave _currentWave = null;
 
     [Header("Settings")]
@@ -22,6 +24,8 @@ public class SpawnManager : MonoBehaviour
     private List<InteractableSpawnData> _interactablesSpawnData = new List<InteractableSpawnData>();
     [SerializeField]
     private List<EnemySpawnData> _enemiesSpawnData = new List<EnemySpawnData>();
+    [SerializeField]
+    private VisualSpawnData _visualSpawnData;
 
     [Serializable]
     private struct InteractableSpawnData
@@ -37,8 +41,16 @@ public class SpawnManager : MonoBehaviour
         public Enemy prefabToSpawn;
     }
 
+    [Serializable]
+    private struct VisualSpawnData
+    {
+        public int numToSpawn;
+        public GameObject prefabToSpawn;
+    }
+
     private Queue<Interactable> _interactableQueue = new Queue<Interactable>();
     private List<Queue<Enemy>> _enemyQueues = new List<Queue<Enemy>>();
+    private Queue<GameObject> _visualQueue = new Queue<GameObject>();
 
     private float _xAxisSpawnSize = 2.5f;
     private float _yAxisSpawnSize = 1.40625f;
@@ -51,6 +63,7 @@ public class SpawnManager : MonoBehaviour
     private Coroutine _spawnWaveRoutine = null;
 
     private WaitForSeconds _shopDelayWait = new WaitForSeconds(2);
+    private WaitForSeconds _spawnDelayWait = new WaitForSeconds(2);
 
     private List<Vector2[]> _subWavePositionData;
 
@@ -109,6 +122,13 @@ public class SpawnManager : MonoBehaviour
                 _enemyQueues[i].Enqueue(currentEnemy);
             }
         }
+        _visualQueue.Clear();
+        GameObject visualToSpawn = _visualSpawnData.prefabToSpawn;
+        for (int i = 0; i < _visualSpawnData.numToSpawn; i++)
+        {
+            GameObject currentVisual = Instantiate(visualToSpawn, _visualsHolderTransform);
+            _visualQueue.Enqueue(currentVisual);
+        }
     }
 
     private void SpawnInteractable(Enemy deadEnemy)
@@ -130,6 +150,12 @@ public class SpawnManager : MonoBehaviour
     {
         enemyToPool.gameObject.SetActive(false);
         _enemyQueues[enemyToPool._enemyId].Enqueue(enemyToPool);
+    }
+
+    private void PoolVisual(GameObject visual)
+    {
+        visual.SetActive(false);
+        _visualQueue.Enqueue(visual);
     }
 
     public void SetSpawnWave(EnemyWave newWave)
@@ -166,6 +192,20 @@ public class SpawnManager : MonoBehaviour
     public void SpawnWave(EnemyWave.SubWaveData newSubWave, Vector2[] positions)
     {
         Enemy[] enemyMakeup = newSubWave.EnemyMakeup; // cache since it is a getter property?
+        GameObject[] spawnedVisuals = new GameObject[enemyMakeup.Length];
+        for (int i = 0; i < enemyMakeup.Length; i++)
+        {
+            GameObject spawnedVisual = _visualQueue.Dequeue();
+            spawnedVisual.transform.position = positions[i];
+            spawnedVisuals[i] = spawnedVisual;
+            spawnedVisual.SetActive(true);
+        }
+        StartCoroutine(EnemyDelayedSpawns(enemyMakeup, spawnedVisuals, positions));
+    }
+
+    private IEnumerator EnemyDelayedSpawns(Enemy[] enemyMakeup, GameObject[] visuals, Vector2[] positions)
+    {
+        yield return _spawnDelayWait;
         for (int i = 0; i < enemyMakeup.Length; i++)
         {
             Enemy spawnedEnemy = _enemyQueues[enemyMakeup[i]._enemyId].Dequeue();
@@ -173,7 +213,10 @@ public class SpawnManager : MonoBehaviour
             spawnedEnemy.transform.position = positions[i];
 
             spawnedEnemy.gameObject.SetActive(true);
+            visuals[i].gameObject.SetActive(false);
+            _visualQueue.Enqueue(visuals[i]);
         }
+
     }
 
     private void ClearWave()
