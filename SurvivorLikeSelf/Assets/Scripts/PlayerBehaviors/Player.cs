@@ -42,7 +42,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void OnEnable()
     {
-        EventManager.OnFullInitialization += AttributeReset;
+        EventManager.OnFullInitialization += FullInitialization;
         EventManager.OnStartWave += ReInitialize;
         EventManager.OnEndWave += DisablePlayer;
         EventManager.OnItemEquipped += EquipItem;
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void OnDisable()
     {
-        EventManager.OnFullInitialization -= AttributeReset;
+        EventManager.OnFullInitialization -= FullInitialization;
         EventManager.OnStartWave -= ReInitialize;
         EventManager.OnEndWave -= DisablePlayer;
         EventManager.OnItemEquipped -= EquipItem;
@@ -61,6 +61,12 @@ public class Player : MonoBehaviour, IDamageable
     private void DisablePlayer()
     {
         _isPlaying = false;
+    }
+
+    private void FullInitialization()
+    {
+        AttributeReset();
+        Initialize();
     }
 
     private void AttributeReset()

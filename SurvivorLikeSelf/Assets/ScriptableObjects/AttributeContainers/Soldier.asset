@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfb1ab41574978841907df025f8e673d, type: 3}
-  m_Name: PlayerAttributes
+  m_Name: Soldier
   m_EditorClassIdentifier: 
+  _characterSprite: {fileID: 21300000, guid: 42820b3c7d68c474eb8b3084c503dbc1, type: 3}
+  _characterDescription: 
   _maxHP:
     _value: 10
   _defaultMaxHP: 10

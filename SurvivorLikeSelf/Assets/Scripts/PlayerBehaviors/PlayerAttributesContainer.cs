@@ -4,6 +4,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerAttributes", menuName = "Scriptable Objects/Player Attributes")]
 public class PlayerAttributesContainer : ScriptableObject
 {
+    [Header("Character Details")]
+    [SerializeField]
+    private Sprite _characterSprite = null;
+    public Sprite CharacterSprite { get { return _characterSprite; } }
+    [SerializeField]
+    private string _characterDescription = "";
+    public string CharacterDescription { get { return _characterDescription;}}
+
+    [Header("Character Stats")]
     public AttributeStat _maxHP;
     [SerializeField]
     private int _defaultMaxHP = 10;

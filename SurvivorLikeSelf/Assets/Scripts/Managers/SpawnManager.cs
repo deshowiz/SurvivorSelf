@@ -129,6 +129,8 @@ public class SpawnManager : MonoBehaviour
             GameObject currentVisual = Instantiate(visualToSpawn, _visualsHolderTransform);
             _visualQueue.Enqueue(currentVisual);
         }
+
+        EventManager.OnFullInitialization?.Invoke();
     }
 
     private void SpawnInteractable(Enemy deadEnemy)
