@@ -35,14 +35,14 @@ public class Player : MonoBehaviour, IDamageable
 
     // Point for later, use structs as stat modifiers for scaling enemies later per wave
 
-    void Start()
-    {
-        Initialize();
-    }
+    // void Start()
+    // {
+    //     Initialize();
+    // }
 
     void OnEnable()
     {
-        EventManager.OnFullInitialization += FullInitialization;
+        EventManager.OnSetPlayerCharacter += SetPlayerCharacter;
         EventManager.OnStartWave += ReInitialize;
         EventManager.OnEndWave += DisablePlayer;
         EventManager.OnItemEquipped += EquipItem;
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour, IDamageable
 
     void OnDisable()
     {
-        EventManager.OnFullInitialization -= FullInitialization;
+        //EventManager.OnFullInitialization -= FullInitialization;
         EventManager.OnStartWave -= ReInitialize;
         EventManager.OnEndWave -= DisablePlayer;
         EventManager.OnItemEquipped -= EquipItem;
@@ -63,8 +63,9 @@ public class Player : MonoBehaviour, IDamageable
         _isPlaying = false;
     }
 
-    private void FullInitialization()
+    public void SetPlayerCharacter(PlayerAttributesContainer newCharacter)
     {
+        this._playerAttributes = newCharacter;
         AttributeReset();
         Initialize();
     }
@@ -180,6 +181,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             changedStats[i].ReCalculateValue();
         }
+        EventManager.OnAttributeChange?.Invoke();
     }
 
     public void Die()

@@ -8,9 +8,9 @@ public class PlayerHUD : MonoBehaviour
 {
     [Header("Canvas References")]
     [SerializeField]
-    private GameObject _gameplayElements = null;
+    private CanvasGroup _gameplayElements = null;
     [SerializeField]
-    private GameObject _itemSelectionElements = null;
+    private CanvasGroup _itemSelectionElements = null;
     [Header("Gameplay References")]
     [SerializeField]
     private Image _filledBarImage = null;
@@ -27,6 +27,8 @@ public class PlayerHUD : MonoBehaviour
     private List<ItemChoice> _itemChoices = new List<ItemChoice>();
     [SerializeField]
     private int numChoices = 3;
+    [Header("Stat References")]
+    private StatDisplayPanel _statDisplayPanel = null;
     private int _maxHealth = 0;
     private int _currentGold = 0;
 
@@ -55,8 +57,12 @@ public class PlayerHUD : MonoBehaviour
     public void SwitchToGameplay()
     {
         _timerText.color = Color.white;
-        _itemSelectionElements.SetActive(false);
-        _gameplayElements.SetActive(true);
+        _itemSelectionElements.alpha = 0;
+        _itemSelectionElements.blocksRaycasts = false;
+        _itemSelectionElements.interactable = false;
+        _gameplayElements.alpha = 1;
+        _gameplayElements.blocksRaycasts = true;
+        _gameplayElements.interactable = true;
     }
 
     private void SwitchToItems()
@@ -68,8 +74,12 @@ public class PlayerHUD : MonoBehaviour
             _itemChoices[i].SetChoice(newItems[i], _currentGold);
         }
 
-        _gameplayElements.SetActive(false);
-        _itemSelectionElements.SetActive(true);
+        _gameplayElements.alpha = 0;
+        _gameplayElements.blocksRaycasts = false;
+        _gameplayElements.interactable = false;
+        _itemSelectionElements.alpha = 1;
+        _itemSelectionElements.blocksRaycasts = true;
+        _itemSelectionElements.interactable = true;
     }
 
     private void IntializeHealth(float newMaxHP)

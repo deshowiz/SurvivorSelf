@@ -40,8 +40,9 @@ public class EventManager : MonoBehaviour
     public delegate void PickedUpInteractable(Interactable pickup);
     public static PickedUpInteractable OnPickedUpInteractable;
 
-    public delegate void SelectedAttributeEvent(PlayerAttributesContainer selectedPlayerCharacter);
-    public static SelectedAttributeEvent OnSelectedPlayer;
+    public delegate void CharacterDataEvent(PlayerAttributesContainer selectedPlayerCharacter);
+    public static CharacterDataEvent OnSelectedPlayer;
+    public static CharacterDataEvent OnSetPlayerCharacter;
 
 
     public static EventManager instance

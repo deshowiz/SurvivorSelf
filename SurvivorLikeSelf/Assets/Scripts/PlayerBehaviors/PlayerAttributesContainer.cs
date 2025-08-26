@@ -11,6 +11,9 @@ public class PlayerAttributesContainer : ScriptableObject
     [SerializeField]
     private string _characterDescription = "";
     public string CharacterDescription { get { return _characterDescription;}}
+    [SerializeField]
+    private Weapon[] _startingWeapons = null;
+    public Weapon[] StartingWeapons { get { return _startingWeapons; }}
 
     [Header("Character Stats")]
     public AttributeStat _maxHP;

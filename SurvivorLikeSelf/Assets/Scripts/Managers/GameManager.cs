@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnStartWave += StartNewWave;
         EventManager.OnDeath += Restart;
         EventManager.OnSelectedPlayer += LoadGameplayScene;
+        EventManager.OnFullInitialization += SetPlayerCharacter;
         EventManager.OnFullInitialization += StartNewWave;
     }
 
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnStartWave -= StartNewWave;
         EventManager.OnDeath -= Restart;
         EventManager.OnSelectedPlayer -= LoadGameplayScene;
+        EventManager.OnFullInitialization -= SetPlayerCharacter;
         EventManager.OnFullInitialization -= StartNewWave;
     }
 
@@ -44,6 +46,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //StartNewWave();
+    }
+
+    private void SetPlayerCharacter()
+    {
+        EventManager.OnSetPlayerCharacter?.Invoke(_chosenCharacter);
     }
 
     private void StartNewWave()
