@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8168094445758622148}
   - component: {fileID: 4251211809848466885}
   - component: {fileID: 6358786467774756560}
-  - component: {fileID: 1844379039826616970}
   - component: {fileID: 7512596962132587641}
   m_Layer: 5
   m_Name: StatDisplayPanel
@@ -79,18 +78,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &1844379039826616970
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 630854684747309462}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &7512596962132587641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +90,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09a2a2bd6ed64249a8e08cfedf832f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _alphaCheckGroup: {fileID: 1844379039826616970}
   _playerAttributesContainer: {fileID: 11400000, guid: 6f6d30e40a7e75c43a30b081afd31459, type: 2}
   _maxHPText: {fileID: 6350182216232749959}
   _speedText: {fileID: 827347900847200021}
@@ -1383,7 +1369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2383804507715436816, guid: c8fb67d787fa3e74cb6c45bebdb09916, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.8308634
       objectReference: {fileID: 0}
     - target: {fileID: 5733000241763391019, guid: c8fb67d787fa3e74cb6c45bebdb09916, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1395,7 +1381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8677778958935857477, guid: c8fb67d787fa3e74cb6c45bebdb09916, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000033039896
+      value: 0.04951921
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
