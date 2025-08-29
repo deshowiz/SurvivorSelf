@@ -8,6 +8,8 @@ public class EventManager : MonoBehaviour
     private static EventManager eventManager;
 
     public delegate void ParamaterlessEvent();
+    public static ParamaterlessEvent OnPausedGame;
+    public static ParamaterlessEvent OnResumedGame;
     public static ParamaterlessEvent OnFullInitialization;
     public static ParamaterlessEvent OnStartWave;
     public static ParamaterlessEvent OnWaveTimerZero;
