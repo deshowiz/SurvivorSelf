@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 4352862207098010170}
   - component: {fileID: 4152978828273077686}
   - component: {fileID: 3388190292133352015}
+  - component: {fileID: 5366310751033537310}
   m_Layer: 5
   m_Name: TooltipPanel
   m_TagString: Untagged
@@ -367,6 +368,19 @@ MonoBehaviour:
   _itemImage: {fileID: 1906874423882222338}
   _nameText: {fileID: 8771032072532318390}
   _descriptionText: {fileID: 4209977449316392907}
+  _tooltipVisibleMask: {fileID: 5366310751033537310}
+--- !u!225 &5366310751033537310
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4874242812109018652}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6138522186876617873
 GameObject:
   m_ObjectHideFlags: 0

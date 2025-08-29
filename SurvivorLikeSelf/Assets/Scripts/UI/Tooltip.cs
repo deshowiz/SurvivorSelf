@@ -14,6 +14,8 @@ public class Tooltip : MonoBehaviour
     private TextMeshProUGUI _nameText = null;
     [SerializeField]
     private TextMeshProUGUI _descriptionText = null;
+    [SerializeField]
+    private CanvasGroup _tooltipVisibleMask = null;
 
     private void Start()
     {
@@ -56,13 +58,31 @@ public class Tooltip : MonoBehaviour
             return;
         }
         RectTransform targetRect = newItemSlot.GetRectTransform;
-
+        // Don't feel like doing the conversion here so setting it again after getting transform screen position
         _panelImage.rectTransform.anchoredPosition = (targetRect.position * resMultiplier)
          + new Vector2(-targetRect.rect.width * 0.5f, targetRect.rect.height * 0.5f);
+
+        Debug.Log(_panelImage.transform.position);
+        Vector2 convertedPosition = _panelImage.transform.position;
+        Vector2 finalOffset = Vector2.zero;
+        if (convertedPosition.x > Camera.main.pixelWidth - _panelImage.rectTransform.rect.width)
+        {
+            finalOffset.x = -_panelImage.rectTransform.rect.width;
+        }
+
+        if (convertedPosition.y > Camera.main.pixelHeight - _panelImage.rectTransform.rect.height)
+        {
+            finalOffset.y = -_panelImage.rectTransform.rect.height;
+        }
+
+        _panelImage.rectTransform.anchoredPosition += finalOffset;
+
+        _tooltipVisibleMask.alpha = 1;
     }
 
     private void DisableTooltip()
     {
         _panelImage.rectTransform.anchoredPosition = Vector2.positiveInfinity;
+        _tooltipVisibleMask.alpha = 0;
     }
 }
