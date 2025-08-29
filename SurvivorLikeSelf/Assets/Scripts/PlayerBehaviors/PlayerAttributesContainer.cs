@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerAttributes", menuName = "Scriptable Objects/Player Attributes")]
@@ -10,10 +11,10 @@ public class PlayerAttributesContainer : ScriptableObject
     public Sprite CharacterSprite { get { return _characterSprite; } }
     [SerializeField]
     private string _characterDescription = "";
-    public string CharacterDescription { get { return _characterDescription;}}
+    public string CharacterDescription { get { return _characterDescription; } }
     [SerializeField]
-    private Weapon[] _startingWeapons = null;
-    public Weapon[] StartingWeapons { get { return _startingWeapons; }}
+    private WeaponItem[] _startingWeapons = null;
+    public WeaponItem[] StartingWeapons { get { return _startingWeapons; } }
 
     [Header("Character Stats")]
     public AttributeStat _maxHP;
@@ -21,7 +22,7 @@ public class PlayerAttributesContainer : ScriptableObject
     private int _defaultMaxHP = 10;
     [SerializeField]
     private float _multiplierMaxHP = 1;
-    
+
     public AttributeStat _speed;
     [SerializeField]
     private float _defaultSpeed = 1;
@@ -38,5 +39,14 @@ public class PlayerAttributesContainer : ScriptableObject
     {
         _maxHP.ReCalculateValue();
         _speed.ReCalculateValue();
+    }
+
+    public void UpdateAllChangedValues(List<AttributeStat> changedAttributes)
+    {
+        for (int i = 0; i < changedAttributes.Count; i++)
+        {
+            changedAttributes[i].ReCalculateValue();
+        }
+        EventManager.OnAttributeChange?.Invoke();
     }
 }

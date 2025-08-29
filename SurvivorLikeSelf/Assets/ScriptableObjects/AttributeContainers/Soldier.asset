@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterSprite: {fileID: 21300000, guid: 42820b3c7d68c474eb8b3084c503dbc1, type: 3}
   _characterDescription: 
+  _startingWeapons:
+  - {fileID: 11400000, guid: 6062b04d4fbd5d64db3cf450156e0260, type: 2}
   _maxHP:
     _value: 10
   _defaultMaxHP: 10
   _multiplierMaxHP: 2
   _speed:
-    _value: 1
+    _value: 2
   _defaultSpeed: 2
   _multiplierSpeed: 1

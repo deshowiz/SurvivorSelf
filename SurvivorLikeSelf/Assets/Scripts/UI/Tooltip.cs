@@ -61,8 +61,7 @@ public class Tooltip : MonoBehaviour
         // Don't feel like doing the conversion here so setting it again after getting transform screen position
         _panelImage.rectTransform.anchoredPosition = (targetRect.position * resMultiplier)
          + new Vector2(-targetRect.rect.width * 0.5f, targetRect.rect.height * 0.5f);
-
-        Debug.Log(_panelImage.transform.position);
+         
         Vector2 convertedPosition = _panelImage.transform.position;
         Vector2 finalOffset = Vector2.zero;
         if (convertedPosition.x > Camera.main.pixelWidth - _panelImage.rectTransform.rect.width)

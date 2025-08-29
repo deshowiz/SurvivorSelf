@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -67,6 +68,16 @@ public class Player : MonoBehaviour, IDamageable
     {
         this._playerAttributes = newCharacter;
         AttributeReset();
+        WeaponItem[] startingWeapons = _playerAttributes.StartingWeapons;
+
+        if (startingWeapons == null) return;
+        int lastIndex = startingWeapons.Length - 1;
+        for (int i = 0; i < startingWeapons.Length; i++)
+        {
+            bool isLastWeapon = i == lastIndex ? true : false;
+            WeaponSetOnCharacter(startingWeapons[i], isLastWeapon);
+        }
+        
         Initialize();
     }
 
@@ -157,12 +168,12 @@ public class Player : MonoBehaviour, IDamageable
 
     private void EquipItem(Item newItem)
     {
-        newItem.Equip(this);
+        newItem.Equip(_playerAttributes);
     }
 
     private void WeaponEquipItem(WeaponItem newWeapon)
     {
-        if (newWeapon.Equip(this))
+        if (newWeapon.Equip(_playerAttributes))
         {
             Weapon weaponObject = Instantiate(newWeapon.WeaponPrefab,
              transform.position,
@@ -175,14 +186,32 @@ public class Player : MonoBehaviour, IDamageable
         _weaponPositions.SetNewPositions(_equippedWeapons);
     }
 
-    public void ReCalcAllChangedStats(List<AttributeStat> changedStats)
+    private void WeaponSetOnCharacter(WeaponItem newWeapon, bool isLastWeapon)
     {
-        for (int i = 0; i < changedStats.Count; i++)
+        if (newWeapon.Equip(_playerAttributes, isLastWeapon))
         {
-            changedStats[i].ReCalculateValue();
+            Weapon weaponObject = Instantiate(newWeapon.WeaponPrefab,
+             transform.position,
+             Quaternion.identity,
+              transform);
+            _equippedWeapons.Add(weaponObject);
         }
-        EventManager.OnAttributeChange?.Invoke();
+
+        // Recalculate Weapon positions
+        if (isLastWeapon)
+        {
+            _weaponPositions.SetNewPositions(_equippedWeapons);
+        }
     }
+
+    // public void ReCalcAllChangedStats(List<AttributeStat> changedStats)
+    // {
+    //     for (int i = 0; i < changedStats.Count; i++)
+    //     {
+    //         changedStats[i].ReCalculateValue();
+    //     }
+    //     EventManager.OnAttributeChange?.Invoke();
+    // }
 
     public void Die()
     {

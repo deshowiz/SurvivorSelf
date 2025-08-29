@@ -40,15 +40,11 @@ public class Item : ScriptableObject
 
     private enum StatTag { MaxHP, Speed }
 
-    private delegate void EquipStatRefresh();
-
-    private EquipStatRefresh _OnEquippedItem;
-
-    public virtual bool Equip(Player player)
+    public virtual bool Equip(PlayerAttributesContainer playerAttributes, bool updateStats = true)
     {
         if (_statModifiers == null) return true;
 
-        PlayerAttributesContainer playerAttributes = player._playerAttributes;
+        //PlayerAttributesContainer playerAttributes = player._playerAttributes;
 
         List<AttributeStat> _playerStatsChanged = new List<AttributeStat>();
 
@@ -66,8 +62,10 @@ public class Item : ScriptableObject
                     break;
             }
         }
-
-        player.ReCalcAllChangedStats(_playerStatsChanged);
+        if (updateStats)
+        {
+            playerAttributes.UpdateAllChangedValues(_playerStatsChanged);
+        }
 
         return true;
     }
