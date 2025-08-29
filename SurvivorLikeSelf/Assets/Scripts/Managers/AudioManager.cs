@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
@@ -23,9 +24,10 @@ public class AudioManager : MonoBehaviour
 
     private float _newMusicEndTime = 0f;
 
-    private float _currentAudioSystemTime = 0f;
-
     private UniTaskVoid _uniSoundVoid = new UniTaskVoid();
+    private CancellationTokenSource _cancelMusicTrack = new CancellationTokenSource();
+
+    int _currentSongIndex = 0;
 
     void Awake()
     {
@@ -58,15 +60,6 @@ public class AudioManager : MonoBehaviour
         AudioListener.pause = false;
     }
 
-    private void Update()
-    {
-        _currentAudioSystemTime = (float)AudioSettings.dspTime;
-        if (_currentAudioSystemTime > _newMusicEndTime)
-        {
-            PlayMusic();
-        }
-    }
-
     private void InitializeSources()
     {
         _musicSource.ignoreListenerPause = true;
@@ -77,23 +70,42 @@ public class AudioManager : MonoBehaviour
             //newSource.ignoreListenerPause = false;
             _sourceStandbyQueue.Enqueue(newSource);
         }
+        WaitForNextSong(_cancelMusicTrack).Forget();
     }
 
-    private void PlayMusic(AudioClip song = null)
+    private async UniTaskVoid WaitForNextSong(CancellationTokenSource cancellationToken, AudioClip newSong = null)
     {
-        if (song)
+        while (true)
         {
-            _musicSource.clip = song;
-            _newMusicEndTime = _currentAudioSystemTime + song.length;
+            PlayMusic(newSong);
+            await UniTask.Delay((int)(_musicClips[_currentSongIndex].length * 1000f), ignoreTimeScale: false);
+        }
+    }
+
+    private void PlayMusic(AudioClip newSong)
+    {
+        if (newSong == null)
+        {
+            _currentSongIndex++;
+
+            if (_currentSongIndex >= _musicClips.Length) _currentSongIndex = 0;
+            _musicSource.clip = _musicClips[_currentSongIndex];
+            _musicSource.Play();
         }
         else
         {
-            _musicSource.clip = _musicClips[0];
-            _newMusicEndTime = _currentAudioSystemTime + _musicClips[0].length;
+            _musicSource.clip = newSong;
+            _musicSource.Play();
         }
-
-        _musicSource.Play();
     }
+
+    private void PlayNewSong(AudioClip newSong)
+    {
+        _cancelMusicTrack.Cancel();
+
+        WaitForNextSong(_cancelMusicTrack, newSong).Forget();
+    }
+    
 
     // Try working with UniTask later so that the delay works with timescale
     public UniTaskVoid PlaySound(AudioClip sound)
