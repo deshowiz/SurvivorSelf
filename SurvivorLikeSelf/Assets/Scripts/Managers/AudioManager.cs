@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,8 +23,6 @@ public class AudioManager : MonoBehaviour
     private int _generalSourcePoolSize = 50;
     private Queue<AudioSource> _sourceStandbyQueue = new Queue<AudioSource>();
 
-    private float _newMusicEndTime = 0f;
-
     private UniTaskVoid _uniSoundVoid = new UniTaskVoid();
     private CancellationTokenSource _cancelMusicTrack = new CancellationTokenSource();
 
@@ -36,6 +35,11 @@ public class AudioManager : MonoBehaviour
             Instance = this;
         }
         InitializeSources();
+    }
+
+    private void Start()
+    {
+        WaitForNextSong(_cancelMusicTrack).Forget();
     }
 
     private void OnEnable()
@@ -67,23 +71,24 @@ public class AudioManager : MonoBehaviour
         for (int i = 0; i < _generalSourcePoolSize; i++)
         {
             AudioSource newSource = _generalSourcesHolder.AddComponent<AudioSource>();
-            //newSource.ignoreListenerPause = false;
             _sourceStandbyQueue.Enqueue(newSource);
         }
-        WaitForNextSong(_cancelMusicTrack).Forget();
     }
 
     private async UniTaskVoid WaitForNextSong(CancellationTokenSource cancellationToken, AudioClip newSong = null)
     {
         while (true)
         {
+            Debug.Log(_musicClips[_currentSongIndex].length * 1000f);
             PlayMusic(newSong);
-            await UniTask.Delay((int)(_musicClips[_currentSongIndex].length * 1000f), ignoreTimeScale: false);
+            Debug.Log(_musicClips[_currentSongIndex].length * 1000f);
+            await UniTask.Delay(TimeSpan.FromSeconds(_musicClips[_currentSongIndex].length), ignoreTimeScale: true);
         }
     }
 
     private void PlayMusic(AudioClip newSong)
     {
+        Debug.Log("playing new song");
         if (newSong == null)
         {
             _currentSongIndex++;
