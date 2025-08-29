@@ -28,6 +28,8 @@ public class GameStateInput : MonoBehaviour
     {
         if (_pauseAction.WasPressedThisFrame())
         {
+            if (!GameManager.IsInGameplayScene) return;
+
             _isPaused = !_isPaused;
             if (_isPaused)
             {

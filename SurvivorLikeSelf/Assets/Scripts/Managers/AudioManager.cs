@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -34,6 +34,28 @@ public class AudioManager : MonoBehaviour
         InitializeSources();
     }
 
+    private void OnEnable()
+    {
+        EventManager.OnPausedGame += PauseListener;
+        EventManager.OnResumedGame += ResumeListener;
+    }
+    
+    private void OnDisable()
+    {
+        EventManager.OnPausedGame -= PauseListener;
+        EventManager.OnResumedGame -= ResumeListener;
+    }
+
+    private void PauseListener()
+    {
+        AudioListener.pause = true;
+    }
+
+    private void ResumeListener()
+    {
+        AudioListener.pause = false;
+    }
+
     private void Update()
     {
         _currentAudioSystemTime = (float)AudioSettings.dspTime;
@@ -45,10 +67,12 @@ public class AudioManager : MonoBehaviour
 
     private void InitializeSources()
     {
+        _musicSource.ignoreListenerPause = true;
         // Initialize General Audio Source Queues
         for (int i = 0; i < _generalSourcePoolSize; i++)
         {
             AudioSource newSource = _generalSourcesHolder.AddComponent<AudioSource>();
+            //newSource.ignoreListenerPause = false;
             _sourceStandbyQueue.Enqueue(newSource);
         }
     }
@@ -68,16 +92,18 @@ public class AudioManager : MonoBehaviour
 
         _musicSource.Play();
     }
-    
+
     // Try working with UniTask later so that the delay works with timescale
-    public async void PlaySound(AudioClip sound)
+    public UniTaskVoid PlaySound(AudioClip sound)
     {
         AudioSource newSource = _sourceStandbyQueue.Dequeue();
         newSource.clip = sound;
         newSource.Play();
 
-        await Task.Delay((int)(sound.length * 1000f));
+        UniTask.Delay((int)(sound.length * 1000f), ignoreTimeScale: false);
 
         _sourceStandbyQueue.Enqueue(newSource);
+
+        return new UniTaskVoid();
     }
 }

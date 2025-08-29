@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     private PlayerAttributesContainer _chosenCharacter = null;
 
+    public static bool IsInGameplayScene = false;
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -93,6 +95,13 @@ public class GameManager : MonoBehaviour
     private void LoadGameplayScene(PlayerAttributesContainer chosenCharacter)
     {
         this._chosenCharacter = chosenCharacter;
+        SceneManager.LoadScene(1);
+        IsInGameplayScene = true;
+    }
+
+    private void LoadMenuScene()
+    {
+        IsInGameplayScene = false;
         SceneManager.LoadScene(1);
     }
 }
