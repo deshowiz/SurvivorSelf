@@ -11,6 +11,8 @@ public class RangedWeapon : Weapon
 
     protected override void FireWeapon()
     {
+        AudioManager.Instance.PlaySound(_weaponAudio);
+        
         Vector3 direction = _swivelTransform.right; // This is more efficient and is automatically normalized foe the projectile
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         _swivelTransform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);

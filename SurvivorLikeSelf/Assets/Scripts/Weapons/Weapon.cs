@@ -16,6 +16,8 @@ public abstract class Weapon : MonoBehaviour
     protected Transform _visualTransform = null;
     [SerializeField]
     protected SpriteRenderer _weaponSprite = null;
+    [SerializeField]
+    protected AudioClip _weaponAudio = null;
     
     [Header("Settings")]
     [SerializeField]

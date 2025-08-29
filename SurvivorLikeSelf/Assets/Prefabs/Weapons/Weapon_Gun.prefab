@@ -79,6 +79,7 @@ MonoBehaviour:
   _swivelTransform: {fileID: 1732745857756765322}
   _visualTransform: {fileID: 4801997992372351017}
   _weaponSprite: {fileID: 5430304939393254084}
+  _weaponAudio: {fileID: 8300000, guid: 7af3900d9fa16ac4ebf10203e45f1971, type: 3}
   _onlyWeapon: 1
   _enemyLayer:
     serializedVersion: 2
@@ -86,7 +87,7 @@ MonoBehaviour:
   _baseRotation: {x: 0, y: 0, z: 0}
   _range: 3
   _detectionRangeMultiplier: 1.5
-  _fireRate: 1
+  _fireRate: 0.15
   _animationPercentage: 0.5
   _closestEnemy: {fileID: 0}
   _exitTransform: {fileID: 2286298253556429492}
