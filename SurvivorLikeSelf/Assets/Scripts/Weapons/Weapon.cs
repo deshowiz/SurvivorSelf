@@ -48,8 +48,6 @@ public abstract class Weapon : MonoBehaviour
 
     protected Vector3 _currentTargetPosition = Vector3.positiveInfinity;
 
-    protected Coroutine _firingRoutine = null;
-
     protected bool _targeting = true;
 
     protected Vector3 _currentAttackDirection = Vector3.zero;

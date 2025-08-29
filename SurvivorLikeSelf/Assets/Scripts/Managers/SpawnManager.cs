@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -20,6 +21,10 @@ public class SpawnManager : MonoBehaviour
     private EnemyWave _currentWave = null;
 
     [Header("Settings")]
+    [SerializeField]
+    private float _endWaveCollectionDelay = 2f;
+    [SerializeField]
+    private float _enemySpawnDelay = 2f;
     [SerializeField]
     private List<InteractableSpawnData> _interactablesSpawnData = new List<InteractableSpawnData>();
     [SerializeField]
@@ -58,12 +63,6 @@ public class SpawnManager : MonoBehaviour
     private List<Enemy> _enemiesToBeCleared = new List<Enemy>();
 
     private int _numInteractablesEnabled = 0;
-
-    private Coroutine _waitForCollectionRoutine = null;
-    private Coroutine _spawnWaveRoutine = null;
-
-    private WaitForSeconds _shopDelayWait = new WaitForSeconds(2);
-    private WaitForSeconds _spawnDelayWait = new WaitForSeconds(2);
 
     private List<Vector2[]> _subWavePositionData;
 
@@ -163,31 +162,24 @@ public class SpawnManager : MonoBehaviour
     public void SetSpawnWave(EnemyWave newWave)
     {
         _currentWave = newWave;
-        if (_spawnWaveRoutine != null)
-        {
-            StopCoroutine(_spawnWaveRoutine);
-            _spawnWaveRoutine = null;
-        }
         int subWaveCount = _currentWave.GetSubWaveCount;
         _subWavePositionData = _currentWave.GetFullWavePositions(_xAxisSpawnSize, _yAxisSpawnSize);
-        _spawnWaveRoutine = StartCoroutine(WaveSpawnRoutine(_currentWave, subWaveCount));
+        WaveSpawnRoutine(_currentWave, subWaveCount).Forget();
     }
     
     // Note that async won't work with timescale things like pausing
     // here's a possible async based replacement
     // https://openupm.com/packages/com.cysharp.unitask/
-    private IEnumerator WaveSpawnRoutine(EnemyWave newWave, int numSubWaves)
+    private async UniTaskVoid WaveSpawnRoutine(EnemyWave newWave, int numSubWaves)
     {
         int currentSubWave = 0;
-        WaitForSeconds subWaveDelay;
 
         while (currentSubWave < numSubWaves)
         {
             EnemyWave.SubWaveData currentsubWaveData = newWave.GetNextSubWave(currentSubWave);
             SpawnWave(currentsubWaveData, _subWavePositionData[currentSubWave]);
-            subWaveDelay = new WaitForSeconds(currentsubWaveData._triggerDelay);
             currentSubWave++;
-            yield return subWaveDelay;
+            await UniTask.Delay((int)(currentsubWaveData._triggerDelay * 1000f));
         }
     }
 
@@ -202,12 +194,12 @@ public class SpawnManager : MonoBehaviour
             spawnedVisuals[i] = spawnedVisual;
             spawnedVisual.SetActive(true);
         }
-        StartCoroutine(EnemyDelayedSpawns(enemyMakeup, spawnedVisuals, positions));
+        EnemyDelayedSpawns(enemyMakeup, spawnedVisuals, positions).Forget();
     }
 
-    private IEnumerator EnemyDelayedSpawns(Enemy[] enemyMakeup, GameObject[] visuals, Vector2[] positions)
+    private async UniTaskVoid EnemyDelayedSpawns(Enemy[] enemyMakeup, GameObject[] visuals, Vector2[] positions)
     {
-        yield return _spawnDelayWait;
+        await UniTask.Delay((int)(_enemySpawnDelay * 1000f));
         for (int i = 0; i < enemyMakeup.Length; i++)
         {
             Enemy spawnedEnemy = _enemyQueues[enemyMakeup[i]._enemyId].Dequeue();
@@ -241,12 +233,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (_numInteractablesEnabled != 0)
         {
-            if (_waitForCollectionRoutine != null)
-            {
-                StopCoroutine(_waitForCollectionRoutine);
-                _waitForCollectionRoutine = null;
-            }
-            _waitForCollectionRoutine = StartCoroutine(WaitForCollection());
+            WaitForCollection().Forget();
         }
         else
         {
@@ -255,9 +242,9 @@ public class SpawnManager : MonoBehaviour
         _numInteractablesEnabled = 0;
     }
 
-    private IEnumerator WaitForCollection()
+    private async UniTaskVoid WaitForCollection()
     {
-        yield return _shopDelayWait;
+        await UniTask.Delay((int)(_endWaveCollectionDelay * 1000f));
         EventManager.OnEndWave?.Invoke();
     }
 }

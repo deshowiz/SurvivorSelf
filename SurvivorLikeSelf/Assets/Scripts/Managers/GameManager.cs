@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,8 +11,6 @@ public class GameManager : MonoBehaviour
     private EnemyWave[] _enemyWaves;
 
     private int _currentWaveIndex = 0;
-
-    private Coroutine _waveTimerRoutine = null;
 
     private PlayerAttributesContainer _chosenCharacter = null;
 
@@ -63,15 +62,10 @@ public class GameManager : MonoBehaviour
         //     EventManager.OnFullInitialization?.Invoke();
         // }
         SpawnManager.Instance.SetSpawnWave(_enemyWaves[_currentWaveIndex]);
-        if (_waveTimerRoutine != null)
-        {
-            StopCoroutine(_waveTimerRoutine);
-            _waveTimerRoutine = null;
-        }
-        _waveTimerRoutine = StartCoroutine(WaveTimer());
+        WaveTimer().Forget();
     }
 
-    private IEnumerator WaveTimer()
+    private async UniTaskVoid WaveTimer()
     {
         int waveTime = _enemyWaves[_currentWaveIndex].WaveLengthSeconds;
         EventManager.OnTimerChange?.Invoke(waveTime);
@@ -85,7 +79,7 @@ public class GameManager : MonoBehaviour
                 lastSecondValue--;
                 EventManager.OnTimerChange?.Invoke(lastSecondValue);
             }
-            yield return null;
+            await UniTask.Yield();
         }
         // Wave Over
         EventManager.OnWaveTimerZero?.Invoke();

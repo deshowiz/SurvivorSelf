@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class MeleeWeapon : Weapon
@@ -82,16 +83,10 @@ public class MeleeWeapon : Weapon
 
     protected override void FireWeapon()
     {
-        if (_firingRoutine != null)
-        {
-            StopCoroutine(_firingRoutine);
-            _firingRoutine = null;
-            _hitEnemies.Clear();
-        }
-        _firingRoutine = StartCoroutine(Firing());
+        Firing().Forget();
     }
 
-    protected virtual IEnumerator Firing()
+    protected async UniTaskVoid Firing()
     {
         _weaponCollider.enabled = true;
         _targeting = false;
@@ -102,7 +97,7 @@ public class MeleeWeapon : Weapon
         while (halfTime > Time.time - startTime)
         {
             _visualTransform.localPosition = Vector3.Lerp(Vector3.zero, destination, (Time.time - startTime) / halfTime);
-            yield return new WaitForFixedUpdate();
+            await UniTask.WaitForFixedUpdate();
         }
         _visualTransform.localPosition = destination;
 
@@ -112,7 +107,7 @@ public class MeleeWeapon : Weapon
         while (halfTime > Time.time - startTime)
         {
             _visualTransform.localPosition = Vector3.Lerp(destination, Vector3.zero, (Time.time - startTime) / halfTime);
-            yield return new WaitForFixedUpdate();
+            await UniTask.WaitForFixedUpdate();
         }
         _visualTransform.localPosition = Vector3.zero;
         _targeting = true;

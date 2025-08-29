@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,7 +15,6 @@ public class Interactable : MonoBehaviour
     Player _player = null;
 
     private bool _pickedUp = false;
-    Coroutine _flyingRoutine = null;
 
     private void Start()
     {
@@ -24,13 +25,13 @@ public class Interactable : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnWaveTimerZero += ForceFly;
+        EventManager.OnWaveTimerZero += StartCollection;
         _pickedUp = false;
     }
 
     private void OnDisable()
     {
-        EventManager.OnWaveTimerZero -= ForceFly;
+        EventManager.OnWaveTimerZero -= StartCollection;
     }
 
     private void Update()
@@ -40,34 +41,24 @@ public class Interactable : MonoBehaviour
             if (_sqrDistancePickup > (_player.transform.position - transform.position).sqrMagnitude)
             {
                 _pickedUp = true;
-                if (_flyingRoutine != null)
-                {
-                    StopCoroutine(_flyingRoutine);
-                    _flyingRoutine = null;
-                }
-                _flyingRoutine = StartCoroutine(FlyTowardsPlayer());
+                StartCollection();
             }
         }
-
     }
 
-    private void ForceFly()
+    private void StartCollection()
     {
-        if (_flyingRoutine != null)
-        {
-            _flyingRoutine = null;
-        }
-        _flyingRoutine = StartCoroutine(FlyTowardsPlayer());
+        FlyTowardsPlayer().Forget();
     }
 
-    private IEnumerator FlyTowardsPlayer()
+    private async UniTaskVoid FlyTowardsPlayer()
     {
         float startTime = 0f;
         while (_sqrDistanceAbsorb < (_player.transform.position - transform.position).sqrMagnitude)
         {
             startTime += Time.deltaTime;
             transform.position = Vector2.Lerp(transform.position, _player.transform.position, startTime);
-            yield return null;
+            await UniTask.Yield();
         }
         EventManager.OnPickedUpInteractable?.Invoke(this);
     }

@@ -25,6 +25,8 @@ public class AudioManager : MonoBehaviour
 
     private float _currentAudioSystemTime = 0f;
 
+    private UniTaskVoid _uniSoundVoid = new UniTaskVoid();
+
     void Awake()
     {
         if (Instance == null)
@@ -104,6 +106,6 @@ public class AudioManager : MonoBehaviour
 
         _sourceStandbyQueue.Enqueue(newSource);
 
-        return new UniTaskVoid();
+        return _uniSoundVoid;
     }
 }
