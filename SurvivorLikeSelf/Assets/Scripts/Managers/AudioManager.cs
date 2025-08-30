@@ -79,16 +79,13 @@ public class AudioManager : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(_musicClips[_currentSongIndex].length * 1000f);
             PlayMusic(newSong);
-            Debug.Log(_musicClips[_currentSongIndex].length * 1000f);
             await UniTask.Delay(TimeSpan.FromSeconds(_musicClips[_currentSongIndex].length), ignoreTimeScale: true);
         }
     }
 
     private void PlayMusic(AudioClip newSong)
     {
-        Debug.Log("playing new song");
         if (newSong == null)
         {
             _currentSongIndex++;
