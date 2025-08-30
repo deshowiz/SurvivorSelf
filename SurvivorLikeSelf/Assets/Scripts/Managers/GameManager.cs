@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public static bool IsInGameplayScene = false;
 
+    CancellationToken _waveTimerCancellation = new CancellationToken();
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -25,15 +29,18 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnStartWave += StartNewWave;
         EventManager.OnDeath += Restart;
+        EventManager.OnRestartGame += Restart;
         EventManager.OnSelectedPlayer += LoadGameplayScene;
         EventManager.OnFullInitialization += SetPlayerCharacter;
         EventManager.OnFullInitialization += StartNewWave;
+        
     }
 
     void OnDisable()
     {
         EventManager.OnStartWave -= StartNewWave;
         EventManager.OnDeath -= Restart;
+        EventManager.OnRestartGame -= Restart;
         EventManager.OnSelectedPlayer -= LoadGameplayScene;
         EventManager.OnFullInitialization -= SetPlayerCharacter;
         EventManager.OnFullInitialization -= StartNewWave;
@@ -41,26 +48,19 @@ public class GameManager : MonoBehaviour
 
     private void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    private void Start()
-    {
-        //StartNewWave();
+        Time.timeScale = 1f;
+        _currentWaveIndex = 0;
+        LoadGameplayScene(_chosenCharacter);
     }
 
     private void SetPlayerCharacter()
     {
         EventManager.OnSetPlayerCharacter?.Invoke(_chosenCharacter);
+        _waveTimerCancellation = SpawnManager.Instance.GetCancellationTokenOnDestroy();
     }
 
     private void StartNewWave()
     {
-        // Write a check for if in shop to return on this function call, for when loading back into a save
-        // if (_currentWaveIndex == 0)
-        // {
-        //     EventManager.OnFullInitialization?.Invoke();
-        // }
         SpawnManager.Instance.SetSpawnWave(_enemyWaves[_currentWaveIndex]);
         WaveTimer().Forget();
     }
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
                 lastSecondValue--;
                 EventManager.OnTimerChange?.Invoke(lastSecondValue);
             }
-            await UniTask.Yield();
+            await UniTask.Yield(_waveTimerCancellation);
         }
         // Wave Over
         EventManager.OnWaveTimerZero?.Invoke();
@@ -89,11 +89,16 @@ public class GameManager : MonoBehaviour
     private void LoadGameplayScene(PlayerAttributesContainer chosenCharacter)
     {
         this._chosenCharacter = chosenCharacter;
-        SceneManager.LoadScene(1);
+        LoadGameplaySceneTask().Forget();
+    }
+
+    private async UniTaskVoid LoadGameplaySceneTask()
+    {
+        await SceneManager.LoadSceneAsync(1);
         IsInGameplayScene = true;
     }
 
-    private void LoadMenuScene()
+    public static void LoadMenuScene()
     {
         IsInGameplayScene = false;
         SceneManager.LoadScene(1);

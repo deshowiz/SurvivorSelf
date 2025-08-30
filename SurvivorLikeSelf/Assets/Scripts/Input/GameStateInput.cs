@@ -11,11 +11,13 @@ public class GameStateInput : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnResumedGame += Resume;
+        EventManager.OnRestartGame += Resume;
     }
 
     private void OnDisable()
     {
         EventManager.OnResumedGame -= Resume;
+        EventManager.OnRestartGame -= Resume;
     }
 
     private void Awake()

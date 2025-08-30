@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -53,6 +54,16 @@ public class Player : MonoBehaviour, IDamageable
     void OnDisable()
     {
         //EventManager.OnFullInitialization -= FullInitialization;
+        EventManager.OnSetPlayerCharacter -= SetPlayerCharacter;
+        EventManager.OnStartWave -= ReInitialize;
+        EventManager.OnEndWave -= DisablePlayer;
+        EventManager.OnItemEquipped -= EquipItem;
+        EventManager.OnWeaponEquipped -= WeaponEquipItem;
+    }
+
+    void OnDestroy()
+    {
+        EventManager.OnSetPlayerCharacter -= SetPlayerCharacter;
         EventManager.OnStartWave -= ReInitialize;
         EventManager.OnEndWave -= DisablePlayer;
         EventManager.OnItemEquipped -= EquipItem;

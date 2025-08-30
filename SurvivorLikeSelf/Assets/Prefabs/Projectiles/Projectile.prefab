@@ -104,6 +104,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _baseSpeed: 20
-  _baseDamage: 1
-  _baseKnockback: 250
+  _baseDamage: 0
+  _baseKnockback: 50
   _lifetime: 1

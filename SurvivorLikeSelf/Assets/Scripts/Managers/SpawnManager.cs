@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -65,6 +66,7 @@ public class SpawnManager : MonoBehaviour
     private int _numInteractablesEnabled = 0;
 
     private List<Vector2[]> _subWavePositionData;
+    private CancellationToken _taskCancellationToken;
 
     private void Awake()
     {
@@ -79,7 +81,11 @@ public class SpawnManager : MonoBehaviour
         // References docs: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-orthographicSize.html
         _yAxisSpawnSize = Camera.main.orthographicSize/* * 2f*/;
         _xAxisSpawnSize = _yAxisSpawnSize * Camera.main.aspect;
+        _taskCancellationToken = this.GetCancellationTokenOnDestroy();
+    }
 
+    void Start()
+    {
         InitializeSpawns();
     }
 
@@ -179,7 +185,7 @@ public class SpawnManager : MonoBehaviour
             EnemyWave.SubWaveData currentsubWaveData = newWave.GetNextSubWave(currentSubWave);
             SpawnWave(currentsubWaveData, _subWavePositionData[currentSubWave]);
             currentSubWave++;
-            await UniTask.Delay((int)(currentsubWaveData._triggerDelay * 1000f));
+            await UniTask.Delay((int)(currentsubWaveData._triggerDelay * 1000f), false, PlayerLoopTiming.Update, _taskCancellationToken);
         }
     }
 
@@ -199,7 +205,8 @@ public class SpawnManager : MonoBehaviour
 
     private async UniTaskVoid EnemyDelayedSpawns(Enemy[] enemyMakeup, GameObject[] visuals, Vector2[] positions)
     {
-        await UniTask.Delay((int)(_enemySpawnDelay * 1000f));
+        await UniTask.Delay((int)(_enemySpawnDelay * 1000f), false, PlayerLoopTiming.Update, _taskCancellationToken);
+
         for (int i = 0; i < enemyMakeup.Length; i++)
         {
             Enemy spawnedEnemy = _enemyQueues[enemyMakeup[i]._enemyId].Dequeue();
@@ -244,7 +251,7 @@ public class SpawnManager : MonoBehaviour
 
     private async UniTaskVoid WaitForCollection()
     {
-        await UniTask.Delay((int)(_endWaveCollectionDelay * 1000f));
+        await UniTask.Delay((int)(_endWaveCollectionDelay * 1000f), false, PlayerLoopTiming.Update, _taskCancellationToken);
         EventManager.OnEndWave?.Invoke();
     }
 }

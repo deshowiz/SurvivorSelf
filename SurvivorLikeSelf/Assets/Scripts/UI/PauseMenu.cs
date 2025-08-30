@@ -54,4 +54,14 @@ public class PauseMenu : MonoBehaviour
         EventManager.OnResumedGame?.Invoke();
         CloseMenu();
     }
+
+    public void RestartRun()
+    {
+        EventManager.OnRestartGame?.Invoke();
+    }
+
+    public void BackToMainMenu()
+    {
+        GameManager.LoadMenuScene();
+    }
 }

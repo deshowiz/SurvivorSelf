@@ -1103,7 +1103,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1023841860}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 862156849}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: BackToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1023841860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1292,7 +1304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8677778958935857477, guid: c8fb67d787fa3e74cb6c45bebdb09916, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000014226733
+      value: 0.000017476921
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1386,7 +1398,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1209689481}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 862156849}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: RestartRun
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1209689481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2869,7 +2893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8454875774802502148, guid: cb2e1a95639c48d48b0e6fa5b6a1d7b0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000014226733
+      value: 0.000017476921
       objectReference: {fileID: 0}
     - target: {fileID: 8573591744654023601, guid: cb2e1a95639c48d48b0e6fa5b6a1d7b0, type: 3}
       propertyPath: m_IsActive
