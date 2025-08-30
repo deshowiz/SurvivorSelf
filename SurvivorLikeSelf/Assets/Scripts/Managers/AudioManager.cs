@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -20,10 +21,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private Transform _generalSourcesHolder = null;
     [SerializeField]
+    private AudioMixerGroup _soundFXGroup = null;
+    [SerializeField]
     private int _generalSourcePoolSize = 50;
     private Queue<AudioSource> _sourceStandbyQueue = new Queue<AudioSource>();
-
-    private UniTaskVoid _uniSoundVoid = new UniTaskVoid();
     private CancellationTokenSource _cancelMusicTrack = new CancellationTokenSource();
 
     int _currentSongIndex = 0;
@@ -71,6 +72,7 @@ public class AudioManager : MonoBehaviour
         for (int i = 0; i < _generalSourcePoolSize; i++)
         {
             AudioSource newSource = _generalSourcesHolder.AddComponent<AudioSource>();
+            newSource.outputAudioMixerGroup = _soundFXGroup;
             _sourceStandbyQueue.Enqueue(newSource);
         }
     }
@@ -105,21 +107,22 @@ public class AudioManager : MonoBehaviour
     {
         _cancelMusicTrack.Cancel();
 
+        if (_musicSource.isPlaying)
+        {
+            _musicSource.Stop();
+        }
+        
         WaitForNextSong(_cancelMusicTrack, newSong).Forget();
     }
     
-
-    // Try working with UniTask later so that the delay works with timescale
-    public UniTaskVoid PlaySound(AudioClip sound)
+    public async UniTaskVoid PlaySound(AudioClip sound)
     {
         AudioSource newSource = _sourceStandbyQueue.Dequeue();
         newSource.clip = sound;
         newSource.Play();
 
-        UniTask.Delay((int)(sound.length * 1000f), ignoreTimeScale: false);
+        await UniTask.Delay((int)(sound.length * 1000f), ignoreTimeScale: false);
 
         _sourceStandbyQueue.Enqueue(newSource);
-
-        return _uniSoundVoid;
     }
 }
