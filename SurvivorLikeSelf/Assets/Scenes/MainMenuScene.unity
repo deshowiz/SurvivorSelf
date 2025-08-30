@@ -848,12 +848,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1579035270}
     - target: {fileID: 8774198950595685566, guid: 960c6c75cdccfa44dbc77698f1f743ca, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774198950595685566, guid: 960c6c75cdccfa44dbc77698f1f743ca, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1579035270}
     - target: {fileID: 8774198950595685566, guid: 960c6c75cdccfa44dbc77698f1f743ca, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: NewMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774198950595685566, guid: 960c6c75cdccfa44dbc77698f1f743ca, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9068304525007034727, guid: 960c6c75cdccfa44dbc77698f1f743ca, type: 3}
       propertyPath: m_Name
@@ -916,6 +924,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3441892531653893805, guid: 52b7d2d13551b364ab03474e03959871, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 3a7204cc135cac24c981cb8e3ee46b0a, type: 3}
+    - target: {fileID: 3441892531653893805, guid: 52b7d2d13551b364ab03474e03959871, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3a7204cc135cac24c981cb8e3ee46b0a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

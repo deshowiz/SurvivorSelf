@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     [Header("References")]
     [SerializeField]
     private EnemyWave[] _enemyWaves;
@@ -22,6 +24,14 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         DontDestroyOnLoad(gameObject);
     }
 
@@ -100,7 +110,8 @@ public class GameManager : MonoBehaviour
 
     public static void LoadMenuScene()
     {
+        Time.timeScale = 1f;
         IsInGameplayScene = false;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 }
