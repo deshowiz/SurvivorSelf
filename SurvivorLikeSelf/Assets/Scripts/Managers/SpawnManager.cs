@@ -54,14 +54,14 @@ public class SpawnManager : MonoBehaviour
         public GameObject prefabToSpawn;
     }
 
-    private Queue<Interactable> _interactableQueue = new Queue<Interactable>();
-    private List<Queue<Enemy>> _enemyQueues = new List<Queue<Enemy>>();
-    private Queue<GameObject> _visualQueue = new Queue<GameObject>();
+    private readonly Queue<Interactable> _interactableQueue = new Queue<Interactable>();
+    private readonly List<Queue<Enemy>> _enemyQueues = new List<Queue<Enemy>>();
+    private readonly Queue<GameObject> _visualQueue = new Queue<GameObject>();
 
     private float _xAxisSpawnSize = 2.5f;
     private float _yAxisSpawnSize = 1.40625f;
 
-    private List<Enemy> _enemiesToBeCleared = new List<Enemy>();
+    private readonly List<Enemy> _enemiesToBeCleared = new List<Enemy>();
 
     private int _numInteractablesEnabled = 0;
 

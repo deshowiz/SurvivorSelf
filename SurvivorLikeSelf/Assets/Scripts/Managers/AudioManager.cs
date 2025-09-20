@@ -24,8 +24,8 @@ public class AudioManager : MonoBehaviour
     private AudioMixerGroup _soundFXGroup = null;
     [SerializeField]
     private int _generalSourcePoolSize = 50;
-    private Queue<AudioSource> _sourceStandbyQueue = new Queue<AudioSource>();
-    private CancellationTokenSource _cancelMusicTrack = new CancellationTokenSource();
+    private readonly Queue<AudioSource> _sourceStandbyQueue = new Queue<AudioSource>();
+    private readonly CancellationTokenSource _cancelMusicTrack = new CancellationTokenSource();
 
     int _currentSongIndex = 0;
 
