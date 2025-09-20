@@ -48,7 +48,7 @@ public class EventManager : MonoBehaviour
     public static CharacterDataEvent OnSetPlayerCharacter;
 
 
-    public static EventManager instance
+    public static EventManager Instance
     {
         get
         {
@@ -71,11 +71,6 @@ public class EventManager : MonoBehaviour
             return eventManager;
         }
     }
-
-    // public static void RegisterEvent<T>(string eventName, T param)
-    // {
-
-    // }
 
 }
 

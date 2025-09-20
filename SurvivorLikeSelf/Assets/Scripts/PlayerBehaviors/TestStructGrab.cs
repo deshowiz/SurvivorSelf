@@ -34,14 +34,6 @@ public class TestStructGrab : MonoBehaviour
         }
         st.Stop();
         UnityEngine.Debug.Log((float)st.Elapsed.TotalMilliseconds);
-        
-        // st.Restart();
-        // for (int i = 0; i < 1000000; i++)
-        // {
-        //     placeholderSpeed = _testGrabClass.speed;
-        // }
-        // st.Stop();
-        // UnityEngine.Debug.Log((float)st.Elapsed.TotalMilliseconds);
     }
 
     void OnDisable()

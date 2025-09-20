@@ -8,8 +8,6 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [Header("References")]
-    // [SerializeField]
-    // private SpriteRenderer _weaponSprite = null;
     [SerializeField]
     protected Transform _swivelTransform = null;
     [SerializeField]
@@ -249,7 +247,6 @@ public abstract class Weapon : MonoBehaviour
         #endregion
         if (_targeting)
         {
-            // Cast on the enemy layer looking for enemies to hit?
             Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(transform.position, _trackingRange, _enemyLayer);
 
             if (enemiesHit.Length != 0)
@@ -282,6 +279,4 @@ public abstract class Weapon : MonoBehaviour
             }
         }
     }
-
-    //protected virtual void OnTriggerEnter2D(Collider2D collision) {}
 }

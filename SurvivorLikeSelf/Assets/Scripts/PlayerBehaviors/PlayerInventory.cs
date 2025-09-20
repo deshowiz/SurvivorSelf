@@ -37,7 +37,6 @@ public class PlayerInventory : MonoBehaviour
 
     private void PickedUpInteractable(Interactable interactable)
     {
-        // _gold += interactable.goldValue
         _gold++;
         EventManager.OnGoldChange?.Invoke(_gold);
     }

@@ -44,8 +44,6 @@ public class Item : ScriptableObject
     {
         if (_statModifiers == null) return true;
 
-        //PlayerAttributesContainer playerAttributes = player._playerAttributes;
-
         List<AttributeStat> _playerStatsChanged = new List<AttributeStat>();
 
         for (int i = 0; i < _statModifiers.Count; i++)

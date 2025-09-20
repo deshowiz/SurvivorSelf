@@ -34,9 +34,6 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             Vector2 travelVector = (_player.transform.position - transform.position).normalized;
             _rigidbody.linearVelocity += travelVector * (_baseSpeed * Time.fixedDeltaTime);
-
-            //transform.position += new Vector3(travelVector.x, travelVector.y, 0f) * (_speed * Time.fixedDeltaTime);
-
         }
         else
         {
@@ -62,8 +59,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void Die()
     {
-        //gameObject.SetActive(false);
-        //Instantiate(_droppedInteractable, transform.position, Quaternion.identity);
         EventManager.OnEnemyDeath?.Invoke(this);
         Destroy(gameObject);
     }

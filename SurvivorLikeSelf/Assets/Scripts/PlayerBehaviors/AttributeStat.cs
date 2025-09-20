@@ -11,8 +11,6 @@ public class AttributeStat
 {
     private float _baseValue;
 
-    //private bool _isDirty = true;
-    //private float _lastBaseValue;
     [SerializeField]
     private float _value;
     public float Value { get { return _value; } }
@@ -25,23 +23,8 @@ public class AttributeStat
         this._value = newBaseValue;
     }
 
-    // public float Value
-    // {
-    //     get
-    //     {
-    //         // if(_isDirty || _lastBaseValue != BaseValue) {
-    //         // 		lastBaseValue = BaseValue;
-    //         // 		_value = CalculateFinalValue();
-    //         // 		isDirty = false;
-    //         // 	}
-    //         _value = CalculateFinalValue();
-    //         return _value;
-    //     }
-    // }
 
     private List<StatModifier> _statmodifiers = new List<StatModifier>();
-    // Similar to a property List<StatModifier> that only has a getter
-    //public ReadOnlyCollection<StatModifier> StatModifiers;
 
     public void AddModifier(StatModifier mod)
     {
@@ -59,7 +42,6 @@ public class AttributeStat
         return false;
     }
 
-    // Make an assignment where a new subclass AttributeStatPercent is made for the StatModType.PercentAdd
     public float CalculateFinalValue()
     {
         float finalValue = _baseValue;

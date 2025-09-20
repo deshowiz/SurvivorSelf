@@ -56,11 +56,11 @@ public class EnemyWave : ScriptableObject
         }
         
 
-        // Consideration: Do all of this calc pre-wave
+        // Calc is done pre wave now
         public Vector2[] GetSubWavePositions(float xHalf, float yHalf)
         {
             Vector2[] generatedPositions = new Vector2[_enemyMakeup.Length];
-            switch (_spawnType)
+            switch (_spawnType) // use switch for future expansion instead of if else
             {
                 case SpawnType.Random:
                     for (int i = 0; i < generatedPositions.Length; i++)

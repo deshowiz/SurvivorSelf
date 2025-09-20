@@ -9,9 +9,4 @@ public class SettingsControl : MonoBehaviour
     private Slider _soundFXSlider = null;
     [SerializeField]
     private Slider _musicSlider = null;
-
-    public void UpdateSettingsVisuals()
-    {
-        
-    }
 }

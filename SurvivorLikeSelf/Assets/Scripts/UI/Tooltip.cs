@@ -58,7 +58,7 @@ public class Tooltip : MonoBehaviour
             return;
         }
         RectTransform targetRect = newItemSlot.GetRectTransform;
-        // Don't feel like doing the conversion here so setting it again after getting transform screen position
+        
         _panelImage.rectTransform.anchoredPosition = (targetRect.position * resMultiplier)
          + new Vector2(-targetRect.rect.width * 0.5f, targetRect.rect.height * 0.5f);
          

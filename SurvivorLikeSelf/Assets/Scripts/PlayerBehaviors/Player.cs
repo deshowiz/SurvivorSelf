@@ -35,12 +35,6 @@ public class Player : MonoBehaviour, IDamageable
 
     private Coroutine _flashRoutine = null;
 
-    // Point for later, use structs as stat modifiers for scaling enemies later per wave
-
-    // void Start()
-    // {
-    //     Initialize();
-    // }
 
     void OnEnable()
     {
@@ -214,15 +208,6 @@ public class Player : MonoBehaviour, IDamageable
             _weaponPositions.SetNewPositions(_equippedWeapons);
         }
     }
-
-    // public void ReCalcAllChangedStats(List<AttributeStat> changedStats)
-    // {
-    //     for (int i = 0; i < changedStats.Count; i++)
-    //     {
-    //         changedStats[i].ReCalculateValue();
-    //     }
-    //     EventManager.OnAttributeChange?.Invoke();
-    // }
 
     public void Die()
     {
